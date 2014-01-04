@@ -7,11 +7,9 @@ echo '<div id="admin-title">Admin panel for SKI ';
   }
 echo ' </div>';
 echo $this->element('admin_menus');
-echo '<div id="container">';
-  echo '<div id="content">';
+echo '<div id="admin-container">';
     echo $this->Session->flash();
     echo $this->fetch('content');
-  echo '</div>';
 echo '</div>';
 echo $this->element('sql_dump');
 echo $this->element('footer'); ?>
