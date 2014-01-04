@@ -1,0 +1,1 @@
+<?php echo '<p class="message">You have been logged out</p>'; ?>

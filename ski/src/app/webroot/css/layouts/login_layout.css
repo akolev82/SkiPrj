@@ -1,0 +1,47 @@
+body {
+  background-color: white;
+  color: black;
+}
+
+#container {
+  width: 400px;
+  background-color: #5BA150;
+  color: yellow;
+  box-shadow: 0px 0px 3px 3px #008000;
+  overflow: hidden;
+}
+
+#container #UserLoginForm {
+  margin: 0;
+  padding: 10px 10px 10px 10px;
+}
+
+#container #UserLoginForm * {
+  background: none;
+  color: yellow;
+}
+
+#container #UserLoginForm h1 {
+  width: 100%;
+  text-align: 100;
+  font-size: 1.5em;
+  padding: 5px 5px 5px 5px;
+}
+
+#container #UserLoginForm input[type='text'], #container #UserLoginForm input[type='password']  {
+  background: white;
+  color: #5BA150;
+  border: 3px solid green; 
+}
+
+#container #UserLoginForm .message {
+  border: 1px solid green;
+  border-radius: 5px 5px 5px 5px;
+  background: yellow;
+  color: #5BA150;
+  font-size: 1em;
+  box-shadow: none;
+  text-decoration: underline;
+  font-weight: normal;
+  text-shadow: none;
+}
