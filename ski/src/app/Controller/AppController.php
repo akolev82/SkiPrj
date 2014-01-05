@@ -35,7 +35,12 @@ class AppController extends Controller {
   public $components = array('Session', 'Auth' => array(
       'loginAction' => array(
           'controller' => 'users',
-          'action' => 'login'
+          'action' => 'login',
+          'admin' => true
+      ),
+      'loginRedirect' => array(
+          'controller' => 'pages',
+          'admin' => true
       ),
       //'logoutRedirect' => '/',
       'authError' => 'Did you really think you are allowed to see that?',
@@ -86,13 +91,18 @@ class AppController extends Controller {
     
     $is_admin = $this->isAdminContext();
     $this->set('is_admin', $is_admin);
-    $this->set('is_logged_in', $this->Auth->loggedIn());
     if ($is_admin) {
+      AuthComponent::$sessionKey = 'Auth.Admin';
+      $is_logged_in = $this->Auth->loggedIn();
+      $this->set('is_logged_in', $is_logged_in);
+      
+      
       //Controller::cacheAction = false;
-      if ($this->action != 'login' && $this->action != 'logout') {
+      if (!$is_logged_in && $this->action != 'login' && $this->action != 'logout') {
         //tell Auth to call the isAuthorized function before allowing access
         $this->Auth->allowedActions = array(); //to require automatic login
-        $this->Auth->authorize = 'controller';
+        $this->Auth->authorize = 'Controller';
+
         
         /*if ($this->Session->check('user') === false) {
           $this->redirect(array('controller' => 'users', 'action' => 'login'));
@@ -103,6 +113,10 @@ class AppController extends Controller {
     } else {
       //allow all non-logged in users access to items without a prefix
       if (!isset($this->params['prefix'])) $this->Auth->allow('*');
+      
+      AuthComponent::$sessionKey = 'Auth.Common';
+      $is_logged_in = $this->Auth->loggedIn();
+      $this->set('is_logged_in', $is_logged_in);
     }
     
     return true;

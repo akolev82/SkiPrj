@@ -52,4 +52,18 @@ class AceHelper extends Helper {
   public function end($options = null) {
     return '</div>' . $this->Form->end($options);
   }
+  
+  public function toBool($aValue) {
+    return ((int)$aValue != 0) ? true : false;
+  }
+  
+  public function toYesStr($aValue) {
+    return ($this->toBool($aValue)) ? 'Yes' : 'No';
+  }
+  
+  public function toViewItem($caption, $value) {
+    echo '<dt>' . $caption . '</dt>';
+    echo '<dd>' . $value . '&nbsp;</dd>';
+  }
+  
 } ?>

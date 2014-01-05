@@ -1,36 +1,37 @@
 <?php echo '<div id="admin-menu">';
   echo '<ul>';
-    echo '<li>' . $this->Html->link('Home', '/') . '</li>';
+    echo '<li>' . $this->Html->link(__('Home'), array('action' => 'display', 'controller' => 'pages', 'admin' => true)) . '</li>';
   echo '</ul>';
     
   echo '<fieldset><legend>User management</legend>';
     echo '<ul>';
-      echo '<li>' . $this->Html->link(__('Users'), array('action' => 'index', 'controller' => 'users')) . '</li>';
-      echo '<li>' . $this->Html->link(__('Roles'), array('action' => 'index', 'controller' => 'roles')) . '</li>';
-      echo '<li>' . $this->Html->link(__('Permissions'), array('action' => 'index', 'controller' => 'permissions')) . '</li>';
+      echo '<li>' . $this->Html->link(__('Users'), array('action' => 'index', 'controller' => 'users', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Roles'), array('action' => 'index', 'controller' => 'roles', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Permissions'), array('action' => 'index', 'controller' => 'permissions', 'admin' => true)) . '</li>';
     echo '</ul>';
   echo '</fieldset>';
         
   echo '<fieldset><legend>Peoples</legend>';
     echo '<ul>';
-      echo '<li>' . $this->Html->link(__('Peoples'), array('action' => 'index', 'controller' => 'peoples')) . '</li>';
-      echo '<li>' . $this->Html->link(__('Students'), array('action' => 'index', 'controller' => 'students')) . '</li>';
-      echo '<li>' . $this->Html->link(__('Coaches'), array('action' => 'index', 'controller' => 'coaches')) . '</li>';
+      echo '<li>' . $this->Html->link(__('Peoples'), array('action' => 'index', 'controller' => 'peoples', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Students'), array('action' => 'index', 'controller' => 'students', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Coaches'), array('action' => 'index', 'controller' => 'coaches', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Contact types'), array('action' => 'index', 'controller' => 'ContactTypes', 'admin' => true)) . '</li>';
     echo '</ul>';
   echo '</fieldset>';
 
   echo '<fieldset><legend>Teams</legend>';
     echo '<ul>';
-      echo '<li>' . $this->Html->link(__('Teams'), array('action' => 'index', 'controller' => 'teams')) . '</li>';
-      echo '<li>' . $this->Html->link(__('Schools'), array('action' => 'index', 'controller' => 'schools')) . '</li>';
+      echo '<li>' . $this->Html->link(__('Teams'), array('action' => 'index', 'controller' => 'teams', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Schools'), array('action' => 'index', 'controller' => 'schools', 'admin' => true)) . '</li>';
     echo '</ul>';
   echo '</fieldset>';
       
   echo '<fieldset><legend>Events</legend>';
     echo '<ul>';
-      echo '<li>' . $this->Html->link(__('Seasons'), array('action' => 'index', 'controller' => 'seasons')) . '</li>';
-      echo '<li>' . $this->Html->link(__('Leagues'), array('action' => 'index', 'controller' => 'leagues')) . '</li>';
-      echo '<li>' . $this->Html->link(__('Events'), array('action' => 'index', 'controller' => 'events')) . '</li>';
+      echo '<li>' . $this->Html->link(__('Seasons'), array('action' => 'index', 'controller' => 'seasons', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Leagues'), array('action' => 'index', 'controller' => 'leagues', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Events'), array('action' => 'index', 'controller' => 'events', 'admin' => true)) . '</li>';
     echo '</ul>';
   echo '</fieldset>';
 

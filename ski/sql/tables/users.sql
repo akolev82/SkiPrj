@@ -12,14 +12,16 @@ insert into `ref`(`Code`, `Desc`, `Value`) values(100, 'Reference for students r
 insert into `roles`(`RoleID`,`RoleName`) values(3, 'Coach');
 insert into `ref`(`Code`, `Desc`, `Value`) values(101, 'Reference for coach role', 3);
 
-create table `users` (
-  `UserID` int(15) unsigned not null auto_increment,
-  `name` varchar(50) not null,
-  `pass` varchar(256) not null,
-  `super` smallint(1) not null default 0,
-  primary key PK_USERS(`UserID`),
-  constraint UQ1_USERS unique (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `users` (
+  `UserID` int(15) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `pass` varchar(256) NOT NULL,
+  `super` smallint(1) NOT NULL DEFAULT '0',
+  `enabled` smallint(1) DEFAULT '1',
+  PRIMARY KEY (`UserID`),
+  UNIQUE KEY `UQ1_USERS` (`name`),
+  KEY `IX1_USERS` (`enabled`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 insert into `users`(UserID, name, pass, super) values(0, 'admin', password('admin'), 1);
 
 create table `user_roles` (

@@ -80,6 +80,12 @@ class PagesController extends AppController {
 	  //the AppController beforeFilter, so all
 	  //admin pages use the admin layout instead.
 	  $this->layout = 'adminLayout';
-	  $this->set('pages',$this->Page->getNav());
+	 // $this->set('pages',$this->Page->getNav());
+	}
+	
+	public function admin_display() {
+	  $this->layout = 'adminLayout';
+	  $this->scaffold = 'admin';
+	  //$this->set('pages',$this->Page->getNav());
 	}
 }

@@ -25,6 +25,8 @@
  * to use (in this case, /app/View/Pages/home.ctp)...
  */
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+	Router::connect('/admin', array('admin' => true, 'prefix' => 'admin', 'controller' => 'pages', 'action' => 'display', 'home')); //AKO pre-routing
+	
 /**
  * ...and connect the rest of 'Pages' controller's URLs.
  */

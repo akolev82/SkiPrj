@@ -5,13 +5,15 @@
 			<th><?php echo $this->Paginator->sort('UserID', 'Code'); ?></th>
 			<th><?php echo $this->Paginator->sort('name', 'Name'); ?></th>
 			<th><?php echo $this->Paginator->sort('super', 'Is super user'); ?></th>
+			<th><?php echo $this->Paginator->sort('enabled', 'Is enabled'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($users as $user): ?>
 	<tr>
 		<td><?php echo h($user['User']['UserID']); ?>&nbsp;</td>
 		<td><?php echo h($user['User']['name']); ?>&nbsp;</td>
-		<td><?php echo (((int)($user['User']['super']) == 1) ? 'Yes' : 'No'); ?>&nbsp;</td>
+		<td><?php echo $this->Ace->toYesStr($user['User']['super']); ?>&nbsp;</td>
+		<td><?php echo $this->Ace->toYesStr($user['User']['enabled']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $user['User']['UserID'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $user['User']['UserID'])); ?>
