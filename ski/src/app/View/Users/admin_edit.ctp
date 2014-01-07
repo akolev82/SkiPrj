@@ -3,14 +3,16 @@
 	<fieldset>
 		<legend><?php echo __('Edit User'); ?></legend>
 	<?php
-		echo $this->Form->input('UserID');
-		echo $this->Form->input('name');
-		//echo $this->Form->input('pass');
-		echo $this->Form->input('super');
+	    echo $this->Form->hidden('UserID');
+		echo $this->Form->input('name', array('type' => 'text', 'label' => 'Username'));
+		//echo $this->Form->input('pass', array('type' => 'password', 'label' => 'Password'));
+		echo $this->Form->input('super', array('type' => 'checkbox'));
+		echo $this->Form->input('enabled', array('type' => 'checkbox'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>
+
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>

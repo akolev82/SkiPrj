@@ -49,12 +49,13 @@ class UsersController extends AppController {
   }
 
   public function admin_delete($id = null) {
-    $this->User->UserID = $id;
-    if (!$this->User->exists()) {
-      throw new NotFoundException(__('Invalid user'));
+    $this->User->clear();
+    if (!$this->User->exists($id)) {
+      $this->Session->setFlash(__('The user ' . $this->User->UserID . ' does not exists.'));
+      return $this->redirect(array('action' => 'index'));
     }
     $this->request->onlyAllow('post', 'delete');
-    if ($this->User->delete()) {
+    if ($this->User->delete($id)) {
       $this->Session->setFlash(__('The user has been deleted.'));
     } else {
       $this->Session->setFlash(__('The user could not be deleted. Please, try again.'));

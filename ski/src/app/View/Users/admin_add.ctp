@@ -3,10 +3,10 @@
 	<fieldset>
 		<legend><?php echo __('Add User'); ?></legend>
 	<?php
-		//echo $this->Form->input('UserID');
-		echo $this->Form->input('name');
-		//echo $this->Form->input('pass');
-		echo $this->Form->checkbox('super', array('hiddenField' => 'N', 'value' => 'Y'));
+		echo $this->Form->input('name', array('type' => 'text', 'label' => 'Username'));
+		echo $this->Form->input('pass', array('type' => 'password', 'label' => 'Password'));
+		echo $this->Form->input('super', array('type' => 'checkbox'));
+		echo $this->Form->input('enabled', array('type' => 'checkbox'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>
