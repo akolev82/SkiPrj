@@ -823,3 +823,27 @@ pre {
 #url-rewriting-warning {
   display: none;
 }
+
+.innerActions ul {
+  margin: 0; padding: 0;
+}
+
+.innerActions ul li {
+  list-style-type: none;
+  margin: 0 0 0.5em;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.innerActions ul li a {
+  background: -moz-linear-gradient(center top , #FEFEFE, #DCDCDC) repeat scroll 0 0 #DCDCDC;
+  border: 1px solid #BBBBBB;
+  border-radius: 4px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 1px 1px rgba(0, 0, 0, 0.2);
+  color: #333333;
+  font-weight: normal;
+  min-width: 0;
+  padding: 4px 8px;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #FFFFFF;
+}

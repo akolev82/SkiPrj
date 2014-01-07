@@ -24,10 +24,13 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 insert into `users`(UserID, name, pass, super) values(0, 'admin', password('admin'), 1);
 
-create table `user_roles` (
-  `UserID` int(15) unsigned not null,
-  `RoleID` int(15) unsigned not null,
-  primary key PK_USER_ROLES(`UserID`, `RoleID`),
-  constraint FK1_USER_ROLES foreign key (`UserID`) references `users`(`UserID`),
-  constraint FK2_USER_ROLES foreign key (`RoleID`) references `roles`(`RoleID`)
-);
+CREATE TABLE `user_roles` (
+  `id` int(15) NOT NULL AUTO_INCREMENT,
+  `UserID` int(15) unsigned NOT NULL,
+  `RoleID` int(15) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UQ_USER_ROLES` (`UserID`,`RoleID`),
+  KEY `FK2_USER_ROLES` (`RoleID`),
+  CONSTRAINT `FK1_USER_ROLES` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`),
+  CONSTRAINT `FK2_USER_ROLES` FOREIGN KEY (`RoleID`) REFERENCES `roles` (`RoleID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;

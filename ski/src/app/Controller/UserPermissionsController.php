@@ -14,15 +14,29 @@ class UserPermissionsController extends AppController {
  * @var array
  */
 	public $components = array('Paginator');
+	
+	protected function setVirtualFields() {
+	  $this->UserPermission->virtualFields = array(
+	      'UserName' => 'User.name',
+	      'PermissionName' => 'Permission.PermissionName'
+	  );
+	}
 
 /**
  * index method
  *
  * @return void
  */
-	public function index() {
+	public function admin_index() {
 		$this->UserPermission->recursive = 0;
+		$this->setVirtualFields();
 		$this->set('userPermissions', $this->Paginator->paginate());
+	}
+	
+	protected function refreshForeignKeys() {
+	  $users = $this->UserPermission->User->find('list');
+	  $permissions = $this->UserPermission->Permission->find('list');
+	  $this->set(compact('users', 'permissions'));
 	}
 
 /**
@@ -32,10 +46,11 @@ class UserPermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function admin_view($id = null) {
 		if (!$this->UserPermission->exists($id)) {
 			throw new NotFoundException(__('Invalid user permission'));
 		}
+		$this->setVirtualFields();
 		$options = array('conditions' => array('UserPermission.' . $this->UserPermission->primaryKey => $id));
 		$this->set('userPermission', $this->UserPermission->find('first', $options));
 	}
@@ -45,7 +60,7 @@ class UserPermissionsController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->UserPermission->create();
 			if ($this->UserPermission->save($this->request->data)) {
@@ -55,6 +70,7 @@ class UserPermissionsController extends AppController {
 				$this->Session->setFlash(__('The user permission could not be saved. Please, try again.'));
 			}
 		}
+		$this->refreshForeignKeys();
 	}
 
 /**
@@ -64,7 +80,7 @@ class UserPermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$this->UserPermission->exists($id)) {
 			throw new NotFoundException(__('Invalid user permission'));
 		}
@@ -79,6 +95,7 @@ class UserPermissionsController extends AppController {
 			$options = array('conditions' => array('UserPermission.' . $this->UserPermission->primaryKey => $id));
 			$this->request->data = $this->UserPermission->find('first', $options);
 		}
+		$this->refreshForeignKeys();
 	}
 
 /**
@@ -88,13 +105,13 @@ class UserPermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function delete($id = null) {
-		$this->UserPermission->id = $id;
-		if (!$this->UserPermission->exists()) {
+	public function admin_delete($id = null) {
+		$this->UserPermission->clear();
+		if (!$this->UserPermission->exists($id)) {
 			throw new NotFoundException(__('Invalid user permission'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this->UserPermission->delete()) {
+		if ($this->UserPermission->delete($id)) {
 			$this->Session->setFlash(__('The user permission has been deleted.'));
 		} else {
 			$this->Session->setFlash(__('The user permission could not be deleted. Please, try again.'));

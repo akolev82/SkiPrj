@@ -3,8 +3,8 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('RolePermissionID'); ?></th>
-			<th><?php echo $this->Paginator->sort('Role'); ?></th>
-			<th><?php echo $this->Paginator->sort('Permission'); ?></th>
+			<th><?php echo $this->Paginator->sort('RoleName', 'Role'); ?></th>
+			<th><?php echo $this->Paginator->sort('PermissionName', 'Permission'); ?></th>
 			<th><?php echo $this->Paginator->sort('Action'); ?></th>
 			<th><?php echo $this->Paginator->sort('enabled'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
