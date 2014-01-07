@@ -60,7 +60,7 @@ class City extends AppModel {
           'fields' => 'StateID',
           'order' => ''
       ),
-      'Countries' => array(
+      'Country' => array(
           'className' => 'Country',
           'foreignKey' => 'CountryID',
           'conditions' => '',

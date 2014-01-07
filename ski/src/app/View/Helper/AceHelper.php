@@ -34,6 +34,7 @@ class AceHelper extends Helper {
   
   public $helpers = array('Html', 'Form');
   protected $defaultClass = 'TitledForm';
+  protected $genderMap = array('M' => 'Male', 'F' => 'Female', 'U' => 'Unknown');
   
   public function create($model, $title, $options) {
     if (!isset($options['class'])) {
@@ -64,6 +65,16 @@ class AceHelper extends Helper {
   public function toViewItem($caption, $value) {
     echo '<dt>' . $caption . '</dt>';
     echo '<dd>' . $value . '&nbsp;</dd>';
+  }
+  
+  public function getGenderMap() {
+    return $this->genderMap;
+  }
+  
+  public function toGenderName($GenderCode) {
+    $GenderCode = str_to_upper($GenderCode);
+    if (isset($this->genderMap[$GenderCode])) return $this->genderMap[$GenderCode];
+    return 'Unknown';
   }
   
 } ?>

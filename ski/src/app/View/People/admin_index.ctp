@@ -3,13 +3,12 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('PersonID'); ?></th>
-			<th><?php echo $this->Paginator->sort('UserID'); ?></th>
-			<th><?php echo $this->Paginator->sort('FirstName'); ?></th>
-			<th><?php echo $this->Paginator->sort('LastName'); ?></th>
-			<th><?php echo $this->Paginator->sort('MiddleName'); ?></th>
+			<th><?php echo $this->Paginator->sort('FirstName', 'First name'); ?></th>
+			<th><?php echo $this->Paginator->sort('LastName', 'Last name'); ?></th>
+			<th><?php echo $this->Paginator->sort('MiddleName', 'Middle name'); ?></th>
 			<th><?php echo $this->Paginator->sort('Gender'); ?></th>
-			<th><?php echo $this->Paginator->sort('BirthDate'); ?></th>
-			<th><?php echo $this->Paginator->sort('BirthPlace'); ?></th>
+			<th><?php echo $this->Paginator->sort('BirthDate', 'Birth place'); ?></th>
+			<th><?php echo $this->Paginator->sort('BirthPlaceName', 'Birth place'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($people as $person): ?>
@@ -19,9 +18,9 @@
 		<td><?php echo h($person['Person']['FirstName']); ?>&nbsp;</td>
 		<td><?php echo h($person['Person']['LastName']); ?>&nbsp;</td>
 		<td><?php echo h($person['Person']['MiddleName']); ?>&nbsp;</td>
-		<td><?php echo h($person['Person']['Gender']); ?>&nbsp;</td>
+		<td><?php echo h($this->Ace->toGenderName($person['Person']['Gender'])); ?>&nbsp;</td>
 		<td><?php echo h($person['Person']['BirthDate']); ?>&nbsp;</td>
-		<td><?php echo h($person['Person']['BirthPlace']); ?>&nbsp;</td>
+		<td><?php echo h($person['Person']['BirthPlaceName']); ?>&nbsp;</td>
 		<td class="actions">
 			<?php echo $this->Html->link(__('View'), array('action' => 'view', $person['Person']['PersonID'])); ?>
 			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $person['Person']['PersonID'])); ?>

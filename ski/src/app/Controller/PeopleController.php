@@ -5,186 +5,111 @@ App::uses('AppController', 'Controller');
  *
  * @property Person $Person
  * @property PaginatorComponent $Paginator
- */
+*/
 class PeopleController extends AppController {
 
-/**
- * Components
- *
- * @var array
- */
-	public $components = array('Paginator');
+  /**
+   * Components
+   *
+   * @var array
+   */
+  public $components = array('Paginator');
+  public $uses = array('Person', 'City');
+  
+  protected function beforeEditing() {
+    $cities = $this->Person->City->find('list');
+    $this->set(compact('cities'));
+  }
+  
+  protected function beforeView() {
+    $this->Person->recursion = 3;
+    $this->Person->virtualFields = array(
+        'BirthPlaceName' => 'City.CityName'
+    );
+  }
 
-/**
- * index method
- *
- * @return void
- */
-	public function index() {
-		$this->Person->recursive = 0;
-		$this->set('people', $this->Paginator->paginate());
-	}
+  /**
+   * index method
+   *
+   * @return void
+  */
+  public function index() {
+    $this->beforeView();
+    $this->set('people', $this->Paginator->paginate());
+  }
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function view($id = null) {
-		if (!$this->Person->exists($id)) {
-			throw new NotFoundException(__('Invalid person'));
-		}
-		$options = array('conditions' => array('Person.' . $this->Person->primaryKey => $id));
-		$this->set('person', $this->Person->find('first', $options));
-	}
+  /**
+   * view method
+   *
+   * @throws NotFoundException
+   * @param string $id
+   * @return void
+   */
+  public function view($id = null) {
+    $this->beforeView();
+    if (!$this->Person->exists($id)) {
+      throw new NotFoundException(__('Invalid person'));
+    }
+    $options = array('conditions' => array('Person.' . $this->Person->primaryKey => $id));
+    $this->set('person', $this->Person->find('first', $options));
+  }
 
-/**
- * add method
- *
- * @return void
- */
-	public function add() {
-		if ($this->request->is('post')) {
-			$this->Person->create();
-			if ($this->Person->save($this->request->data)) {
-				$this->Session->setFlash(__('The person has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The person could not be saved. Please, try again.'));
-			}
-		}
-	}
+  public function admin_index() {
+    $this->beforeView();
+    $this->set('people', $this->Paginator->paginate());
+  }
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function edit($id = null) {
-		if (!$this->Person->exists($id)) {
-			throw new NotFoundException(__('Invalid person'));
-		}
-		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Person->save($this->request->data)) {
-				$this->Session->setFlash(__('The person has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The person could not be saved. Please, try again.'));
-			}
-		} else {
-			$options = array('conditions' => array('Person.' . $this->Person->primaryKey => $id));
-			$this->request->data = $this->Person->find('first', $options);
-		}
-	}
+  public function admin_view($id = null) {
+    $this->beforeView();
+    if (!$this->Person->exists($id)) {
+      throw new NotFoundException(__('Invalid person'));
+    }
+    $options = array('conditions' => array('Person.' . $this->Person->primaryKey => $id));
+    $this->set('person', $this->Person->find('first', $options));
+  }
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function delete($id = null) {
-		$this->Person->id = $id;
-		if (!$this->Person->exists()) {
-			throw new NotFoundException(__('Invalid person'));
-		}
-		$this->request->onlyAllow('post', 'delete');
-		if ($this->Person->delete()) {
-			$this->Session->setFlash(__('The person has been deleted.'));
-		} else {
-			$this->Session->setFlash(__('The person could not be deleted. Please, try again.'));
-		}
-		return $this->redirect(array('action' => 'index'));
-	}
+  public function admin_add() {
+    if ($this->request->is('post')) {
+      $this->Person->create();
+      if ($this->Person->save($this->request->data)) {
+        $this->Session->setFlash(__('The person has been saved.'));
+        return $this->redirect(array('action' => 'index'));
+      } else {
+        $this->Session->setFlash(__('The person could not be saved. Please, try again.'));
+      }
+    }
+    $this->beforeEditing();
+  }
 
-/**
- * admin_index method
- *
- * @return void
- */
-	public function admin_index() {
-		$this->Person->recursive = 0;
-		$this->set('people', $this->Paginator->paginate());
-	}
+  public function admin_edit($id = null) {
+    if (!$this->Person->exists($id)) {
+      throw new NotFoundException(__('Invalid person'));
+    }
+    if ($this->request->is(array('post', 'put'))) {
+      if ($this->Person->save($this->request->data)) {
+        $this->Session->setFlash(__('The person has been saved.'));
+        return $this->redirect(array('action' => 'index'));
+      } else {
+        $this->Session->setFlash(__('The person could not be saved. Please, try again.'));
+      }
+    } else {
+      $options = array('conditions' => array('Person.' . $this->Person->primaryKey => $id));
+      $this->request->data = $this->Person->find('first', $options);
+    }
+    $this->beforeEditing();
+  }
 
-/**
- * admin_view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function admin_view($id = null) {
-		if (!$this->Person->exists($id)) {
-			throw new NotFoundException(__('Invalid person'));
-		}
-		$options = array('conditions' => array('Person.' . $this->Person->primaryKey => $id));
-		$this->set('person', $this->Person->find('first', $options));
-	}
-
-/**
- * admin_add method
- *
- * @return void
- */
-	public function admin_add() {
-		if ($this->request->is('post')) {
-			$this->Person->create();
-			if ($this->Person->save($this->request->data)) {
-				$this->Session->setFlash(__('The person has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The person could not be saved. Please, try again.'));
-			}
-		}
-	}
-
-/**
- * admin_edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function admin_edit($id = null) {
-		if (!$this->Person->exists($id)) {
-			throw new NotFoundException(__('Invalid person'));
-		}
-		if ($this->request->is(array('post', 'put'))) {
-			if ($this->Person->save($this->request->data)) {
-				$this->Session->setFlash(__('The person has been saved.'));
-				return $this->redirect(array('action' => 'index'));
-			} else {
-				$this->Session->setFlash(__('The person could not be saved. Please, try again.'));
-			}
-		} else {
-			$options = array('conditions' => array('Person.' . $this->Person->primaryKey => $id));
-			$this->request->data = $this->Person->find('first', $options);
-		}
-	}
-
-/**
- * admin_delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function admin_delete($id = null) {
-		$this->Person->id = $id;
-		if (!$this->Person->exists()) {
-			throw new NotFoundException(__('Invalid person'));
-		}
-		$this->request->onlyAllow('post', 'delete');
-		if ($this->Person->delete()) {
-			$this->Session->setFlash(__('The person has been deleted.'));
-		} else {
-			$this->Session->setFlash(__('The person could not be deleted. Please, try again.'));
-		}
-		return $this->redirect(array('action' => 'index'));
-	}}
+  public function admin_delete($id = null) {
+    $this->Person->clear();
+    if (!$this->Person->exists($id)) {
+      throw new NotFoundException(__('Invalid person'));
+    }
+    $this->request->onlyAllow('post', 'delete');
+    if ($this->Person->delete($id)) {
+      $this->Session->setFlash(__('The person has been deleted.'));
+    } else {
+      $this->Session->setFlash(__('The person could not be deleted. Please, try again.'));
+    }
+    return $this->redirect(array('action' => 'index'));
+  }
+} ?>

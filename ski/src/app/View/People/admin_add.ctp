@@ -3,13 +3,13 @@
 	<fieldset>
 		<legend><?php echo __('Admin Add Person'); ?></legend>
 	<?php
-		echo $this->Form->input('UserID');
+		//echo $this->Form->input('UserID');
 		echo $this->Form->input('FirstName');
 		echo $this->Form->input('LastName');
 		echo $this->Form->input('MiddleName');
-		echo $this->Form->input('Gender');
+		echo $this->Form->input('Gender', array('options' => $this->Ace->getGenderMap(), 'empty' => 'Please choose gender'));
 		echo $this->Form->input('BirthDate');
-		echo $this->Form->input('BirthPlace');
+		echo $this->Form->input('BirthPlace', array('options' => $cities, 'empty' => 'Please choose city'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

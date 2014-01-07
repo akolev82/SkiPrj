@@ -16,7 +16,7 @@
         
   echo '<fieldset><legend>Peoples</legend>';
     echo '<ul>';
-      echo '<li>' . $this->Html->link(__('Peoples'), array('action' => 'index', 'controller' => 'peoples', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('People'), array('action' => 'index', 'controller' => 'people', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Students'), array('action' => 'index', 'controller' => 'students', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Coaches'), array('action' => 'index', 'controller' => 'coaches', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Contact types'), array('action' => 'index', 'controller' => 'ContactTypes', 'admin' => true)) . '</li>';
