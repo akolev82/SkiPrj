@@ -8,8 +8,11 @@ echo '<div id="admin-title">Admin panel for SKI ';
 echo ' </div>';
 echo $this->element('admin_menus');
 echo '<div id="admin-container">';
-    echo $this->Session->flash();
     echo $this->fetch('content');
 echo '</div>';
-echo $this->element('sql_dump');
+echo '<div id="splitter">&nbsp;</div>';
+echo '<div id="admin-messages">';
+  echo $this->Session->flash();
+  echo $this->element('sql_dump');
+echo '</div>';
 echo $this->element('footer'); ?>

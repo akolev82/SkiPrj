@@ -30,7 +30,7 @@ body {
   display: block;
   overflow: auto;
   top: 50px;
-  bottom: 0;
+  bottom: 50px;
   border: 1px solid #5BA150;
   border-radius: none;
   color: #5BA150;
@@ -184,8 +184,6 @@ h1 {
   text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
 }
 
-
-
 div.form,div.index,div.view,div.actions {
   position: absolute;
   width: none;
@@ -229,4 +227,33 @@ div.actions {
   right: 0;
   width: 100px;
   left: none;
+}
+
+#splitter {
+  position: fixed;
+  left: 0; right: 0;
+  top: none; bottom: 50px;
+  height: 3px;
+  border: none; margin: 0; padding: 0;
+  background-color: black;
+  color: black;
+  cursor: ns-resize;
+}
+
+#admin-messages {
+  display: block;
+  position: fixed;
+  left: 0; top: none; right: 0; bottom: 0;
+  height: 47px;
+  margin: 0;
+  background-color: yellow;
+  color: green;
+  overflow: auto;
+}
+
+.cake-sql-log {
+  color: black;
+}
+.cake-sql-log caption {
+  color: black;
 }

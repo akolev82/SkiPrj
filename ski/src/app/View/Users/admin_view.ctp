@@ -13,9 +13,9 @@ echo '</div>';
 echo '<div class="actions">';
   echo '<h3>' . __('Actions') . '</h3>';
   echo '<ul>';
-	  echo '<li>' . $this->Html->link(__('Edit User'), array('action' => 'edit', $UserID)) . '</li>'; ?>
-		<li><?php echo $this->Form->postLink(__('Delete User'), array('action' => 'delete', $UserID), null, __('Are you sure you want to delete # %s?', $UserID)); ?> </li>
-		<li><?php echo $this->Html->link(__('List Users'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New User'), array('action' => 'add')); ?> </li>
-	</ul>
-</div>
+	  echo '<li>' . $this->Html->link(__('Edit User'), array('action' => 'edit', $UserID)) . '</li>';
+		echo '<li>' . $this->Form->postLink(__('Delete User'), array('action' => 'delete', $UserID), null, __('Are you sure you want to delete # %s?', $UserID)) . '</li>';
+		echo '<li>' . $this->Html->link(__('List Users'), array('action' => 'index')) . '</li>';
+		echo '<li>' . $this->Html->link(__('New User'), array('action' => 'add')) . '</li>';
+      echo '</ul>';
+echo '</div>'; ?>

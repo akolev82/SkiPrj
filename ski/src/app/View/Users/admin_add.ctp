@@ -3,10 +3,10 @@
 	<fieldset>
 		<legend><?php echo __('Add User'); ?></legend>
 	<?php
-		echo $this->Form->input('UserID');
+		//echo $this->Form->input('UserID');
 		echo $this->Form->input('name');
-		echo $this->Form->input('pass');
-		echo $this->Form->input('super');
+		//echo $this->Form->input('pass');
+		echo $this->Form->checkbox('super', array('hiddenField' => 'N', 'value' => 'Y'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

@@ -30,10 +30,11 @@ header('Pragma: no-cache'); ?>
     echo $this->Html->script('/js/jquery/ui/jquery.ui.resizable.js', $javascript_options);
     echo $this->Html->script('/js/jquery/ui/jquery.ui.button.js', $javascript_options);
     echo $this->Html->script('/js/jquery/ui/jquery.ui.dialog.js', $javascript_options);
+    echo $this->Html->script('/js/splitter.js', $javascript_options);
     
     echo $this->Html->script('/js/global.js', $javascript_options);
     
-    $base = 'layouts' . DS . $this->layout;
+    $base = 'layouts' . DS . Inflector::underscore($this->layout);
     $js_link = $this->Html->toUrlJS($base); //layout css
     if (is_file($this->Html->toPathExtended('js', $base, '.js'))) {
     	echo $this->Html->script($js_link);
