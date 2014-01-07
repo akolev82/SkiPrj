@@ -6,20 +6,20 @@ App::uses('AppModel', 'Model');
  */
 class RolePermission extends AppModel {
 
-/**
- * Validation rules
- *
- * @var array
- */
+  public $name = 'RolePermission';
+  public $useTable='role_permissions';
+  public $primaryKey = 'RolePermissionID';
+  public $displayField = 'RolePermissionID';
+
 	public $validate = array(
 		'RolePermissionID' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
-				//'required' => false,
+				'required' => true,
 				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'on' => 'update', // Limit validation to 'create' or 'update' operations
 			),
 		),
 		'PermissionID' => array(
@@ -27,21 +27,31 @@ class RolePermission extends AppModel {
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
-				//'required' => false,
+				'required' => true,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'Action' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
+	    'RoleID' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
-				//'required' => false,
+				'required' => true,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+	    'Action' => array(
+	        'notEmpty' => array(
+	            'rule' => array('notEmpty'),
+	            //'message' => 'Your custom message here',
+	            //'allowEmpty' => false,
+	            //'required' => false,
+	            //'last' => false, // Stop validation after this rule
+	            //'on' => 'create', // Limit validation to 'create' or 'update' operations
+	        ),
+	    ),
 		'enabled' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
@@ -52,5 +62,23 @@ class RolePermission extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+	);
+	
+	//The Associations below have been created with all possible keys, those that are not needed can be removed
+	public $belongsTo = array(
+	    'Permission' => array(
+	        'className' => 'Permission',
+	        'foreignKey' => 'PermissionID',
+	        'conditions' => '',
+	        'fields' => 'PermissionID',
+	        'order' => ''
+	    ),
+	    'Role' => array(
+	        'className' => 'Role',
+	        'foreignKey' => 'RoleID',
+	        'conditions' => '',
+	        'fields' => 'RoleID',
+	        'order' => ''
+	    )
 	);
 }

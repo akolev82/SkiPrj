@@ -20,8 +20,11 @@ class PermissionsController extends AppController {
  *
  * @return void
  */
-	public function index() {
+	public function admin_index() {
 		$this->Permission->recursive = 0;
+		$this->Permission->virtualFields = array(
+		    'DomainName' => 'Domain.DomainName'
+		);
 		$this->set('permissions', $this->Paginator->paginate());
 	}
 
@@ -32,12 +35,20 @@ class PermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function admin_view($id = null) {
 		if (!$this->Permission->exists($id)) {
 			throw new NotFoundException(__('Invalid permission'));
 		}
 		$options = array('conditions' => array('Permission.' . $this->Permission->primaryKey => $id));
+		$this->Permission->virtualFields = array(
+		    'DomainName' => 'Domain.DomainName'
+		);
 		$this->set('permission', $this->Permission->find('first', $options));
+	}
+	
+	protected function refreshDomains() {
+	  $domains = $this->Permission->Domain->find('list');
+	  $this->set(compact('domains'));
 	}
 
 /**
@@ -45,7 +56,7 @@ class PermissionsController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->Permission->create();
 			if ($this->Permission->save($this->request->data)) {
@@ -55,9 +66,7 @@ class PermissionsController extends AppController {
 				$this->Session->setFlash(__('The permission could not be saved. Please, try again.'));
 			}
 		}
-		$aros = $this->Permission->Aro->find('list');
-		$acos = $this->Permission->Aco->find('list');
-		$this->set(compact('aros', 'acos'));
+		$this->refreshDomains();
 	}
 
 /**
@@ -67,7 +76,7 @@ class PermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$this->Permission->exists($id)) {
 			throw new NotFoundException(__('Invalid permission'));
 		}
@@ -82,9 +91,7 @@ class PermissionsController extends AppController {
 			$options = array('conditions' => array('Permission.' . $this->Permission->primaryKey => $id));
 			$this->request->data = $this->Permission->find('first', $options);
 		}
-		$aros = $this->Permission->Aro->find('list');
-		$acos = $this->Permission->Aco->find('list');
-		$this->set(compact('aros', 'acos'));
+		$this->refreshDomains();
 	}
 
 /**
@@ -94,16 +101,18 @@ class PermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function delete($id = null) {
-		$this->Permission->id = $id;
-		if (!$this->Permission->exists()) {
+	public function admin_delete($id = null) {
+		$this->Permission->clear();
+		if (!$this->Permission->exists($id)) {
 			throw new NotFoundException(__('Invalid permission'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this->Permission->delete()) {
+		if ($this->Permission->delete($id)) {
 			$this->Session->setFlash(__('The permission has been deleted.'));
 		} else {
 			$this->Session->setFlash(__('The permission could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
-	}}
+	}
+	
+}

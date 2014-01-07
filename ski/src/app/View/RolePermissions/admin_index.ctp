@@ -3,21 +3,26 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('RolePermissionID'); ?></th>
-			<th><?php echo $this->Paginator->sort('PermissionID'); ?></th>
+			<th><?php echo $this->Paginator->sort('Role'); ?></th>
+			<th><?php echo $this->Paginator->sort('Permission'); ?></th>
 			<th><?php echo $this->Paginator->sort('Action'); ?></th>
 			<th><?php echo $this->Paginator->sort('enabled'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
-	<?php foreach ($rolePermissions as $rolePermission): ?>
+	<?php foreach ($rolePermissions as $record):
+	  $item =& $record['RolePermission'];
+	  $id = $item['RolePermissionID'];
+	?>
 	<tr>
-		<td><?php echo h($rolePermission['RolePermission']['RolePermissionID']); ?>&nbsp;</td>
-		<td><?php echo h($rolePermission['RolePermission']['PermissionID']); ?>&nbsp;</td>
-		<td><?php echo h($rolePermission['RolePermission']['Action']); ?>&nbsp;</td>
-		<td><?php echo h($rolePermission['RolePermission']['enabled']); ?>&nbsp;</td>
+		<td><?php echo h($id); ?>&nbsp;</td>
+		<td><?php echo h($item['RoleName']); ?>&nbsp;</td>
+		<td><?php echo h($item['PermissionName']); ?>&nbsp;</td>
+		<td><?php echo h($item['Action']); ?>&nbsp;</td>
+		<td><?php echo $this->Ace->toYesStr(h($item['enabled'])); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $rolePermission['RolePermission']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $rolePermission['RolePermission']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $rolePermission['RolePermission']['id']), null, __('Are you sure you want to delete # %s?', $rolePermission['RolePermission']['id'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $id)); ?>
+			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $id)); ?>
+			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $id), null, __('Are you sure you want to delete # %s?', $id)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -39,6 +44,6 @@
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Role Permission'), array('action' => 'add')); ?></li>
+		<li><?php echo $this->Html->link(__('New Permission'), array('action' => 'add')); ?></li>
 	</ul>
 </div>

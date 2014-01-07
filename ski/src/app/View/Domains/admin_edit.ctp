@@ -3,10 +3,10 @@
 	<fieldset>
 		<legend><?php echo __('Edit Domain'); ?></legend>
 	<?php
-		echo $this->Form->input('DomainID');
-		echo $this->Form->input('DomainName');
-		echo $this->Form->input('DomainDesc');
-		echo $this->Form->input('enabled');
+		echo $this->Form->hidden('DomainID');
+		echo $this->Form->input('DomainName', array('label' => 'Domain'));
+		echo $this->Form->input('DomainDesc', array('label' => 'Description'));
+		echo $this->Form->input('enabled', array('type' => 'checkbox', 'label' => 'Is enabled'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

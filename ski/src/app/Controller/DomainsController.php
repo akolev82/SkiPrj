@@ -20,7 +20,7 @@ class DomainsController extends AppController {
  *
  * @return void
  */
-	public function index() {
+	public function admin_index() {
 		$this->Domain->recursive = 0;
 		$this->set('domains', $this->Paginator->paginate());
 	}
@@ -32,7 +32,7 @@ class DomainsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function admin_view($id = null) {
 		if (!$this->Domain->exists($id)) {
 			throw new NotFoundException(__('Invalid domain'));
 		}
@@ -45,7 +45,7 @@ class DomainsController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->Domain->create();
 			if ($this->Domain->save($this->request->data)) {
@@ -64,7 +64,7 @@ class DomainsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$this->Domain->exists($id)) {
 			throw new NotFoundException(__('Invalid domain'));
 		}
@@ -88,13 +88,13 @@ class DomainsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function delete($id = null) {
-		$this->Domain->id = $id;
-		if (!$this->Domain->exists()) {
+	public function admin_delete($id = null) {
+		$this->Domain->clear();
+		if (!$this->Domain->exists($id)) {
 			throw new NotFoundException(__('Invalid domain'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this->Domain->delete()) {
+		if ($this->Domain->delete($id)) {
 			$this->Session->setFlash(__('The domain has been deleted.'));
 		} else {
 			$this->Session->setFlash(__('The domain could not be deleted. Please, try again.'));

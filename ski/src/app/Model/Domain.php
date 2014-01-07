@@ -5,6 +5,11 @@ App::uses('AppModel', 'Model');
  *
  */
 class Domain extends AppModel {
+  
+  public $name = 'Domain';
+  public $useTable='domains';
+  public $primaryKey = 'DomainID';
+  public $displayField = 'DomainName';
 
 /**
  * Validation rules
@@ -31,6 +36,9 @@ class Domain extends AppModel {
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+		    'This domain entity already exists' => array(
+		        'rule' => array('isUnique')
+		    ),
 		),
 		'enabled' => array(
 			'numeric' => array(

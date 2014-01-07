@@ -51,7 +51,7 @@ class UsersController extends AppController {
   public function admin_delete($id = null) {
     $this->User->clear();
     if (!$this->User->exists($id)) {
-      $this->Session->setFlash(__('The user ' . $this->User->UserID . ' does not exists.'));
+      $this->Session->setFlash(__('The user ' . $id . ' does not exists.'));
       return $this->redirect(array('action' => 'index'));
     }
     $this->request->onlyAllow('post', 'delete');
@@ -89,4 +89,4 @@ class UsersController extends AppController {
     }
   }
 
-}
+} ?>

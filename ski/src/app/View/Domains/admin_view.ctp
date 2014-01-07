@@ -18,7 +18,7 @@
 		</dd>
 		<dt><?php echo __('Enabled'); ?></dt>
 		<dd>
-			<?php echo h($domain['Domain']['enabled']); ?>
+			<?php echo $this->Ace->toYesStr(h($domain['Domain']['enabled'])); ?>
 			&nbsp;
 		</dd>
 	</dl>
@@ -26,8 +26,8 @@
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('Edit Domain'), array('action' => 'edit', $domain['Domain']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Domain'), array('action' => 'delete', $domain['Domain']['id']), null, __('Are you sure you want to delete # %s?', $domain['Domain']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Edit Domain'), array('action' => 'edit', $domain['Domain']['DomainID'])); ?> </li>
+		<li><?php echo $this->Form->postLink(__('Delete Domain'), array('action' => 'delete', $domain['Domain']['DomainID']), null, __('Are you sure you want to delete # %s?', $domain['Domain']['DomainID'])); ?> </li>
 		<li><?php echo $this->Html->link(__('List Domains'), array('action' => 'index')); ?> </li>
 		<li><?php echo $this->Html->link(__('New Domain'), array('action' => 'add')); ?> </li>
 	</ul>

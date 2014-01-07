@@ -3,21 +3,23 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('DomainID'); ?></th>
-			<th><?php echo $this->Paginator->sort('DomainName'); ?></th>
-			<th><?php echo $this->Paginator->sort('DomainDesc'); ?></th>
-			<th><?php echo $this->Paginator->sort('enabled'); ?></th>
+			<th><?php echo $this->Paginator->sort('DomainName', 'Domain'); ?></th>
+			<th><?php echo $this->Paginator->sort('DomainDesc', 'Description'); ?></th>
+			<th><?php echo $this->Paginator->sort('enabled', 'Enabled'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
-	<?php foreach ($domains as $domain): ?>
-	<tr>
-		<td><?php echo h($domain['Domain']['DomainID']); ?>&nbsp;</td>
-		<td><?php echo h($domain['Domain']['DomainName']); ?>&nbsp;</td>
-		<td><?php echo h($domain['Domain']['DomainDesc']); ?>&nbsp;</td>
-		<td><?php echo h($domain['Domain']['enabled']); ?>&nbsp;</td>
+	<?php foreach ($domains as $record):
+	echo '<tr>';
+	  $domain =& $record['Domain'];
+	  $DomainID = $domain['DomainID']; ?>
+		<td><?php echo h($DomainID); ?>&nbsp;</td>
+		<td><?php echo h($domain['DomainName']); ?>&nbsp;</td>
+		<td><?php echo h($domain['DomainDesc']); ?>&nbsp;</td>
+		<td><?php echo $this->Ace->toYesStr(h($domain['enabled'])); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $domain['Domain']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $domain['Domain']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $domain['Domain']['id']), null, __('Are you sure you want to delete # %s?', $domain['Domain']['id'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $DomainID)); ?>
+			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $DomainID)); ?>
+			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $DomainID), null, __('Are you sure you want to delete # %s?', $DomainID)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

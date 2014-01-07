@@ -20,9 +20,24 @@ class RolePermissionsController extends AppController {
  *
  * @return void
  */
-	public function index() {
+	
+	protected function setVirtualFields() {
+	  $this->RolePermission->virtualFields = array(
+	      'RoleName' => 'Role.RoleName',
+	      'PermissionName' => 'Permission.PermissionName'
+	  );
+	}
+	
+	public function admin_index() {
 		$this->RolePermission->recursive = 0;
+		$this->setVirtualFields();
 		$this->set('rolePermissions', $this->Paginator->paginate());
+	}
+	
+	protected function refreshForeignKeys() {
+	  $roles = $this->RolePermission->Role->find('list');
+	  $permissions = $this->RolePermission->Permission->find('list');
+	  $this->set(compact('roles', 'permissions'));
 	}
 
 /**
@@ -32,10 +47,11 @@ class RolePermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function view($id = null) {
+	public function admin_view($id = null) {
 		if (!$this->RolePermission->exists($id)) {
 			throw new NotFoundException(__('Invalid role permission'));
 		}
+		$this->setVirtualFields();
 		$options = array('conditions' => array('RolePermission.' . $this->RolePermission->primaryKey => $id));
 		$this->set('rolePermission', $this->RolePermission->find('first', $options));
 	}
@@ -45,7 +61,7 @@ class RolePermissionsController extends AppController {
  *
  * @return void
  */
-	public function add() {
+	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->RolePermission->create();
 			if ($this->RolePermission->save($this->request->data)) {
@@ -55,6 +71,7 @@ class RolePermissionsController extends AppController {
 				$this->Session->setFlash(__('The role permission could not be saved. Please, try again.'));
 			}
 		}
+		$this->refreshForeignKeys();
 	}
 
 /**
@@ -64,7 +81,7 @@ class RolePermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$this->RolePermission->exists($id)) {
 			throw new NotFoundException(__('Invalid role permission'));
 		}
@@ -79,6 +96,7 @@ class RolePermissionsController extends AppController {
 			$options = array('conditions' => array('RolePermission.' . $this->RolePermission->primaryKey => $id));
 			$this->request->data = $this->RolePermission->find('first', $options);
 		}
+		$this->refreshForeignKeys();
 	}
 
 /**
@@ -88,13 +106,13 @@ class RolePermissionsController extends AppController {
  * @param string $id
  * @return void
  */
-	public function delete($id = null) {
-		$this->RolePermission->id = $id;
-		if (!$this->RolePermission->exists()) {
+	public function admin_delete($id = null) {
+		$this->RolePermission->clear();
+		if (!$this->RolePermission->exists($id)) {
 			throw new NotFoundException(__('Invalid role permission'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this->RolePermission->delete()) {
+		if ($this->RolePermission->delete($id)) {
 			$this->Session->setFlash(__('The role permission has been deleted.'));
 		} else {
 			$this->Session->setFlash(__('The role permission could not be deleted. Please, try again.'));

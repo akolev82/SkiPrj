@@ -7,7 +7,10 @@
     echo '<ul>';
       echo '<li>' . $this->Html->link(__('Users'), array('action' => 'index', 'controller' => 'users', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Roles'), array('action' => 'index', 'controller' => 'roles', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Domains'), array('action' => 'index', 'controller' => 'domains', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Permissions'), array('action' => 'index', 'controller' => 'permissions', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Role permissions'), array('action' => 'index', 'controller' => 'RolePermissions', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('User permissions'), array('action' => 'index', 'controller' => 'UserPermissions', 'admin' => true)) . '</li>';
     echo '</ul>';
   echo '</fieldset>';
         

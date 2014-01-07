@@ -3,10 +3,11 @@
 	<fieldset>
 		<legend><?php echo __('Edit Role Permission'); ?></legend>
 	<?php
-		echo $this->Form->input('RolePermissionID');
-		echo $this->Form->input('PermissionID');
+		echo $this->Form->hidden('RolePermissionID');
+		echo $this->Form->input('RoleID', array('label' => 'Role', 'options' => $roles, 'empty' => 'Please choose role'));
+		echo $this->Form->input('PermissionID', array('label' => 'Permission', 'options' => $permissions, 'empty' => 'Please choose permission'));
 		echo $this->Form->input('Action');
-		echo $this->Form->input('enabled');
+		echo $this->Form->input('enabled', array('label' => 'Is enabled', 'type' => 'checkbox'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

@@ -28,22 +28,28 @@ insert into `permissions`(`PermissionID`, `DomainID`, `PermissionName`, `Permiss
 insert into `permissions`(`PermissionID`, `DomainID`, `PermissionName`, `PermissionDesc`, `enabled`) values(5, 1, 'coaches', 'Permissions for coaches', 1);
 insert into `permissions`(`PermissionID`, `DomainID`, `PermissionName`, `PermissionDesc`, `enabled`) values(6, 1, 'students', 'Permissions for students', 1);
 
-create table `role_permissions`(
+CREATE TABLE `role_permissions` (
   `RolePermissionID` int(15) unsigned NOT NULL AUTO_INCREMENT,
   `PermissionID` int(15) unsigned NOT NULL,
+  `RoleID` int(15) unsigned NOT NULL,
   `Action` varchar(255) NOT NULL,
-  `enabled` smallint(1) not null default 0,
-  primary key PK_ROLE_PERMISSIONS(`RolePermissionID`),
-  constraint UQ1_ROLE_PERMISSIONS unique (`PermissionID`, `Action`),
-  constraint FK1_ROLE_PERMISSIONS foreign key (`PermissionID`) references `permissions`(`PermissionID`)
+  `enabled` smallint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`RolePermissionID`),
+  UNIQUE KEY `UQ1_ROLE_PERMISSIONS` (`PermissionID`,`RoleID`,`Action`),
+  KEY `FK2_ROLE_PERMISSIONS_idx` (`RoleID`),
+  CONSTRAINT `FK1_ROLE_PERMISSIONS` FOREIGN KEY (`PermissionID`) REFERENCES `permissions` (`PermissionID`),
+  CONSTRAINT `FK2_ROLE_PERMISSIONS` FOREIGN KEY (`RoleID`) REFERENCES `roles` (`RoleID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table `user_permissions`(
+CREATE TABLE `user_permissions` (
   `UserPermissionID` int(15) unsigned NOT NULL AUTO_INCREMENT,
   `PermissionID` int(15) unsigned NOT NULL,
+  `UserID` int(15) unsigned NOT NULL,
   `Action` varchar(255) NOT NULL,
-  `enabled` smallint(1) not null default 0,
-  primary key PK_USER_PERMISSIONS(`UserPermissionID`),
-  constraint UQ1_USER_PERMISSIONS unique (`PermissionID`, `Action`),
-  constraint FK1_USER_PERMISSIONS foreign key (`PermissionID`) references `permissions`(`PermissionID`)
+  `enabled` smallint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`UserPermissionID`),
+  UNIQUE KEY `UQ1_USER_PERMISSIONS` (`PermissionID`,`UserID`,`Action`),
+  KEY `FK2_USER_PERMISSIONS_idx` (`UserID`),
+  CONSTRAINT `FK1_USER_PERMISSIONS` FOREIGN KEY (`PermissionID`) REFERENCES `permissions` (`PermissionID`),
+  CONSTRAINT `FK2_USER_PERMISSIONS` FOREIGN KEY (`UserID`) REFERENCES `users` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

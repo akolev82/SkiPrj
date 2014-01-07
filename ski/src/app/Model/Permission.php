@@ -1,19 +1,12 @@
 <?php
 App::uses('AppModel', 'Model');
-/**
- * Permission Model
- *
- * @property Aro $Aro
- * @property Aco $Aco
- */
+
 class Permission extends AppModel {
 
-/**
- * Use table
- *
- * @var mixed False or table name
- */
-	public $useTable = 'aros_acos';
+  public $name = 'Permission';
+  public $useTable='permissions';
+  public $primaryKey = 'PermissionID';
+  public $displayField = 'PermissionName';
 
 /**
  * Validation rules
@@ -21,14 +14,12 @@ class Permission extends AppModel {
  * @var array
  */
 	public $validate = array(
-		'aro_id' => array(
+		'DomainID' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
-				//'allowEmpty' => false,
-				//'required' => false,
-				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'allowEmpty' => false,
+				'required' => true,
+				'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
 		'aco_id' => array(
@@ -84,25 +75,12 @@ class Permission extends AppModel {
 	);
 
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
-
-/**
- * belongsTo associations
- *
- * @var array
- */
 	public $belongsTo = array(
-		'Aro' => array(
-			'className' => 'Aro',
-			'foreignKey' => 'aro_id',
+		'Domain' => array(
+			'className' => 'Domain',
+			'foreignKey' => 'DomainID',
 			'conditions' => '',
-			'fields' => '',
-			'order' => ''
-		),
-		'Aco' => array(
-			'className' => 'Aco',
-			'foreignKey' => 'aco_id',
-			'conditions' => '',
-			'fields' => '',
+			'fields' => 'DomainID',
 			'order' => ''
 		)
 	);
