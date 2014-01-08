@@ -8,18 +8,22 @@ header('Pragma: no-cache'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
     <?php echo $this->Html->charset(); ?>
     <title>
         <?php echo $title_for_layout; ?>
     </title><?php
     echo $this->Html->meta('icon');
     echo $this->fetch('meta');
-
     $javascript_options = array();
     echo '<script type="text/javascript">';
     	echo 'var AcePath = "'. $this->Html->toUrl('', '', '') . '";';
     echo '</script>';
-
+    echo $this->Html->script('/css/js/holder.js', $javascript_options);
     echo $this->Html->script('/js/jquery/jquery.js', $javascript_options);
     echo $this->Html->script('/js/jquery/ui/jquery-ui.js', $javascript_options);
     echo $this->Html->script('/js/jquery/ui/jquery.ui.core.js', $javascript_options);
@@ -31,7 +35,7 @@ header('Pragma: no-cache'); ?>
     echo $this->Html->script('/js/jquery/ui/jquery.ui.button.js', $javascript_options);
     echo $this->Html->script('/js/jquery/ui/jquery.ui.dialog.js', $javascript_options);
     echo $this->Html->script('/js/splitter.js', $javascript_options);
-    
+    echo $this->Html->script('/css/js/bootstrap.js', $javascript_options);
     echo $this->Html->script('/js/global.js', $javascript_options);
     
     $base = 'layouts' . DS . Inflector::underscore($this->layout);
@@ -47,12 +51,12 @@ header('Pragma: no-cache'); ?>
     }
 
 
-    echo $this->Html->css('cake.generic');
+    //echo $this->Html->css('cake.generic');
     echo $this->fetch('css');
-    echo $this->Html->css('front');
-    echo $this->Html->css('styles');
+   // echo $this->Html->css('front');
+   // echo $this->Html->css('styles');
     echo $this->Html->css('menus');
-    echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
+   // echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
     
     if (isset($css_list)) {
     	foreach($css_list as $item) {
