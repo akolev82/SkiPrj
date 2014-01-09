@@ -5,7 +5,12 @@
  */
 
 /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
-
+.otherpage{
+    background: url("../img/background_ski.jpg");
+    background-size: 100%;
+    width: 100%;
+    height: 100%;
+}
 article,
 aside,
 details,
@@ -20,12 +25,35 @@ section,
 summary {
   display: block;
 }
+footer .homepage{
+    position: absolute !important;
+
+}
+.footer_homepage{
+    padding: 30px;
+    width: 100%;
+}
+.footer_color{
+    background:url("../img/bg_footer.jpg") repeat-x;
+    width: 100%;
+    height: 400px;
+    position: absolute;
+    z-index: -1;
+    left: 0px;
+    margin-top: -400px;
+}
 audio,
 canvas,
 video {
   display: inline-block;
 }
-
+#main-banner {
+    position: relative;
+    background: url(../img/headtop-bg.jpg) repeat;
+    margin: 0 0 100px 0;
+    width: 100%;
+    height: auto;
+}
 audio:not([controls]) {
   display: none;
   height: 0;
@@ -306,7 +334,7 @@ body {
   font-size: 14px !important;
   line-height: 1.428571429;
   color: #333333;
-  background-color: #ffffff;
+  background-color: transparent;
 }
 
 input,
@@ -345,7 +373,20 @@ img {
   max-width: 90%;
   border-radius: 50px;
 }
-
+.img-responsive-left {
+    display: block;
+    height: auto;
+    max-width: 90%;
+    border-radius: 50px;
+    float: left;
+}
+.img-responsive-right {
+    display: block;
+    height: auto;
+    max-width: 90%;
+    border-radius: 50px;
+    float: right;
+}
 .img-rounded {
   border-radius: 6px;
 }
@@ -3577,6 +3618,7 @@ input[type="button"].btn-block {
   background-clip: padding-box;
 }
 
+
 .dropdown-menu.pull-right {
   right: 0;
   left: auto;
@@ -4607,6 +4649,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   .navbar-nav {
     float: left;
     margin: 0;
+
   }
   .navbar-nav > li {
     float: left;
@@ -4693,6 +4736,14 @@ textarea.input-group-sm > .input-group-btn > .btn {
   margin-top: 0;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    padding: 0 32em; /* trick from css-tricks comments */
+    margin: 0 -32em; /* trick from css-tricks comments */
+    z-index: 101;
+    opacity: 1;
+    background: rgba(255, 240, 240, 0.8);
 }
 
 .navbar-fixed-bottom .navbar-nav > li > .dropdown-menu {

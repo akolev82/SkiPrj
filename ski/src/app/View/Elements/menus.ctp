@@ -1,5 +1,6 @@
+<div class="container">
 <div class="navbar-wrapper">
-    <div class="container">
+
 
         <div class="navbar navbar-inverse navbar-static-top" role="navigation">
             <div class="container">
@@ -20,6 +21,7 @@
                         echo '<li>' . $this->Html->link('Schools', '/Schools') . '</li>';?>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+
                             <ul class="dropdown-menu">
                                 <li><a href="#">Action</a></li>
                                 <li><a href="#">Another action</a></li>
