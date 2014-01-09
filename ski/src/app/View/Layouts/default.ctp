@@ -1,12 +1,13 @@
-<?php echo $this->element('header');
-
-echo '<div id="container">';
+<?php
+  echo $this->element('header');
   echo $this->element('main-banner');
   echo $this->element('menus');
-  echo '<div id="content">';
-    echo $this->Session->flash();
-    echo $this->fetch('content');
-  echo '</div>';
-echo '</div>';
+
+  echo '<div class="container marketing">';
+     echo '<div id="content">';
+        echo $this->Session->flash();
+            echo $this->fetch('content');
+            echo '';
+    echo $this->element('footer_other');
 echo $this->element('sql_dump');
-echo $this->element('footer'); ?>
+?>
