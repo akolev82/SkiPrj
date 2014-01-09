@@ -1,0 +1,1 @@
+find $1 -type f \( -iname '*.sql' -o -iname '*.php' -o -iname '*.ctp' -o -iname '*.sh' -o -name '*.css' -o -iname '*.js' -o -iname '.gitignore' -o -iname '*.md' -o -iname '.jshintrc' -o -iname '*.yml' -o -iname '*.json' -o -iname '*.pot' -o -iname '.htaccess' -o -iname '*.xml' -o -iname '.editorconfig' \) -exec dos2unix {} +
