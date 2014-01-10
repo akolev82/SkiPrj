@@ -2,7 +2,6 @@
   echo $this->element('header');
   echo $this->element('main-banner');
   echo $this->element('menus');
-
   echo '<div class="container marketing">';
      echo '<div id="content">';
         echo $this->Session->flash();

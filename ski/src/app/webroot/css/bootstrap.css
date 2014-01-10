@@ -30,8 +30,15 @@ footer .homepage{
 
 }
 .footer_homepage{
-    padding: 30px;
     width: 100%;
+}
+.login_right{
+    float: right !important;
+    width: 75px;
+    margin-left: 250px;
+    height: 50px;
+    padding: 15px;
+    color: #ccc;
 }
 .footer_color{
     background:url("../img/bg_footer.jpg") repeat-x;
@@ -41,6 +48,20 @@ footer .homepage{
     z-index: -1;
     left: 0px;
     margin-top: -400px;
+}
+#footer_bg{
+    background: url("../img/footer-bg.png") repeat-x;
+    width: 100%;
+    position: absolute;
+    height: 300px;
+    z-index: 0;
+    left: inherit;
+    display: block;
+    bottom: 0px;
+}
+#footer_text{
+    width:1170px;
+    margin: 0 auto;
 }
 audio,
 canvas,
@@ -3617,7 +3638,26 @@ input[type="button"].btn-block {
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
 }
-
+.dropdown-menu1{
+    position: absolute;
+    top: 100%;
+    left: 100px;
+    z-index: 1000;
+    display: none;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+    background-clip: padding-box;
+}
 
 .dropdown-menu.pull-right {
   right: 0;
