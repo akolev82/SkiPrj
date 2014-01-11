@@ -5,6 +5,11 @@ App::uses('AppModel', 'Model');
  *
  */
 class Zip extends AppModel {
+  
+  public $name = 'Zip';
+  public $useTable='zips';
+  public $primaryKey = 'ZipID';
+  public $displayField = 'ZipCode';
 
 /**
  * Validation rules
@@ -17,9 +22,9 @@ class Zip extends AppModel {
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
-				//'required' => false,
+				'required' => true,
 				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'on' => 'update', // Limit validation to 'create' or 'update' operations
 			),
 		),
 		'CountryID' => array(
@@ -62,5 +67,29 @@ class Zip extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+	);
+	
+	public $belongsTo = array(
+	    'State' => array(
+	        'className' => 'State',
+	        'foreignKey' => 'StateID',
+	        'conditions' => '',
+	        'fields' => 'StateID',
+	        'order' => ''
+	    ),
+	    'Country' => array(
+	        'className' => 'Country',
+	        'foreignKey' => 'CountryID',
+	        'conditions' => '',
+	        'fields' => 'CountryID',
+	        'order' => ''
+	    ),
+	    'City' => array(
+	        'className' => 'City',
+	        'foreignKey' => 'CityID',
+	        'conditions' => '',
+	        'fields' => 'CityID',
+	        'order' => ''
+	    )
 	);
 }

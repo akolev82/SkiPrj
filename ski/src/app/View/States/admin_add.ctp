@@ -3,10 +3,10 @@
 	<fieldset>
 		<legend><?php echo __('Add State'); ?></legend>
 	<?php
-		echo $this->Form->input('StateID');
-		echo $this->Form->input('CountryID');
-		echo $this->Form->input('StateCode');
-		echo $this->Form->input('StateName');
+		//echo $this->Form->input('StateID');
+		echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
+		echo $this->Form->input('StateCode', array('label' => 'Code'));
+		echo $this->Form->input('StateName', array('label' => 'Name'));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

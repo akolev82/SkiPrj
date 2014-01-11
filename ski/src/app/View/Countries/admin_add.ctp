@@ -3,8 +3,7 @@
 	<fieldset>
 		<legend><?php echo __('Add Country'); ?></legend>
 	<?php
-		echo $this->Form->input('CountryID');
-		echo $this->Form->input('CountryName');
+		echo $this->Form->input('CountryName', array('type' => 'text', 'label' => __('Country name')));
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

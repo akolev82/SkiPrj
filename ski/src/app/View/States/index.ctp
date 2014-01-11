@@ -3,22 +3,24 @@
 	<table cellpadding="0" cellspacing="0">
 	<tr>
 			<th><?php echo $this->Paginator->sort('StateID'); ?></th>
-			<th><?php echo $this->Paginator->sort('CountryID'); ?></th>
-			<th><?php echo $this->Paginator->sort('StateCode'); ?></th>
-			<th><?php echo $this->Paginator->sort('StateName'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
+			<th><?php echo $this->Paginator->sort('CountryName', __('Country')); ?></th>
+			<th><?php echo $this->Paginator->sort('StateCode', __('Code')); ?></th>
+			<th><?php echo $this->Paginator->sort('StateName', __('Name')); ?></th>
+			<?php if ($is_admin) echo '<th class="actions">' . __('Actions') . '</th>'; ?>
 	</tr>
 	<?php foreach ($states as $state): ?>
 	<tr>
 		<td><?php echo h($state['State']['StateID']); ?>&nbsp;</td>
-		<td><?php echo h($state['State']['CountryID']); ?>&nbsp;</td>
+		<td><?php echo h($state['State']['CountryName']); ?>&nbsp;</td>
 		<td><?php echo h($state['State']['StateCode']); ?>&nbsp;</td>
 		<td><?php echo h($state['State']['StateName']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $state['State']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $state['State']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $state['State']['id']), null, __('Are you sure you want to delete # %s?', $state['State']['id'])); ?>
-		</td>
+		<?php if ($is_admin) {
+		  echo '<td class="actions">';
+			echo $this->Html->link(__('View'), array('action' => 'view', $state['State']['StateID']));
+			echo $this->Html->link(__('Edit'), array('action' => 'edit', $state['State']['StateID']));
+			echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $state['State']['StateID']), null, __('Are you sure you want to delete # %s?', $state['State']['StateID']));
+		  echo '</td>';
+        } ?>
 	</tr>
 <?php endforeach; ?>
 	</table>
@@ -36,9 +38,11 @@
 	?>
 	</div>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New State'), array('action' => 'add')); ?></li>
-	</ul>
-</div>
+<?php if ($is_admin) {
+  echo '<div class="actions">';
+	echo '<h3>' . __('Actions') . '</h3>';
+	echo '<ul>';
+		echo '<li>' . $this->Html->link(__('New State'), array('action' => 'add')) . '</li>';
+	echo '</ul>';
+  echo '</div>';
+} ?>

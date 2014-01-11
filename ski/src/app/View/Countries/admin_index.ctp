@@ -10,6 +10,11 @@
 	<tr>
 		<td><?php echo h($country['Country']['CountryID']); ?>&nbsp;</td>
 		<td><?php echo h($country['Country']['CountryName']); ?>&nbsp;</td>
+		<td class="actions">
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $country['Country']['CountryID'])); ?>
+			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $country['Country']['CountryID'])); ?>
+			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $country['Country']['CountryID']), null, __('Are you sure you want to delete # %s?', $country['Country']['CountryID'])); ?>
+		</td>
 	</tr>
 <?php endforeach; ?>
 	</table>
@@ -26,4 +31,10 @@
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
 	</div>
+</div>
+<div class="actions">
+	<h3><?php echo __('Actions'); ?></h3>
+	<ul>
+		<li><?php echo $this->Html->link(__('New Country'), array('action' => 'add')); ?></li>
+	</ul>
 </div>

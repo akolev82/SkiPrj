@@ -2,23 +2,25 @@
 	<h2><?php echo __('Cities'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('CityID'); ?></th>
-			<th><?php echo $this->Paginator->sort('CountryID'); ?></th>
-			<th><?php echo $this->Paginator->sort('StateID'); ?></th>
-			<th><?php echo $this->Paginator->sort('CityName'); ?></th>
-			<th class="actions"><?php echo __('Actions'); ?></th>
+			<th><?php echo $this->Paginator->sort('CityID', __('ID')); ?></th>
+			<th><?php echo $this->Paginator->sort('CountryName', __('Country')); ?></th>
+			<th><?php echo $this->Paginator->sort('StateName', __('State')); ?></th>
+			<th><?php echo $this->Paginator->sort('CityName'), __('City'); ?></th>
+			<?php if ($is_admin) echo '<th class="actions">' . __('Actions') . '</th>'; ?>
 	</tr>
 	<?php foreach ($cities as $city): ?>
 	<tr>
 		<td><?php echo h($city['City']['CityID']); ?>&nbsp;</td>
-		<td><?php echo h($city['City']['CountryID']); ?>&nbsp;</td>
-		<td><?php echo h($city['City']['StateID']); ?>&nbsp;</td>
+		<td><?php echo h($city['City']['CountryName']); ?>&nbsp;</td>
+		<td><?php echo h($city['City']['StateName']); ?>&nbsp;</td>
 		<td><?php echo h($city['City']['CityName']); ?>&nbsp;</td>
-		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $city['City']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $city['City']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $city['City']['id']), null, __('Are you sure you want to delete # %s?', $city['City']['id'])); ?>
-		</td>
+		<?php if ($is_admin) {
+		  echo '<td class="actions">';
+			echo $this->Html->link(__('View'), array('action' => 'view', $city['City']['CityID']));
+			echo $this->Html->link(__('Edit'), array('action' => 'edit', $city['City']['CityID']));
+			echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $city['City']['CityID']), null, __('Are you sure you want to delete # %s?', $city['City']['CityID']));
+		  echo '</td>'; 
+         } ?>
 	</tr>
 <?php endforeach; ?>
 	</table>
@@ -36,9 +38,11 @@
 	?>
 	</div>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New City'), array('action' => 'add')); ?></li>
-	</ul>
-</div>
+<?php if ($is_admin) {
+  echo '<div class="actions">';
+	echo '<h3>' . __('Actions') . '</h3>';
+	echo '<ul>';
+		echo '<li>' . $this->Html->link(__('New City'), array('action' => 'add')) . '</li>';
+	echo '</ul>';
+  echo '</div>';
+} ?>

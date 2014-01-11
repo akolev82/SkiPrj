@@ -10,8 +10,8 @@ header('Pragma: no-cache'); ?>
 <head>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/carousel.css" rel="stylesheet">
+    <?php echo $this->Html->css('bootstrap'); //<link href="css/bootstrap.css" rel="stylesheet">
+    echo $this->Html->css('carousel'); //<link href="css/carousel.css" rel="stylesheet"> ?>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <?php echo $this->Html->charset(); ?>
     <title>
@@ -50,20 +50,29 @@ header('Pragma: no-cache'); ?>
     	echo $this->Html->script($js_link);
     }
 
-
-    //echo $this->Html->css('cake.generic');
-    echo $this->fetch('css');
-   // echo $this->Html->css('front');
-   // echo $this->Html->css('styles');
-    echo $this->Html->css('menus');
-   // echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
+    $is_admin = true;
+    if ($is_admin) {
+      $this->Html->css('admin/admin.css');
+      echo $this->Html->css('front');
+      echo $this->Html->css('styles');
+      echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
+      echo $this->Html->css('menus');
+      echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
+    } else {
+      //echo $this->Html->css('cake.generic');
+      echo $this->fetch('css');
+      // echo $this->Html->css('front');
+      // echo $this->Html->css('styles');
+      echo $this->Html->css('menus');
+      // echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
+    }
     
-    if (isset($css_list)) {
+   /* if (isset($css_list)) {
     	foreach($css_list as $item) {
     		$src = $item['src'];
     		echo $this->Html->css($src);
     	}
-    }
+    }*/
     
     $base = 'layouts' . DS . Inflector::underscore($this->layout);
     $css_link = $this->Html->toUrlCSS($base); //layout css

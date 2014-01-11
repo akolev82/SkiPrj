@@ -6,22 +6,22 @@
 			<?php echo h($zip['Zip']['ZipID']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('CountryID'); ?></dt>
+		<dt><?php echo __('Country'); ?></dt>
 		<dd>
-			<?php echo h($zip['Zip']['CountryID']); ?>
+			<?php echo h($zip['Zip']['CountryName']); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('CityID'); ?></dt>
 		<dd>
-			<?php echo h($zip['Zip']['CityID']); ?>
+			<?php echo h($zip['Zip']['CityName']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('StateID'); ?></dt>
+		<dt><?php echo __('State'); ?></dt>
 		<dd>
-			<?php echo h($zip['Zip']['StateID']); ?>
+			<?php echo h($zip['Zip']['StateName']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('ZipCode'); ?></dt>
+		<dt><?php echo __('Zip'); ?></dt>
 		<dd>
 			<?php echo h($zip['Zip']['ZipCode']); ?>
 			&nbsp;
@@ -38,12 +38,15 @@
 		</dd>
 	</dl>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Zip'), array('action' => 'edit', $zip['Zip']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Zip'), array('action' => 'delete', $zip['Zip']['id']), null, __('Are you sure you want to delete # %s?', $zip['Zip']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Zips'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Zip'), array('action' => 'add')); ?> </li>
-	</ul>
-</div>
+<?php if ($is_admin) {
+  echo '<div class="actions">';
+	echo '<h3>' . __('Actions') . '</h3>';
+	echo '<ul>';
+		echo '<li>' . $this->Html->link(__('Edit Zip'), array('action' => 'edit', $zip['Zip']['ZipID'])) . '</li>';
+		echo '<li>' . $this->Form->postLink(__('Delete Zip'), array('action' => 'delete', $zip['Zip']['ZipID']), null, __('Are you sure you want to delete # %s?', $zip['Zip']['ZipID'])) . '</li>';
+		echo '<li>' . $this->Html->link(__('List Zips'), array('action' => 'index')) . '</li>';
+		echo '<li>' . $this->Html->link(__('New Zip'), array('action' => 'add')) . '</li>';
+	echo '</ul>';
+  echo '</div>';
+}
+?>

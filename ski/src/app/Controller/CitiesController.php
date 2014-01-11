@@ -10,6 +10,13 @@ class CitiesController extends AppController {
    * @var array
    */
   public $components = array('Paginator');
+  
+  protected function setVirtualFields() {
+    $this->City->virtualFields = array(
+        'CountryName' => 'Country.CountryName',
+        'StateName' => 'State.StateName'
+    );
+  }
 
   /**
    * index method
@@ -18,23 +25,33 @@ class CitiesController extends AppController {
   */
   public function index() {
     $this->City->recursive = 0;
+    $this->setVirtualFields();
     $this->set('cities', $this->Paginator->paginate());
+  }
+  
+  public function admin_index() {
+    $this->index();
+    $this->render('index');
   }
 
   public function view($id = null) {
     if (!$this->City->exists($id)) {
       throw new NotFoundException(__('Invalid city'));
     }
+    $this->setVirtualFields();
     $options = array('conditions' => array('City.' . $this->City->primaryKey => $id));
     $this->set('city', $this->City->find('first', $options));
   }
 
   public function admin_view($id = null) {
-    if (!$this->City->exists($id)) {
-      throw new NotFoundException(__('Invalid city'));
-    }
-    $options = array('conditions' => array('City.' . $this->City->primaryKey => $id));
-    $this->set('city', $this->City->find('first', $options));
+    $this->view($id);
+    $this->render('view');
+  }
+  
+  protected function refreshForeignKeys() {
+    $countries = $this->City->Country->find('list');
+    $states = $this->City->State->find('list');
+    $this->set(compact('countries', 'states'));
   }
 
   /**
@@ -52,6 +69,7 @@ class CitiesController extends AppController {
         $this->Session->setFlash(__('The city could not be saved. Please, try again.'));
       }
     }
+    $this->refreshForeignKeys();
   }
 
   /**
@@ -76,6 +94,7 @@ class CitiesController extends AppController {
       $options = array('conditions' => array('City.' . $this->City->primaryKey => $id));
       $this->request->data = $this->City->find('first', $options);
     }
+    $this->refreshForeignKeys();
   }
 
   /**
@@ -86,12 +105,12 @@ class CitiesController extends AppController {
    * @return void
    */
   public function admin_delete($id = null) {
-    $this->City->id = $id;
-    if (!$this->City->exists()) {
+    $this->City->clear();
+    if (!$this->City->exists($id)) {
       throw new NotFoundException(__('Invalid city'));
     }
     $this->request->onlyAllow('post', 'delete');
-    if ($this->City->delete()) {
+    if ($this->City->delete($id)) {
       $this->Session->setFlash(__('The city has been deleted.'));
     } else {
       $this->Session->setFlash(__('The city could not be deleted. Please, try again.'));
