@@ -3,13 +3,22 @@
 	<fieldset>
 		<legend><?php echo __('Edit City'); ?></legend>
 	<?php
+	    $CountryID = $this->Form->value('City.CountryID');
+	    $StateID = $this->Form->value('City.StateID');
 		echo $this->Form->hidden('CityID');
-		echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
-		echo $this->Form->input('StateID', array('label' => 'State', 'options' => $states, 'empty' => 'Please choose state'));
+		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', '', '');
+		echo $combo->addCountryCombo('CountryID', array('label' => 'Country', /*'options' => $countries, 'empty' => 'Please choose country',*/ 'CountryID' => $CountryID));
+		echo $combo->addStateCombo('StateID', array('label' => 'State', 'CountryID' => $CountryID, 'StateID' => $StateID));
+		//echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
+		//echo $this->Form->input('StateID', array('label' => 'State', 'options' => $states, 'empty' => 'Please choose state'));
+		
 		echo $this->Form->input('CityName');
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(__('Submit'));
+  $combo->loadData($CountryID, $StateID);
+  $combo->printClientScript();
+?>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>

@@ -30,9 +30,10 @@ App::uses('Helper', 'View');
  *
  * @package       app.View.Helper
  */
+
 class AceHelper extends Helper {
   
-  public $helpers = array('Html', 'Form');
+  public $helpers = array('Html', 'Form', 'Combo');
   protected $defaultClass = 'TitledForm';
   protected $genderMap = array('M' => 'Male', 'F' => 'Female', 'U' => 'Unknown');
   

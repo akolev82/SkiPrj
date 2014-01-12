@@ -34,9 +34,10 @@ header('Pragma: no-cache'); ?>
     echo $this->Html->script('/js/jquery/ui/jquery.ui.resizable.js', $javascript_options);
     echo $this->Html->script('/js/jquery/ui/jquery.ui.button.js', $javascript_options);
     echo $this->Html->script('/js/jquery/ui/jquery.ui.dialog.js', $javascript_options);
-    echo $this->Html->script('/js/splitter.js', $javascript_options);
     echo $this->Html->script('/css/js/bootstrap.js', $javascript_options);
     echo $this->Html->script('/js/global.js', $javascript_options);
+    echo $this->Html->script('/js/splitter.js', $javascript_options);
+    echo $this->Html->script('/js/combo.js', $javascript_options);
     
     $base = 'layouts' . DS . Inflector::underscore($this->layout);
     $js_link = $this->Html->toUrlJS($base); //layout css
@@ -55,8 +56,6 @@ header('Pragma: no-cache'); ?>
       $this->Html->css('admin/admin.css');
       echo $this->Html->css('front');
       echo $this->Html->css('styles');
-      echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
-      echo $this->Html->css('menus');
       echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
     } else {
       //echo $this->Html->css('cake.generic');

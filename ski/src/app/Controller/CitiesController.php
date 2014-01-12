@@ -50,7 +50,7 @@ class CitiesController extends AppController {
   
   protected function refreshForeignKeys() {
     $countries = $this->City->Country->find('list');
-    $states = $this->City->State->find('list');
+    $states = array(); //$this->City->State->find('list');
     $this->set(compact('countries', 'states'));
   }
 
@@ -117,4 +117,38 @@ class CitiesController extends AppController {
     }
     return $this->redirect(array('action' => 'index'));
   }
+  
+  protected function internalFind($numargs, $arg_list) {
+    $this->layout = 'ajax';
+    $this->set('is_debug', false);
+    $conditions = array('City.CityName !=' => null, 'City.CityName !=' => '');
+    $criterias = array(); $selectbox = array(); $empty_caption = 'Please select city'; $is_find = true;
+    for ($index = 0; $index < $numargs; $index = $index + 2) {
+      $what = $arg_list[$index];
+      $value = $arg_list[$index+1];
+      if ($what == 'empty') {
+        $is_find = false;
+        break;
+      } else if ($what == 'country') {
+        $conditions['City.CountryID = '] = $value;
+      } else if ($what == 'state') {
+        $conditions['City.StateID = '] = $value;
+      } else if ($what == 'beginswith') {
+        $conditions['City.CityName like '] = $value . '%';
+      }
+      $criterias[] = array('what' => $what, 'value' => $value);
+    }
+    
+    if ($is_find === true) {
+      $this->City->clear();
+      $selectbox = $this->City->find('list', array(
+          'conditions' => $conditions,
+          'fields' => array('City.CityID', 'City.CityName'),
+          'order' => array('City.CityName'),
+          'recursive' => 0
+      ));
+    }
+    $this->set(compact('selectbox', 'criterias', 'empty_caption'));
+  }
+  
 }

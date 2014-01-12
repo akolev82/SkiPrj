@@ -87,7 +87,7 @@ class AppController extends Controller {
   public function beforeFilter() {
     //$this->clear_cache();
     
-    $this->Auth->allowedActions = array('display', 'index', 'view'); //do not require automatic login
+    $this->Auth->allowedActions = array('display', 'index', 'view', 'find'); //do not require automatic login
     
     $is_admin = $this->isAdminContext();
     $this->set('is_admin', $is_admin);
@@ -157,6 +157,28 @@ class AppController extends Controller {
   
     $this->set(compact('files'));
     //$this->layout = 'ajax';
+  }
+  
+  protected function internalFind($numargs, $arg_list) {
+    
+  }
+  
+  protected final function doFind($numargs, $arg_list) {
+    if ($numargs > 0 && $numargs % 2 != 0) {
+      echo 'Invalid number of parameters.';
+      $this->render('Errors/error');
+      return;
+    }
+    $this->internalFind($numargs, $arg_list);
+    $this->render('/Pages/find', 'ajax');
+  }
+  
+  public function find() {
+    $this->doFind(func_num_args(), func_get_args());
+  }
+  
+  public function admin_find() {
+    $this->doFind(func_num_args(), func_get_args());
   }
   
 }

@@ -132,4 +132,40 @@ class ZipsController extends AppController {
     }
     return $this->redirect(array('action' => 'index'));
   }
+  
+  protected function internalFind($numargs, $arg_list) {
+    $this->set('is_debug', false);
+    $conditions = array('Zip.ZipCode !=' => null, 'Zip.ZipCode !=' => '');
+    $criterias = array(); $selectbox = array(); $empty_caption = 'Please select zip'; $is_find = true;
+    for ($index = 0; $index < $numargs; $index = $index + 2) {
+      $what = $arg_list[$index];
+      $value = $arg_list[$index+1];
+      if ($what == 'empty') {
+        $is_find = false;
+        break;
+      } else if ($what == 'country') {
+        $conditions['Zip.CountryID = '] = $value;
+      } else if ($what == 'state') {
+        $conditions['Zip.StateID = '] = $value;
+      } else if ($what == 'city') {
+        $conditions['Zip.CityID = '] = $value;
+      } else if ($what == 'beginswith') {
+        $conditions['Zip.ZipCode like '] = $value . '%';
+      }
+      $criterias[] = array('what' => $what, 'value' => $value);
+    }
+  
+    if ($is_find === true) {
+      $this->Zip->clear();
+      $selectbox = $this->Zip->find('list', array(
+          'conditions' => $conditions,
+          'fields' => array('Zip.ZipID', 'Zip.ZipCode'),
+          'order' => array('Zip.ZipCode'),
+          'recursive' => 0
+      ));
+    }
+    $this->set(compact('selectbox', 'criterias', 'empty_caption'));
+    $this->layout = 'ajax';
+  }
+  
 }

@@ -104,4 +104,34 @@ class CountriesController extends AppController {
     }
     return $this->redirect(array('action' => 'index'));
   }
+  
+  protected function internalFind($numargs, $arg_list) {
+    $this->set('is_debug', false);
+    $conditions = array('Country.CountryName !=' => null, 'Country.CountryName !=' => '');
+    $criterias = array(); $selectbox = array(); $empty_caption = 'Please select country'; $is_find = true;
+    for ($index = 0; $index < $numargs; $index = $index + 2) {
+      $what = $arg_list[$index];
+      $value = $arg_list[$index+1];
+      if ($what == 'empty') {
+        $is_find = false;
+        break;
+      } else if ($what == 'beginswith') {
+        $conditions['Country.CountryName like '] = $value . '%';
+      }
+      $criterias[] = array('what' => $what, 'value' => $value);
+    }
+  
+    if ($is_find === true) {
+      $this->Country->clear();
+      $selectbox = $this->Country->find('list', array(
+          'conditions' => $conditions,
+          'fields' => array('Country.CountryID', 'Country.CountryName'),
+          'order' => array('Country.CountryName'),
+          'recursive' => 0
+      ));
+    }
+    $this->set(compact('selectbox', 'criterias', 'empty_caption'));
+    $this->layout = 'ajax';
+  }
+  
 }

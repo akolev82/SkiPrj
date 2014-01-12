@@ -126,4 +126,36 @@ class StatesController extends AppController {
     }
     return $this->redirect(array('action' => 'index'));
   }
+  
+  protected function internalFind($numargs, $arg_list) {
+    $this->set('is_debug', false);
+    $this->layout = 'ajax';
+    $conditions = array('State.StateName !=' => null, 'State.StateName !=' => '');
+    $criterias = array(); $selectbox = array(); $empty_caption = 'Please select state'; $is_find = true;
+    for ($index = 0; $index < $numargs; $index = $index + 2) {
+      $what = $arg_list[$index];
+      $value = $arg_list[$index+1];
+      if ($what == 'empty') {
+        $is_find = false;
+        break;
+      } else if ($what == 'country') {
+        $conditions['State.CountryID = '] = $value;
+      } else if ($what == 'beginswith') {
+        $conditions['State.StateName like '] = $value . '%';
+      }
+      $criterias[] = array('what' => $what, 'value' => $value);
+    }
+  
+    if ($is_find === true) {
+      $this->State->clear();
+      $selectbox = $this->State->find('list', array(
+          'conditions' => $conditions, 
+          'fields' => array('State.StateID', 'State.StateName'),
+          'order' => array('State.StateName'),
+          'recursive' => 0
+      ));
+    }
+    $this->set(compact('selectbox', 'criterias', 'empty_caption'));
+  }
+  
 }
