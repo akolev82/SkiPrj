@@ -4,15 +4,20 @@
 		<legend><?php echo __('Add Zip'); ?></legend>
 	<?php
 		//echo $this->Form->input('ZipID');
-		echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
-		echo $this->Form->input('StateID', array('label' => 'State', 'options' => $states, 'empty' => 'Please choose state'));
-		echo $this->Form->input('CityID', array('label' => 'City', 'options' => $cities, 'empty' => 'Please choose city'));
+		
+		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', 'CityID', '');
+		echo $combo->addCountryCombo('CountryID', array('label' => 'Country'));
+		echo $combo->addStateCombo('StateID', array('label' => 'State'));
+		echo $combo->addCityCombo('CityID', array('label' => 'City'));
+		
 		echo $this->Form->input('ZipCode', array('label' => 'Zip'));
 		echo $this->Form->input('latitude', array('label' => 'Latitude'));
 		echo $this->Form->input('longitude', array('label' => 'Longitude'));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(__('Submit'));
+$combo->loadData();
+$combo->printClientScript(); ?>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>

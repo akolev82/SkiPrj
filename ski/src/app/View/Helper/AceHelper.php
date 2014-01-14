@@ -37,6 +37,7 @@ class AceHelper extends Helper {
   protected $defaultClass = 'TitledForm';
   protected $genderMap = array('M' => 'Male', 'F' => 'Female', 'U' => 'Unknown');
   
+  
   public function create($model, $title, $options) {
     if (!isset($options['class'])) {
       $options['class'] = $this->defaultClass;
@@ -73,9 +74,19 @@ class AceHelper extends Helper {
   }
   
   public function toGenderName($GenderCode) {
-    $GenderCode = str_to_upper($GenderCode);
+    $GenderCode = strtoupper($GenderCode);
     if (isset($this->genderMap[$GenderCode])) return $this->genderMap[$GenderCode];
     return 'Unknown';
+  }
+  
+  public function toBoolean($value) {
+    $value = (int)$value;
+    return ($value == 1) ? true : false;
+  }
+  
+  public function toYesNoStr($value) {
+    $bool = $this->toBoolean($value);
+    return ($bool === true) ? 'Yes' : 'No';
   }
   
 } ?>

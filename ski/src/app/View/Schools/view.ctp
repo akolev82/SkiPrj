@@ -18,7 +18,7 @@
 		</dd>
 		<dt><?php echo __('Active'); ?></dt>
 		<dd>
-			<?php echo h($school['School']['Active']); ?>
+			<?php echo h($this->Ace->toYesNoStr($school['School']['Active'])); ?>
 			&nbsp;
 		</dd>
 		<dt><?php echo __('SchoolLogo'); ?></dt>
@@ -33,12 +33,14 @@
 		</dd>
 	</dl>
 </div>
-<div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit School'), array('action' => 'edit', $school['School']['id'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete School'), array('action' => 'delete', $school['School']['id']), null, __('Are you sure you want to delete # %s?', $school['School']['id'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Schools'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New School'), array('action' => 'add')); ?> </li>
-	</ul>
-</div>
+<?php if ($is_admin) {
+  echo '<div class="actions">';
+	echo '<h3>' . __('Actions') . '</h3>';
+	echo '<ul>';
+	  echo '<li>' . $this->Html->link(__('Edit School'), array('action' => 'edit', $school['School']['SchoolID'])) . '</li>';
+	  echo '<li>' . $this->Form->postLink(__('Delete School'), array('action' => 'delete', $school['School']['SchoolID']), null, __('Are you sure you want to delete # %s?', $school['School']['SchoolID'])) . '</li>';
+	  echo '<li>' . $this->Html->link(__('List Schools'), array('action' => 'index')) . '</li>';
+	  echo '<li>' . $this->Html->link(__('New School'), array('action' => 'add')) . '</li>';
+	echo '</ul>';
+  echo '</div>';
+} ?>

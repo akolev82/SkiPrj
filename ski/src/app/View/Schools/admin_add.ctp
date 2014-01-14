@@ -3,12 +3,12 @@
 	<fieldset>
 		<legend><?php echo __('Add School'); ?></legend>
 	<?php
-		echo $this->Form->input('SchoolID');
+		//echo $this->Form->input('SchoolID');
 		echo $this->Form->input('SchoolName');
-		echo $this->Form->input('PrimaryAddressID');
-		echo $this->Form->input('Active');
-		echo $this->Form->input('SchoolLogo');
-		echo $this->Form->input('PrincipalID');
+		//echo $this->Form->input('PrimaryAddressID');
+		echo $this->Combo->comboYesNo('Active');
+		//echo $this->Form->input('SchoolLogo');
+		//echo $this->Form->input('PrincipalID');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

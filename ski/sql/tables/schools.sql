@@ -146,10 +146,13 @@ create table `leagues` (
   constraint FK2_LEAGUES foreign key (`ThemeID`) references `themes`(`ThemeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-create table `league_members` (
-  `LeagueID` int(15) unsigned not null,
-  `TeamID` int(15) unsigned not null,
-  primary key PK_LEAGUE_MEMBERS(`LeagueID`),
-  constraint FK1_LEAGUE_MEMBERS foreign key (`LeagueID`) references `leagues`(`LeagueID`),
-  constraint FK2_LEAGUE_MEMBERS foreign key (`TeamID`) references `teams`(`TeamID`)
+CREATE TABLE `league_members` (
+  `LeagueMemberID` int(15) unsigned NOT NULL,
+  `LeagueID` int(15) unsigned NOT NULL,
+  `TeamID` int(15) unsigned NOT NULL,
+  PRIMARY KEY (`LeagueMemberID`),
+  UNIQUE KEY `UQ1_LEAGUE_MEMBERS` (`LeagueID`,`TeamID`),
+  KEY `FK2_LEAGUE_MEMBERS` (`TeamID`),
+  CONSTRAINT `FK1_LEAGUE_MEMBERS` FOREIGN KEY (`LeagueID`) REFERENCES `leagues` (`LeagueID`),
+  CONSTRAINT `FK2_LEAGUE_MEMBERS` FOREIGN KEY (`TeamID`) REFERENCES `teams` (`TeamID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

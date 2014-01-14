@@ -5,12 +5,7 @@
  */
 
 /*! normalize.css v2.1.3 | MIT License | git.io/normalize */
-.otherpage{
-    background: url("../img/background_ski.jpg");
-    background-size: 100%;
-    width: 100%;
-    height: 100%;
-}
+
 article,
 aside,
 details,
@@ -49,10 +44,10 @@ video {
 }
 #main-banner {
     position: relative;
-    background: url(../img/headtop-bg.jpg) repeat;
-    margin: 0 0 100px 0;
+    background:transparent;
+    margin: 0;
     width: 100%;
-    height: auto;
+    height: 100px;
 }
 audio:not([controls]) {
   display: none;
@@ -130,6 +125,12 @@ pre {
 
 q {
   quotes: "\201C" "\201D" "\2018" "\2019";
+}
+.otherpage{
+    background: url("../img/background_ski.jpg");
+    background-size: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 small {

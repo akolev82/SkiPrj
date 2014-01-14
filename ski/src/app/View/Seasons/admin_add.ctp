@@ -3,7 +3,7 @@
 	<fieldset>
 		<legend><?php echo __('Add Season'); ?></legend>
 	<?php
-		echo $this->Form->input('SeasonID');
+		//echo $this->Form->input('SeasonID');
 		echo $this->Form->input('SeasonName');
 		echo $this->Form->input('DateBegin');
 		echo $this->Form->input('DateEnd');

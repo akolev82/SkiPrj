@@ -4,15 +4,24 @@
 		<legend><?php echo __('Edit Zip'); ?></legend>
 	<?php
 		echo $this->Form->hidden('ZipID');
-		echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
-		echo $this->Form->input('StateID', array('label' => 'State', 'options' => $states, 'empty' => 'Please choose state'));
-		echo $this->Form->input('CityID', array('label' => 'City', 'options' => $cities, 'empty' => 'Please choose city'));
+		
+		$CountryID = $this->Form->value('Zip.CountryID');
+	    $StateID = $this->Form->value('Zip.StateID');
+	    $CityID = $this->Form->value('Zip.CityID');
+		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', 'CityID', '');
+		echo $combo->addCountryCombo('CountryID', array('label' => 'Country', /*'options' => $countries, 'empty' => 'Please choose country',*/ 'CountryID' => $CountryID));
+		echo $combo->addStateCombo('StateID', array('label' => 'State', 'CountryID' => $CountryID, 'StateID' => $StateID));
+		echo $combo->addCityCombo('CityID', array('label' => 'City', 'CountryID' => $CountryID, 'StateID' => $StateID, 'CityID' => $CityID));
+		
 		echo $this->Form->input('ZipCode', array('label' => 'Zip'));
 		echo $this->Form->input('latitude', array('label' => 'Latitude'));
 		echo $this->Form->input('longitude', array('label' => 'Longitude'));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(__('Submit'));
+$combo->loadData($CountryID, $StateID, $CityID);
+$combo->printClientScript(); 
+?>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>

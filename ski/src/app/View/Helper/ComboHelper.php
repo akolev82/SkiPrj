@@ -91,6 +91,8 @@ class ComboHelper extends Helper {
   
   public $helpers = array('Html', 'Form', 'Ace');
   
+  protected $booleanMap = array('0' => 'No', '1' => 'Yes');
+  
   public function addCustomCombo($name, $options) {
     $merged_options = array_merge(array('options' => array(), 'empty' => 'Please choose'), $options);
     echo $this->Form->input($name, $merged_options);
@@ -98,6 +100,18 @@ class ComboHelper extends Helper {
   
   public function getLocationCombos($js_object, $CountryID = '', $StateID = '', $CityID = '', $ZipID = '') {
     return new LocationComboMaker($this, $js_object, $CountryID, $StateID, $CityID, $ZipID);
+  }
+  
+  public function getYesNoMap() {
+    return $this->booleanMap();
+  }
+  
+  public function comboBoolean($name, $true_caption = 'true', $false_caption = 'false', $empty = 'Please choose', $options = array()) {
+    return $this->Form->input($name, array_merge(array('options' => array('1' => $true_caption, '0' => $false_caption), 'empty' => $empty), $options));
+  }
+  
+  public function comboYesNo($name, $empty = 'Please choose Yes or No', $options = array()) {
+    return $this->comboBoolean($name, 'Yes', 'No', $empty, $options);
   }
   
 } ?>

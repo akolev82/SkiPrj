@@ -59,7 +59,7 @@ class StatesController extends AppController {
   }
   
   protected function refreshForeignKeys() {
-    $countries = $this->State->Country->find('list');
+    $countries = array(); //$this->State->Country->find('list');
     $this->set(compact('countries'));
   }
 

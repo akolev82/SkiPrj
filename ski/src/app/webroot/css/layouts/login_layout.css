@@ -1,264 +1,3 @@
-
-#admin-menu,#admin-container,#admin-title {
-  display: block;
-  float: none;
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
-
-#admin-title {
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: none;
-  height: 50px;
-  line-height: 50px;
-  font-size: 15px;
-  text-align: center;
-  vertical-align: middle;
-}
-
-#admin-menu,#admin-container {
-  display: block;
-  top: 0px;
-  background: transparent;
-  box-shadow: none;
-}
-
-#admin-menu {
-  float: left;
-  width: 15%;
-  background-color: transparent;
-}
-
-#admin-menu fieldset {
-  display: table;
-  float: left;
-  clear: both;
-  width: 100%;
-  border: none;
-
-  color: #fff;
-  font-size: 1em;
-  margin: 10px 0 10px 0;
-  padding: 5px 0;
-  font-size: 10px;
-  background-color: transparent;
-
-}
-
-#admin-menu fieldset legend {
-  color: #ffffff;
-  border-radius: 3px 3px 3px 3px;
-  background-color: #000000;
-  padding: 5px;
-  margin: 0 0 0 10px;
-  font-size: 1em;
-}
-
-#admin-menu ul {
-  display: block;
-  float: left;
-  clear: both;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  list-style: none;
-  font-family: sans-serif;
-  background-color: transparent;
-  color: #fff;
-  text-decoration: none;
-  word-spacing: normal;
-  text-align: left;
-  letter-spacing: 0;
-  line-height: 1.5em;
-  font-size: 1.2em;
-}
-
-#admin-menu ul li {
-  width: 80%;
-  border-radius: 3px 3px 3px 3px;
-  padding: 0;
-  margin: 0 0 10px 5px;
-  text-indent: 10px;
-  color: #fff;
-  box-shadow: 2px 2px 2px 2px #008000;
-  background: #000000;
-  border-color: #808080;
-  color: #FFFFFF;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-}
-
-#admin-menu ul li a {
-  width: 100%;
-  text-decoration: none;
-  color: #FFFFFF;
-  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.5);
-}
-
-#admin-container {
-    left: 0%;
-    padding: 15px;
-    background: rgba(50, 50, 50, 0.1);
-    color: #808080;
-    -webkit-box-shadow: 0px -3px 15px 5px rgba(50, 50, 50, 0.75);
-    -moz-box-shadow: 0px -3px 15px 5px rgba(50, 50, 50, 0.75);
-    box-shadow: 0px -3px 15px 5px rgba(50, 50, 50, 0.75);
-    width: 80%;
-    float: left;
-    height: 570px;
-}
-
-#admin-container #content {
-  border: none;
-  border-radius: none;
-}
-.logo-admin{
-    background: url("../img/stellaractive_logo.png") 50% 50% no-repeat;
-    width: 100%;
-    height: 80px;
-    position: absolute;
-    top: 20px;
-    left: 0px;
-}
-#logout {
-    box-shadow: 0 0 3px 3px #FFFF00;
-    clear: none;
-    color: white;
-    float: right;
-    font-family: serif;
-    font-size: 15px;
-    font-weight: normal;
-    height: 30px;
-    line-height: 25px;
-    margin: 20px;
-    padding: 3px 10px 5px 10px;
-    text-decoration: none;
-    text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
-    border-radius: 5px;
-}
-
-.fancy.modal {
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.25);
-  border: 1px solid #bbb;
-  background: -webkit-linear-gradient(top, #fff, #ddd);
-  background: -moz-linear-gradient(top, #fff, #ddd);
-  background: linear-gradient(top, #fff, #ddd);
-  -webkit-transform: translateY(-100%);
-  -moz-transform: translateY(-100%);
-  -ms-transform: translateY(-100%);
-  -o-transform: translateY(-100%);
-  transform: translateY(-100%);
-}
-
-.fancy.show {
-  -webkit-transform: translateY(0%);
-  -moz-transform: translateY(0%);
-  -ms-transform: translateY(0%);
-  -o-transform: translateY(0%);
-  transform: translateY(0%);
-}
-
-h1 {
-  color: #008000;
-  font-size: 1.8em;
-  font-weight: bold;
-  text-align: center;
-  width: 100%;
-  text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
-}
-
-div.form,div.index,div.view,div.actions {
-  position: absolute;
-  width: none;
-  height: none;
-  top: 0;
-  bottom: 0;
-}
-
-div.form,div.index,div.view {
-  border: none;
-  left: 0;
-  right: 100px;
-  width: auto;
-  float: none;
-}
-
-div.form form fieldset legend, h2 {
-  border-color: #808080;
-  border-image: none;
-  border-style: none none dotted;
-  border-width: medium medium 1px;
-  color: #008000;
-  font-family: sans-serif;
-  font-size: 20px;
-  font-weight: normal;
-  height: 30px;
-  line-height: 15px;
-  padding: 5px 0;
-  text-shadow: 2px 2px 3px #969696;
-  width: 100%;
-}
-
-div.actions {
-  background-color: #DCDCB3;
-  border-bottom: 1px solid #008000;
-  border-radius: 0 0 5px;
-  border-right: 1px solid #008000;
-  box-shadow: 1px 1px 5px 0 rgba(50, 50, 50, 0.75);
-  margin: 0;
-  padding: 4px;
-  right: 0;
-  width: 100px;
-  left: none;
-}
-
-#splitter {
-  position: fixed;
-  left: 0; right: 0;
-  top: none; bottom: 50px;
-  height: 3px;
-  border: none; margin: 0; padding: 0;
-  background-color: black;
-  color: black;
-  cursor: ns-resize;
-}
-
-#admin-messages {
-  display: block;
-  position: fixed;
-  left: 0; top: none; right: 0; bottom: 0;
-  height: 47px;
-  margin: 0;
-  background-color: yellow;
-  color: green;
-  overflow: auto;
-}
-
-.cake-sql-log {
-  color: black;
-}
-.cake-sql-log caption {
-  color: black;
-}
-
-.admin-fieldset {
-  border: 1px solid #008000;
-  color: 1px solid #008000;
-  background: transparent;
-}
-.admin-fieldset legend {
-  background-color: #62AF56;
-  border: 1px solid green;
-  color: #FFFF00;
-  padding: 4px;
-  font-family: sans-serif;
-  font-size: 1.2em;
-  font-weight: normal;
-  text-shadow: 2px 2px 2px rgba(150, 150, 150, 1);
-}
-
 /*!
  * Bootstrap v3.0.3 (http://getbootstrap.com)
  * Copyright 2013 Twitter, Inc.
@@ -612,7 +351,7 @@ body {
     font-size: 14px !important;
     line-height: 1.428571429;
     color: #333333;
-    background: white;
+    background: url("../img/admin-bg.png");
     background-size: 100% 100% !important;
     background-repeat: no-repeat;
 }
@@ -630,22 +369,13 @@ body {
     border-radius: 5px;
     padding: 50px;
 }
-.login_right {
+.login_right{
     float: right !important;
     width: 75px;
     margin-left: 250px;
-    height: 35px;
-    padding: 0;
-    color: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-.login_right a{
-    color: #ccc;
-    font-size: 16px;
-    font-weight: bold;
-    text-transform: uppercase;
+    height: 50px;
+    padding: 15px;
+    color: #cccccc;
 }
 input,
 button,
@@ -3906,13 +3636,7 @@ input[type="button"].btn-block {
 .dropdown-toggle:focus {
     outline: 0;
 }
-.menu-container{
-    float: right;
-    width:80%;
-    height: 130px;
-    background: #56574f;
-    text-align: center;
-}
+
 .dropdown-menu {
     position: absolute;
     top: 100%;
@@ -7548,223 +7272,51 @@ td.visible-print {
         display: none !important;
     }
 }
-
+body {
+  background-color: white;
+  color: black;
+}
 
 #container {
-    width: 400px;
-    background-color: #5BA150;
-    color: yellow;
-    box-shadow: 0px 0px 3px 3px #008000;
-    overflow: hidden;
+  width: 400px;
+  background-color: #5BA150;
+  color: yellow;
+  box-shadow: 0px 0px 3px 3px #008000;
+  overflow: hidden;
     height: 100%;
 }
 
 #container #UserLoginForm {
-    margin: 0;
-    padding: 10px 10px 10px 10px;
+  margin: 0;
+  padding: 10px 10px 10px 10px;
 }
 
 #container #UserLoginForm * {
-    background: none;
-    color: yellow;
+  background: none;
+  color: yellow;
 }
 
 #container #UserLoginForm h1 {
-    width: 100%;
-    text-align: 100;
-    font-size: 1.5em;
-    padding: 5px 5px 5px 5px;
+  width: 100%;
+  text-align: 100;
+  font-size: 1.5em;
+  padding: 5px 5px 5px 5px;
 }
 
 #container #UserLoginForm input[type='text'], #container #UserLoginForm input[type='password']  {
-    background: white;
-    color: #5BA150;
-    border: 3px solid green;
+  background: white;
+  color: #5BA150;
+  border: 3px solid green;
 }
 
 #container #UserLoginForm .message {
-    border: 1px solid green;
-    border-radius: 5px 5px 5px 5px;
-    background: yellow;
-    color: #5BA150;
-    font-size: 1em;
-    box-shadow: none;
-    text-decoration: underline;
-    font-weight: normal;
-    text-shadow: none;
+  border: 1px solid green;
+  border-radius: 5px 5px 5px 5px;
+  background: yellow;
+  color: #5BA150;
+  font-size: 1em;
+  box-shadow: none;
+  text-decoration: underline;
+  font-weight: normal;
+  text-shadow: none;
 }
-
-.left-sidebar{
-    position: relative;
-    width: 20%;
-    margin-top: 0px;
-    margin-left: 0;
-    background: #56574f;
-    padding: 100px 5px 0 5px;
-    height: 700px;
-    float: left;
-    text-align: center;
-}
-@import url(http://fonts.googleapis.com/css?family=Ubuntu:300,400,500,700);
-
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,300);
-@charset 'UTF-8';
-/* Base Styles */
-#cssmenu,
-#cssmenu ul,
-#cssmenu li,
-#cssmenu a {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    list-style: none;
-    font-weight: normal;
-    text-decoration: none;
-    line-height: 1;
-    font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
-    position: relative;
-}
-#cssmenu {
-    width: 100%;
-    border-bottom: 4px solid #656659;
-    -webkit-border-radius: 3px;
-    -moz-border-radius: 3px;
-    border-radius: 3px;
-    float: left;
-    margin-top: 29px;
-}
-#cssmenu a {
-    line-height: 1.3;
-}
-#cssmenu > ul > li:first-child {
-    background: #66665e;
-    background: -moz-linear-gradient(#66665e 0%, #45463d 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #66665e), color-stop(100%, #45463d));
-    background: -webkit-linear-gradient(#66665e 0%, #45463d 100%);
-    background: linear-gradient(#66665e 0%, #45463d 100%);
-    border: 1px solid #45463d;
-    -webkit-border-radius: 3px 3px 0 0;
-    -moz-border-radius: 3px 3px 0 0;
-    border-radius: 3px 3px 0 0;
-}
-#cssmenu > ul > li:first-child > a {
-    padding: 15px 10px;
-    background: url(../img/pattern.png) top left repeat;
-    border: none;
-    border-top: 1px solid #818176;
-    -webkit-border-radius: 3px 3px 0 0;
-    -moz-border-radius: 3px 3px 0 0;
-    border-radius: 3px 3px 0 0;
-    font-family: 'Ubuntu', sans-serif;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 300;
-    text-shadow: 0 -1px 1px #000000;
-}
-#cssmenu > ul > li:first-child > a > span {
-    padding: 0;
-}
-#cssmenu > ul > li:first-child:hover {
-    background: #66665e;
-    background: -moz-linear-gradient(#66665e 0%, #45463d 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #66665e), color-stop(100%, #45463d));
-    background: -webkit-linear-gradient(#66665e 0%, #45463d 100%);
-    background: linear-gradient(#66665e 0%, #45463d 100%);
-}
-#cssmenu > ul > li {
-    background: #7292ad;
-    background: -moz-linear-gradient(#7292ad 0%, #577995 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7292ad), color-stop(100%, #577995));
-    background: -webkit-linear-gradient(#7292ad 0%, #577995 100%);
-    background: linear-gradient(#7292ad 0%, #577995 100%);
-}
-#cssmenu > ul > li:hover {
-    background: #688ba7;
-    background: -moz-linear-gradient(#688ba7 0%, #51718c 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #688ba7), color-stop(100%, #51718c));
-    background: -webkit-linear-gradient(#688ba7 0%, #51718c 100%);
-    background: linear-gradient(#688ba7 0%, #51718c 100%);
-}
-#cssmenu > ul > li > a {
-    font-size: 14px;
-    display: block;
-    background: url(../img/pattern.png) top left repeat;
-    color: #ffffff;
-    border: 1px solid #4d6c85;
-    border-top: none;
-    text-shadow: 0 -1px 1px #314555;
-}
-#cssmenu > ul > li > a > span {
-    display: block;
-    padding: 12px 10px;
-    -webkit-border-radius: 4px;
-    -moz-border-radius: 4px;
-    border-radius: 4px;
-}
-#cssmenu > ul > li > a:hover {
-    text-decoration: none;
-}
-#cssmenu > ul > li.active {
-    border-bottom: none;
-}
-#cssmenu > ul > li.has-sub > a span {
-    background: url(../img/icon_plus.png) 96% center no-repeat;
-}
-#cssmenu > ul > li.has-sub.active > a span {
-    background: url(../img/icon_minus.png) 96% center no-repeat;
-}
-/* Sub menu */
-#cssmenu ul ul {
-    display: none;
-    background: #fff;
-    border-right: 1px solid #a2a194;
-    border-left: 1px solid #a2a194;
-}
-#cssmenu ul ul li {
-    padding: 0;
-    border-bottom: 1px solid #d4d4d4;
-    border-top: none;
-    background: #f7f7f7;
-    background: -moz-linear-gradient(#f7f7f7 0%, #ececec 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%, #ececec));
-    background: -webkit-linear-gradient(#f7f7f7 0%, #ececec 100%);
-    background: linear-gradient(#f7f7f7 0%, #ececec 100%);
-}
-#cssmenu ul ul li:last-child {
-    border-bottom: none;
-}
-#cssmenu ul ul a {
-    padding: 10px 10px 10px 25px;
-    display: block;
-    color: #676767;
-    font-size: 12px;
-    font-weight: normal;
-}
-#cssmenu ul ul a:before {
-    content: '»';
-    position: absolute;
-    left: 10px;
-    color: #7292ad;
-}
-#cssmenu ul ul a:hover {
-    color: #7292ad;
-}
-
-#main-menu .nav-bar { list-style:none; margin-top: 40px; }
-#main-menu .nav-bar li { display:inline; padding:0 10px; }
-
-#main-menu .nav-bar li a {
-    text-decoration: none;
-    padding-left: 25px;
-    text-transform: uppercase;
-    color: #333;
-    text-shadow: 1px 1px 1px #ccc;
-}
-
-.nav-bar .nav-button-home a { background:url("http://www.cheesetoast.co.uk/cheesepress/wp-content/uploads/2012/08/home.gif") no-repeat 0px -2px transparent; }
-
-.nav-bar .nav-button-services a { background:url("http://www.cheesetoast.co.uk/cheesepress/wp-content/uploads/2012/08/services.gif") no-repeat 0px -2px transparent; }
-
-.nav-bar .nav-button-products a { background:url("http://www.cheesetoast.co.uk/cheesepress/wp-content/uploads/2012/08/products.gif") no-repeat 0px -2px transparent; }
-/* Icons courtesy of Thom : http://pixelb.in/assorted-pixel-perfect-14px-icon-set-286/ */

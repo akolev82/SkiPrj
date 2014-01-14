@@ -49,7 +49,7 @@ class CitiesController extends AppController {
   }
   
   protected function refreshForeignKeys() {
-    $countries = $this->City->Country->find('list');
+    $countries = array(); //$this->City->Country->find('list');
     $states = array(); //$this->City->State->find('list');
     $this->set(compact('countries', 'states'));
   }

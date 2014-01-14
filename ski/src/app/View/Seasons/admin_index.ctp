@@ -19,9 +19,9 @@
 		<td><?php echo h($season['Season']['NumberOfRuns']); ?>&nbsp;</td>
 		<td><?php echo h($season['Season']['SeedOrderClass']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $season['Season']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $season['Season']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $season['Season']['id']), null, __('Are you sure you want to delete # %s?', $season['Season']['id'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $season['Season']['SeasonID'])); ?>
+			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $season['Season']['SeasonID'])); ?>
+			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $season['Season']['SeasonID']), null, __('Are you sure you want to delete # %s?', $season['Season']['SeasonID'])); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>

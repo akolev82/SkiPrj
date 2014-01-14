@@ -39,13 +39,6 @@ class ZipsController extends AppController {
     $this->render('index');
   }
 
-  /**
-   * view method
-   *
-   * @throws NotFoundException
-   * @param string $id
-   * @return void
-   */
   public function view($id = null) {
     if (!$this->Zip->exists($id)) {
       throw new NotFoundException(__('Invalid zip'));
@@ -61,9 +54,9 @@ class ZipsController extends AppController {
   }
   
   protected function refreshForeignKeys() {
-    $countries = $this->Zip->Country->find('list');
-    $states = $this->Zip->State->find('list');
-    $cities = $this->Zip->State->find('list');
+    $countries = array(); //$this->Zip->Country->find('list');
+    $states = array(); //$this->Zip->State->find('list');
+    $cities = array(); //$this->Zip->State->find('list');
     $this->set(compact('countries', 'states', 'cities'));
   }
 

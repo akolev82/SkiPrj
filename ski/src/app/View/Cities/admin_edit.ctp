@@ -9,9 +9,6 @@
 		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', '', '');
 		echo $combo->addCountryCombo('CountryID', array('label' => 'Country', /*'options' => $countries, 'empty' => 'Please choose country',*/ 'CountryID' => $CountryID));
 		echo $combo->addStateCombo('StateID', array('label' => 'State', 'CountryID' => $CountryID, 'StateID' => $StateID));
-		//echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
-		//echo $this->Form->input('StateID', array('label' => 'State', 'options' => $states, 'empty' => 'Please choose state'));
-		
 		echo $this->Form->input('CityName');
 	?>
 	</fieldset>

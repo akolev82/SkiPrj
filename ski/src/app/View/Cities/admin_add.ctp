@@ -3,13 +3,16 @@
 	<fieldset>
 		<legend><?php echo __('Add City'); ?></legend>
 	<?php
-		//echo $this->Form->input('CityID');
-		echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
-		echo $this->Form->input('StateID', array('label' => 'State', 'options' => $states, 'empty' => 'Please choose state'));
+		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', '', '');
+		echo $combo->addCountryCombo('CountryID', array('label' => 'Country'));
+		echo $combo->addStateCombo('StateID', array('label' => 'State'));
 		echo $this->Form->input('CityName');
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(__('Submit'));
+$combo->loadData();
+$combo->printClientScript(); 
+?>
 </div>
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>

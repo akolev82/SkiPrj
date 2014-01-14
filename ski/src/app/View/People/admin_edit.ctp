@@ -3,14 +3,14 @@
 	<fieldset>
 		<legend><?php echo __('Admin Edit Person'); ?></legend>
 	<?php
-		echo $this->Form->input('PersonID');
-		echo $this->Form->input('UserID');
+	    echo $this->Form->hidden('PersonID');
+		//echo $this->Form->hidden('UserID');
 		echo $this->Form->input('FirstName');
 		echo $this->Form->input('LastName');
 		echo $this->Form->input('MiddleName');
-		echo $this->Form->input('Gender');
-		echo $this->Form->input('BirthDate');
-		echo $this->Form->input('BirthPlace');
+		echo $this->Form->input('Gender', array('options' => $this->Ace->getGenderMap(), 'empty' => 'Please choose gender'));
+		//echo $this->Form->input('BirthDate');
+		//echo $this->Form->input('BirthPlace');
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit')); ?>

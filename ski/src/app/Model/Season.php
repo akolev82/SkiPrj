@@ -5,6 +5,11 @@ App::uses('AppModel', 'Model');
  *
  */
 class Season extends AppModel {
+  
+  public $name = 'Season';
+  public $useTable='seasons';
+  public $primaryKey = 'SeasonID';
+  public $displayField = 'SeasonName';
 
 /**
  * Validation rules
@@ -17,9 +22,9 @@ class Season extends AppModel {
 				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
-				//'required' => false,
+				'required' => true,
 				//'last' => false, // Stop validation after this rule
-				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+				'on' => 'update', // Limit validation to 'create' or 'update' operations
 			),
 		),
 		'DateBegin' => array(

@@ -1,5 +1,5 @@
 <?php
-    echo $this->element('header');
+    echo $this->element('header_admin');
     echo $this->element('main-banner');
     echo $this->element('menus');
     echo '<div class="container marketing">';

@@ -64,8 +64,8 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName) {
         }
       };
       var lLoadCities = function() {
-        if (aFindCities === true && mNames.cities > '') {
-          mLoadFromSrc(aSrcID, AcePath + 'cities/find/', aPrefix, mNames.state, aDefaultCityID, lLoadZips);
+        if (aFindCities === true && mNames.city > '') {
+          mLoadFromSrc(aSrcID, AcePath + 'cities/find/', aPrefix, mNames.city, aDefaultCityID, lLoadZips);
         }
       };
       var lLoadStates = function() {
@@ -75,7 +75,7 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName) {
       };
       if (aFindStates === true && mNames.state > '') {
         lLoadStates();
-      } else if (aFindCities === true && mNames.cities > '') {
+      } else if (aFindCities === true && mNames.city > '') {
         lLoadCities();
       } else if (aFindZips === true && mNames.zips > '') {
         lLoadZips();
@@ -101,11 +101,11 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName) {
     }
     
     var mReloadCities = null;
-    if (mNames.cities > '') {
+    if (mNames.city > '') {
       mReloadCities = function(aDefaultStateID, aDefaultCityID, aDefaultZipID) {
-        mLoadAll(mNames.cities, 'cities', false, false, true, aDefaultStateID, aDefaultCityID, aDefaultZipID);
+        mLoadAll(mNames.city, 'cities', false, false, true, aDefaultStateID, aDefaultCityID, aDefaultZipID);
       };
-      $(mNames.cities).change(mReloadCities);  
+      $(mNames.city).change(mReloadCities);  
     };
     
     return {
