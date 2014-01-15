@@ -41,6 +41,7 @@
 			<?php echo h($person['Person']['BirthPlace']); ?>
 			&nbsp;
 		</dd>
+		<?php var_dump($students); ?>
 	</dl>
 </div>
 <div class="actions">

@@ -7,9 +7,7 @@ App::uses('AppController', 'Controller');
  * @property PaginatorComponent $Paginator
 */
 class SchoolsController extends AppController {
-
   public $components = array('Paginator');
-
   protected function setVirtualFields() {
     $this->School->virtualFields = array(
         // 'CountryName' => 'Country.CountryName',
@@ -22,19 +20,33 @@ class SchoolsController extends AppController {
   }
 
   public function index() {
+    $this->set("title_for_layout","Schools");
     $this->School->recursive = 0;
     $this->setVirtualFields();
     $joins = array();
     //'AddressCityName' => 'Address.City.CityName'
     $joins[] =  array(
-        'table' => 'cities',
-        'alias' => 'c',
+        'table' => 'addresses',
+        'alias' => 'Address',
         'type' => 'LEFT',
         'conditions' => array(
-            'C.CityID = Address.CityID'
+            'Address.AddressID = School.PrimaryAddressID'
         )
     );
-    $this->set('schools', $this->Paginator->paginate());
+    $joins[] =  array(
+        'table' => 'cities',
+        'alias' => 'City',
+        'type' => 'LEFT',
+        'conditions' => array(
+            'City.CityID = Address.CityID'
+        )
+    );
+    $this->paginate = array(
+        'recursive' => -1,
+        'joins' => $joins
+    );
+    $fields = array('School.SchoolID', 'School.SchoolName', 'School.Active', 'Address.StreetAddress as StreetAddress', 'City.CityName');
+    $this->set('schools', $this->Paginator->paginate('School', array(), $fields));
   }
 
   public function admin_index() {

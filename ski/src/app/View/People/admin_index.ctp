@@ -11,7 +11,7 @@
 			<th><?php echo $this->Paginator->sort('BirthPlaceName', 'Birth place'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
-	<?php foreach ($people as $person): ?>
+	<?php foreach ($people as $person): var_dump($person); ?>
 	<tr>
 		<td><?php echo h($person['Person']['PersonID']); ?>&nbsp;</td>
 		<td><?php echo h($person['Person']['UserID']); ?>&nbsp;</td>

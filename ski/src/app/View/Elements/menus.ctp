@@ -30,6 +30,15 @@
                                 <li><a href="#">One more separated link</a></li>
                             </ul>
                         </li>
+                    <li>
+                       <?php if ($is_logged_in) {
+                        echo $this->HTML->link(__('Logout'), array('controller' => 'users', 'action' => 'logout'), array('id' => 'logout'));
+                        } else {
+                        echo '<div class="login_right">';
+                            echo $this->HTML->link(__('Login'), array('controller' => 'users', 'action' => 'login'), array('id' => 'login'));
+                            echo '</div>';
+                        }?>
+                    </li>
                     </ul>
                 </div>
             </div>

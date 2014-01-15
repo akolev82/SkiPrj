@@ -2,8 +2,8 @@
 	<h2>
 		<?php echo __('Seasons'); ?>
 	</h2>
-	<table cellpadding="0" cellspacing="0">
-		<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+		<tr class="ski_tr">
 			<th><?php echo $this->Paginator->sort('SeasonID'); ?>
 			</th>
 			<th><?php echo $this->Paginator->sort('SeasonName'); ?>
@@ -18,7 +18,7 @@
 			</th>
 		</tr>
 		<?php foreach ($seasons as $season): ?>
-		<tr>
+		<tr class="ski_tr_sub">
 			<td><?php echo h($season['Season']['SeasonID']); ?>&nbsp;</td>
 			<td><?php echo h($season['Season']['SeasonName']); ?>&nbsp;</td>
 			<td><?php echo h($season['Season']['DateBegin']); ?>&nbsp;</td>
@@ -28,7 +28,9 @@
 		</tr>
 		<?php endforeach; ?>
 	</table>
-	<p>
+    <br/>
+	<div class="pagination">
+    <p>
 		<?php
 		echo $this->Paginator->counter(array(
 	'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
@@ -41,5 +43,6 @@
 		echo $this->Paginator->numbers(array('separator' => ''));
 		echo $this->Paginator->next(__('next') . ' >', array(), null, array('class' => 'next disabled'));
 	?>
-	</div>
+	</div></div>
+
 </div>

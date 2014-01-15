@@ -9,7 +9,7 @@ class Student extends AppModel {
   public $name = 'Student';
   public $useTable = 'students';
   public $primaryKey = 'StudentID';
-  public $displayField = 'Person.FirstName + \' \' + Person.LastName';
+  public $displayField = '';
 
   /**
    * Validation rules

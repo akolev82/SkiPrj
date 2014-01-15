@@ -3,7 +3,6 @@
 /* Padding below the footer and lighter body text */
 
 body {
-  padding-bottom: 40px;
   color: #5a5a5a;
 }
 
@@ -76,6 +75,12 @@ body {
 }
 .marketing h2 {
   font-weight: normal;
+
+}
+.otherpage .marketing h2{
+    border-bottom: 1px solid gray;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
 }
 .marketing .col-lg-4 p {
   margin-left: 10px;

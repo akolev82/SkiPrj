@@ -50,13 +50,15 @@ class AppController extends Controller {
               'fields' => array('username' => 'name', 'password' => 'pass'),
           )
       )
-  ));
+    ),
+    'Paginator' => array('className' => 'JoinedPaginator'),
+  );
   public $cacheAction = "0";
-  
+
   public function __construct($request = null, $response = null) {
     parent::__construct($request, $response);
   }
-  
+
   protected function isAjax() {
     $lIsAjax = ($this->request->is('ajax')) ? true : false;
     if ($lIsAjax) {
@@ -64,64 +66,64 @@ class AppController extends Controller {
     }
     return $lIsAjax;
   }
-  
+
   protected function isLogin() {
     //$user = $this->getUser();
     //return (isset($user)) ? true : false;
     return $this->Auth->loggedIn();
   }
-  
+
   protected function getUser() {
     return $this->Auth->user();
   }
-  
+
   public function isAdminContext() {
     if (!isset($this->params['admin'])) return false;
     return ($this->params['admin'] === true) ? true : false;
   }
-  
+
   /* public function afterFind($results, $primary = false) {
-    return Router::getParam('prefix', true) == 'admin' ? $results : $this->locale(&$results);
+   return Router::getParam('prefix', true) == 'admin' ? $results : $this->locale(&$results);
   } */
-  
+
   public function beforeFilter() {
     //$this->clear_cache();
-    
+
     $this->Auth->allowedActions = array('display', 'index', 'view', 'find'); //do not require automatic login
-    
+
     $is_admin = $this->isAdminContext();
     $this->set('is_admin', $is_admin);
     if ($is_admin) {
       AuthComponent::$sessionKey = 'Auth.Admin';
       $is_logged_in = $this->Auth->loggedIn();
       $this->set('is_logged_in', $is_logged_in);
-      
-      
+
+
       //Controller::cacheAction = false;
       if (!$is_logged_in && $this->action != 'login' && $this->action != 'logout') {
         //tell Auth to call the isAuthorized function before allowing access
         $this->Auth->allowedActions = array(); //to require automatic login
         $this->Auth->authorize = 'Controller';
 
-        
+
         /*if ($this->Session->check('user') === false) {
-          $this->redirect(array('controller' => 'users', 'action' => 'login'));
-          $this->Session->setFlash('The URL you\'ve followed requires you login.');
+         $this->redirect(array('controller' => 'users', 'action' => 'login'));
+        $this->Session->setFlash('The URL you\'ve followed requires you login.');
         }*/
       }
       $this->layout = 'adminLayout';
     } else {
       //allow all non-logged in users access to items without a prefix
       if (!isset($this->params['prefix'])) $this->Auth->allow('*');
-      
+
       AuthComponent::$sessionKey = 'Auth.Common';
       $is_logged_in = $this->Auth->loggedIn();
       $this->set('is_logged_in', $is_logged_in);
     }
-    
+
     return true;
   }
-  
+
   function isAuthorized() {
     //if the prefix is setup, make sure the prefix matches their role
     //if( isset($this->params['prefix']))
@@ -132,37 +134,37 @@ class AppController extends Controller {
     //shouldn't get here, better be safe than sorry
     //return false;
   }
-  
+
   public function clear_cache() {
     Cache::clear();
     clearCache();
-  
+
     $files = array();
     $files = array_merge($files, glob(CACHE . '*')); // remove cached css
     $files = array_merge($files, glob(CACHE . 'css' . DS . '*')); // remove cached css
     $files = array_merge($files, glob(CACHE . 'js' . DS . '*'));  // remove cached js
     $files = array_merge($files, glob(CACHE . 'models' . DS . '*'));  // remove cached models
     $files = array_merge($files, glob(CACHE . 'persistent' . DS . '*'));  // remove cached persistent
-  
+
     foreach ($files as $f) {
       if (is_file($f)) {
         unlink($f);
       }
     }
-  
+
     if(function_exists('apc_clear_cache')):
     apc_clear_cache();
     apc_clear_cache('user');
     endif;
-  
+
     $this->set(compact('files'));
     //$this->layout = 'ajax';
   }
-  
+
   protected function internalFind($numargs, $arg_list) {
-    
+
   }
-  
+
   protected final function doFind($numargs, $arg_list) {
     if ($numargs > 0 && $numargs % 2 != 0) {
       echo 'Invalid number of parameters.';
@@ -172,13 +174,13 @@ class AppController extends Controller {
     $this->internalFind($numargs, $arg_list);
     $this->render('/Pages/find', 'ajax');
   }
-  
+
   public function find() {
     $this->doFind(func_num_args(), func_get_args());
   }
-  
+
   public function admin_find() {
     $this->doFind(func_num_args(), func_get_args());
   }
-  
+
 }

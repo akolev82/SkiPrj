@@ -9,7 +9,7 @@ class Staff extends AppModel {
   public $name = 'Staff';
   public $useTable = 'staffs';
   public $primaryKey = 'StaffID';
-  public $displayField = 'Person.FirstName + \' \' + Person.LastName';
+  public $displayField = '';
 
   /**
    * Validation rules

@@ -1,7 +1,7 @@
 <div class="leagues index">
 	<h2><?php echo __('Leagues'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+	<tr class="ski_tr">
 			<th><?php echo $this->Paginator->sort('LeagueID'); ?></th>
 			<th><?php echo $this->Paginator->sort('LeagueName'); ?></th>
 			<th><?php echo $this->Paginator->sort('PersonContactID'); ?></th>
@@ -10,7 +10,7 @@
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($leagues as $league): ?>
-	<tr>
+	<tr class="ski_tr_sub">
 		<td><?php echo h($league['League']['LeagueID']); ?>&nbsp;</td>
 		<td><?php echo h($league['League']['LeagueName']); ?>&nbsp;</td>
 		<td><?php echo h($league['League']['PersonContactID']); ?>&nbsp;</td>

@@ -69,6 +69,23 @@ class Person extends AppModel {
           ),
       ),
   );
+  
+  public $hasManyAndBelongsTo = array(
+    'Student' => array(
+        'className' => 'Student',
+        'joinTable' => 'students',
+        'foreignKey' => 'PersonID',
+        'associationForeignKey' => 'PersonID',
+        'unique' => true
+    ),
+    'Staff' => array(
+        'className' => 'Staff',
+        'joinTable' => 'staffs',
+        'foreignKey' => 'PersonID',
+        'associationForeignKey' => 'PersonID',
+        'unique' => true
+    )
+  );
 
   //The Associations below have been created with all possible keys, those that are not needed can be removed
   public $belongsTo = array(

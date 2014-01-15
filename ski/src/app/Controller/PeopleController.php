@@ -22,7 +22,7 @@ class PeopleController extends AppController {
   }
   
   protected function beforeView() {
-    $this->Person->recursion = 3;
+    $this->Person->recursion = 0;
     $this->Person->virtualFields = array(
         'BirthPlaceName' => 'City.CityName'
     );
@@ -66,6 +66,13 @@ class PeopleController extends AppController {
     }
     $options = array('conditions' => array('Person.' . $this->Person->primaryKey => $id));
     $this->set('person', $this->Person->find('first', $options));
+    
+    $this->loadModel('Student');
+    $this->loadModel('Staff');
+
+    $this->Student->recursive = 10;
+    $this->set('students', $this->Student->find('all', array('conditions' => array('Student.' . $this->Person->primaryKey => $id))));
+    $this->set('staffs', $this->Staff->find('list', array('conditions' => array('Staff.' . $this->Person->primaryKey => $id))));
   }
 
   public function admin_add() {
