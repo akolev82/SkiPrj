@@ -1,7 +1,7 @@
 <div class="users index">
 	<h2><?php echo __('Users'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+	<tr class="ski_tr">
 			<th><?php echo $this->Paginator->sort('UserID', 'Code'); ?></th>
 			<th><?php echo $this->Paginator->sort('name', 'Name'); ?></th>
 			<th><?php echo $this->Paginator->sort('super', 'Is super user'); ?></th>
@@ -9,7 +9,7 @@
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($users as $user): ?>
-	<tr>
+	<tr class="ski_tr_sub">
 		<td><?php echo h($user['User']['UserID']); ?>&nbsp;</td>
 		<td><?php echo h($user['User']['name']); ?>&nbsp;</td>
 		<td><?php echo $this->Ace->toYesStr($user['User']['super']); ?>&nbsp;</td>
@@ -37,8 +37,10 @@
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New User'), array('action' => 'add')); ?></li>
-	</ul>
+	<h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+			<li class="nav-button-add"><?php echo $this->Html->link(__('New User'), array('action' => 'add')); ?></li>
+   	    </ul>
+    </nav>
 </div>

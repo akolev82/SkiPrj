@@ -1,7 +1,7 @@
 <div class="users form">
 <?php echo $this->Form->create('User'); ?>
 	<fieldset>
-		<legend><?php echo __('Edit User'); ?></legend>
+		<h2><?php echo __('Edit User'); ?></h2>
 	<?php
 	    echo $this->Form->hidden('UserID');
 		echo $this->Form->input('name', array('type' => 'text', 'label' => 'Username'));
@@ -14,9 +14,11 @@
 </div>
 
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('User.UserID')), null, __('Are you sure you want to delete # %s?', $this->Form->value('User.UserID'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Users'), array('action' => 'index')); ?></li>
-	</ul>
+	<h2><?php echo __('Actions'); ?></2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+            <li class="nav-button-delete"><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('User.UserID')), null, __('Are you sure you want to delete # %s?', $this->Form->value('User.UserID'))); ?></li>
+            <li class="nav-button-list"><?php echo $this->Html->link(__('List Users'), array('action' => 'index')); ?></li>
+	    </ul>
+   </nav>
 </div>

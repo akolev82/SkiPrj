@@ -1,7 +1,7 @@
 <div class="domains index">
 	<h2><?php echo __('Domains'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+	<tr class="ski_tr">
 			<th><?php echo $this->Paginator->sort('DomainID'); ?></th>
 			<th><?php echo $this->Paginator->sort('DomainName', 'Domain'); ?></th>
 			<th><?php echo $this->Paginator->sort('DomainDesc', 'Description'); ?></th>
@@ -9,7 +9,7 @@
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($domains as $record):
-	echo '<tr>';
+	echo '<tr class="ski_tr_sub">';
 	  $domain =& $record['Domain'];
 	  $DomainID = $domain['DomainID']; ?>
 		<td><?php echo h($DomainID); ?>&nbsp;</td>
@@ -39,8 +39,9 @@
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Domain'), array('action' => 'add')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li class="nav-button-add"><?php echo $this->Html->link(__('New Domain'), array('action' => 'add')); ?></li>
+	</ul></nav>
 </div>

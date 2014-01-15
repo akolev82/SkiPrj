@@ -29,11 +29,12 @@
 	</dl>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('Edit Role Permission'), array('action' => 'edit', $rolePermission['RolePermission']['RolePermissionID'])); ?> </li>
-		<li><?php echo $this->Form->postLink(__('Delete Role Permission'), array('action' => 'delete', $rolePermission['RolePermission']['RolePermissionID']), null, __('Are you sure you want to delete # %s?', $rolePermission['RolePermission']['RolePermissionID'])); ?> </li>
-		<li><?php echo $this->Html->link(__('List Role Permissions'), array('action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Role Permission'), array('action' => 'add')); ?> </li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li  class="nav-button-edit"><?php echo $this->Html->link(__('Edit Role Permission'), array('action' => 'edit', $rolePermission['RolePermission']['RolePermissionID'])); ?> </li>
+		<li  class="nav-button-delete"><?php echo $this->Form->postLink(__('Delete Role Permission'), array('action' => 'delete', $rolePermission['RolePermission']['RolePermissionID']), null, __('Are you sure you want to delete # %s?', $rolePermission['RolePermission']['RolePermissionID'])); ?> </li>
+		<li  class="nav-button-list"><?php echo $this->Html->link(__('List Role Permissions'), array('action' => 'index')); ?> </li>
+		<li  class="nav-button-add"><?php echo $this->Html->link(__('New Role Permission'), array('action' => 'add')); ?> </li>
+	</ul></nav>
 </div>

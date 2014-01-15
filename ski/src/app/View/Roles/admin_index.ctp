@@ -1,14 +1,14 @@
 <div class="roles index">
 	<h2><?php echo __('Roles'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+	<tr class="ski_tr">
 			<th><?php echo $this->Paginator->sort('RoleID', 'ID'); ?></th>
 			<th><?php echo $this->Paginator->sort('RoleName', 'Name'); ?></th>
 			<th><?php echo $this->Paginator->sort('RoleDesc', 'Description'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($roles as $role): ?>
-	<tr>
+	<tr class="ski_tr_sub">
 		<td><?php echo h($role['Role']['RoleID']); ?>&nbsp;</td>
 		<td><?php echo h($role['Role']['RoleName']); ?>&nbsp;</td>
 		<td><?php echo h($role['Role']['RoleDesc']); ?>&nbsp;</td>
@@ -35,8 +35,9 @@
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New role'), array('action' => 'add')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li  class="nav-button-add"><?php echo $this->Html->link(__('New role'), array('action' => 'add')); ?></li>
+	</ul></nav>
 </div>

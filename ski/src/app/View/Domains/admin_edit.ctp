@@ -1,7 +1,7 @@
 <div class="domains form">
 <?php echo $this->Form->create('Domain'); ?>
 	<fieldset>
-		<legend><?php echo __('Edit Domain'); ?></legend>
+		<h2><?php echo __('Edit Domain'); ?></h2>
 	<?php
 		echo $this->Form->hidden('DomainID');
 		echo $this->Form->input('DomainName', array('label' => 'Domain'));

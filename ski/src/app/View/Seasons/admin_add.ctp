@@ -1,7 +1,7 @@
 <div class="seasons form">
 <?php echo $this->Form->create('Season'); ?>
 	<fieldset>
-		<legend><?php echo __('Add Season'); ?></legend>
+		<h2><?php echo __('Add Season'); ?></h2>
 	<?php
 		//echo $this->Form->input('SeasonID');
 		echo $this->Form->input('SeasonName');
@@ -14,9 +14,9 @@
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('List Seasons'), array('action' => 'index')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li class="nav-button-add"><?php echo $this->Html->link(__('List Seasons'), array('action' => 'index')); ?></li>
+	</ul></nav>
 </div>

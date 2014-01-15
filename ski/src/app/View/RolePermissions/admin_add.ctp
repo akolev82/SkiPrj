@@ -1,7 +1,7 @@
 <div class="rolePermissions form">
 <?php echo $this->Form->create('RolePermission'); ?>
 	<fieldset>
-		<legend><?php echo __('Add Role Permission'); ?></legend>
+		<h2><?php echo __('Add Role Permission'); ?></h2>
 	<?php
 		//echo $this->Form->input('RolePermissionID');
 	    echo $this->Form->input('RoleID', array('label' => 'Role', 'options' => $roles, 'empty' => 'Please choose role'));
@@ -13,8 +13,9 @@
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('List Permissions'), array('action' => 'index')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li  class="nav-button-list"><?php echo $this->Html->link(__('List Permissions'), array('action' => 'index')); ?></li>
+	</ul></nav>
 </div>

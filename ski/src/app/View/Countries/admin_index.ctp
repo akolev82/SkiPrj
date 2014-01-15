@@ -1,13 +1,13 @@
 <div class="countries index">
 	<h2><?php echo __('Countries'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+	<tr class="ski_tr">
 			<th><?php echo $this->Paginator->sort('CountryID'); ?></th>
 			<th><?php echo $this->Paginator->sort('CountryName'); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($countries as $country): ?>
-	<tr>
+	<tr class="ski_tr_sub">
 		<td><?php echo h($country['Country']['CountryID']); ?>&nbsp;</td>
 		<td><?php echo h($country['Country']['CountryName']); ?>&nbsp;</td>
 		<td class="actions">
@@ -33,8 +33,9 @@
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Country'), array('action' => 'add')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li class="nav-button-add"><?php echo $this->Html->link(__('New Country'), array('action' => 'add')); ?></li>
+	</ul></nav>
 </div>

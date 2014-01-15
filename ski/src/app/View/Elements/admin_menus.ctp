@@ -1,8 +1,9 @@
 <?php
 echo '<div id="cssmenu">';
   echo '<ul>';
-    echo '<li class="active">' . $this->Html->link(__('Home'), array('action' => 'display', 'controller' => 'pages', 'admin' => true)). '</li>';
-
+    echo '<li class="cssmenu active">';
+    echo $this->Html->link(__('Home'), array('action' => 'display', 'controller' => 'pages', 'admin' => true));
+    echo '</li>';
   echo '<li class="has-sub"><a href="#"><span>User management</span></a>';
     echo '<ul>';
       echo '<li>' . $this->Html->link(__('Users'), array('action' => 'index', 'controller' => 'users', 'admin' => true)) . '</li>';

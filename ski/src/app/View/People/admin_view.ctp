@@ -41,7 +41,6 @@
 			<?php echo h($person['Person']['BirthPlace']); ?>
 			&nbsp;
 		</dd>
-		<?php var_dump($students); ?>
 	</dl>
 </div>
 <div class="actions">
@@ -78,9 +77,11 @@
 		</dl>
 	<?php endif; ?>
 		<div class="actions">
-			<ul>
-				<li><?php echo $this->Html->link(__('Edit Users'), array('controller' => 'users', 'action' => 'edit', $person['Users']['id'])); ?></li>
-			</ul>
+            <h2><?php echo __('Actions'); ?></h2>
+            <nav id="main-menu">
+                <ul class="nav-bar">
+                    <li class="nav-button-edit"><?php echo $this->Html->link(__('Edit Users'), array('controller' => 'users', 'action' => 'edit', $person['Users']['id'])); ?></li>
+			</ul></nav>
 		</div>
 	</div>
 	

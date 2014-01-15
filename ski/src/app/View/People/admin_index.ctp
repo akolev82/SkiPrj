@@ -1,7 +1,7 @@
 <div class="people index">
 	<h2><?php echo __('People'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+	<tr class="ski_tr">
 			<th><?php echo $this->Paginator->sort('PersonID'); ?></th>
 			<th><?php echo $this->Paginator->sort('FirstName', 'First name'); ?></th>
 			<th><?php echo $this->Paginator->sort('LastName', 'Last name'); ?></th>
@@ -12,7 +12,7 @@
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($people as $person): var_dump($person); ?>
-	<tr>
+	<tr class="ski_tr_sub">
 		<td><?php echo h($person['Person']['PersonID']); ?>&nbsp;</td>
 		<td><?php echo h($person['Person']['UserID']); ?>&nbsp;</td>
 		<td><?php echo h($person['Person']['FirstName']); ?>&nbsp;</td>
@@ -44,10 +44,11 @@
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Person'), array('action' => 'add')); ?></li>
-		<li><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
-		<li><?php echo $this->Html->link(__('New Users'), array('controller' => 'users', 'action' => 'add')); ?> </li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li class="nav-button-add"><?php echo $this->Html->link(__('New Person'), array('action' => 'add')); ?></li>
+		<li class="nav-button-list"><?php echo $this->Html->link(__('List Users'), array('controller' => 'users', 'action' => 'index')); ?> </li>
+		<li class="nav-button-add"><?php echo $this->Html->link(__('New Users'), array('controller' => 'users', 'action' => 'add')); ?> </li>
+	</ul></nav>
 </div>

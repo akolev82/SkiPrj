@@ -1,7 +1,7 @@
 <div class="states form">
 <?php echo $this->Form->create('State'); ?>
 	<fieldset>
-		<legend><?php echo __('Add State'); ?></legend>
+		<h2><?php echo __('Add State'); ?></h2>
 	<?php
 		//echo $this->Form->input('StateID');
 		echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
@@ -12,9 +12,9 @@
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Html->link(__('List States'), array('action' => 'index')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li class="nav-button-list"><?php echo $this->Html->link(__('List States'), array('action' => 'index')); ?></li>
+	</ul></nav>
 </div>

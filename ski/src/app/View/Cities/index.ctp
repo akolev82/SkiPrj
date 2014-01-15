@@ -1,7 +1,7 @@
 <div class="cities index">
 	<h2><?php echo __('Cities'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+	<trclass="ski_tr">
 			<th><?php echo $this->Paginator->sort('CityID', __('ID')); ?></th>
 			<th><?php echo $this->Paginator->sort('CountryName', __('Country')); ?></th>
 			<th><?php echo $this->Paginator->sort('StateName', __('State')); ?></th>
@@ -9,7 +9,7 @@
 			<?php if ($is_admin) echo '<th class="actions">' . __('Actions') . '</th>'; ?>
 	</tr>
 	<?php foreach ($cities as $city): ?>
-	<tr>
+	<tr class="ski_tr_sub">
 		<td><?php echo h($city['City']['CityID']); ?>&nbsp;</td>
 		<td><?php echo h($city['City']['CountryName']); ?>&nbsp;</td>
 		<td><?php echo h($city['City']['StateName']); ?>&nbsp;</td>
@@ -40,9 +40,11 @@
 </div>
 <?php if ($is_admin) {
   echo '<div class="actions">';
-	echo '<h3>' . __('Actions') . '</h3>';
-	echo '<ul>';
-		echo '<li>' . $this->Html->link(__('New City'), array('action' => 'add')) . '</li>';
-	echo '</ul>';
+    echo '<h2>' . __('Actions') . '</h2>';
+    echo '<nav id="main-menu">';
+    echo '<ul class="nav-bar">';
+		echo '<li class="nav-button-add">' . $this->Html->link(__('New City'), array('action' => 'add')) . '</li>';
+    echo '</ul>';
+    echo '</nav>';
   echo '</div>';
 } ?>

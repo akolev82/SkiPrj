@@ -1,7 +1,7 @@
 <div class="rolePermissions index">
 	<h2><?php echo __('Role Permissions'); ?></h2>
-	<table cellpadding="0" cellspacing="0">
-	<tr>
+	<table cellpadding="0" cellspacing="0" class="ski_table">
+	<tr class="ski_tr">
 			<th><?php echo $this->Paginator->sort('RolePermissionID'); ?></th>
 			<th><?php echo $this->Paginator->sort('RoleName', 'Role'); ?></th>
 			<th><?php echo $this->Paginator->sort('PermissionName', 'Permission'); ?></th>
@@ -13,7 +13,7 @@
 	  $item =& $record['RolePermission'];
 	  $id = $item['RolePermissionID'];
 	?>
-	<tr>
+	<tr class="ski_tr_sub">
 		<td><?php echo h($id); ?>&nbsp;</td>
 		<td><?php echo h($item['RoleName']); ?>&nbsp;</td>
 		<td><?php echo h($item['PermissionName']); ?>&nbsp;</td>
@@ -42,8 +42,9 @@
 	</div>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('New Permission'), array('action' => 'add')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li  class="nav-button-add"><?php echo $this->Html->link(__('New Permission'), array('action' => 'add')); ?></li>
+	</ul></nav>
 </div>

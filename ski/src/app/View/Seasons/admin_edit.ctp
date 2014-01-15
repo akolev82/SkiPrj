@@ -1,7 +1,7 @@
 <div class="seasons form">
 <?php echo $this->Form->create('Season'); ?>
 	<fieldset>
-		<legend><?php echo __('Edit Season'); ?></legend>
+		<h2><?php echo __('Edit Season'); ?></h2>
 	<?php
 		echo $this->Form->hidden('SeasonID');
 		echo $this->Form->input('SeasonName');
@@ -14,10 +14,10 @@
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-
-		<li><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Season.SeasonID')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Season.SeasonID'))); ?></li>
-		<li><?php echo $this->Html->link(__('List Seasons'), array('action' => 'index')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></h2>
+    <nav id="main-menu">
+        <ul class="nav-bar">
+		<li class="nav-button-delete"><?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $this->Form->value('Season.SeasonID')), null, __('Are you sure you want to delete # %s?', $this->Form->value('Season.SeasonID'))); ?></li>
+		<li class="nav-button-list"><?php echo $this->Html->link(__('List Seasons'), array('action' => 'index')); ?></li>
+	</ul></nav>
 </div>

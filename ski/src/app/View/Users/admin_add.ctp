@@ -12,8 +12,9 @@
 <?php echo $this->Form->end(__('Submit')); ?>
 </div>
 <div class="actions">
-	<h3><?php echo __('Actions'); ?></h3>
-	<ul>
-		<li><?php echo $this->Html->link(__('List Users'), array('action' => 'index')); ?></li>
-	</ul>
+    <h2><?php echo __('Actions'); ?></2>
+    <nav id="main-menu">
+     <ul class="nav-bar">
+		<li class="nav-button-list"><?php echo $this->Html->link(__('List Users'), array('action' => 'index')); ?></li>
+	</ul></nav>
 </div>
