@@ -30,28 +30,32 @@ App::uses('Controller', 'Controller');
  * @package		app.Controller
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
 */
+
+App::uses('JoinedPaginatorComponent', 'Controller/Component');
+
 class AppController extends Controller {
 
-  public $components = array('Session', 'Auth' => array(
-      'loginAction' => array(
-          'controller' => 'users',
-          'action' => 'login',
-          'admin' => true
-      ),
-      'loginRedirect' => array(
-          'controller' => 'pages',
-          'admin' => true
-      ),
-      //'logoutRedirect' => '/',
-      'authError' => 'Did you really think you are allowed to see that?',
-      'authenticate' => array(
-          'Form' => array(
-              'userModel' => 'User',
-              'fields' => array('username' => 'name', 'password' => 'pass'),
+  public $components = array('Session',
+      'Paginator' => array('className' => 'JoinedPaginator'),
+      'Auth' => array(
+          'loginAction' => array(
+              'controller' => 'users',
+              'action' => 'login',
+              'admin' => true
+          ),
+          'loginRedirect' => array(
+              'controller' => 'pages',
+              'admin' => true
+          ),
+          //'logoutRedirect' => '/',
+          'authError' => 'Did you really think you are allowed to see that?',
+          'authenticate' => array(
+              'Form' => array(
+                  'userModel' => 'User',
+                  'fields' => array('username' => 'name', 'password' => 'pass'),
+              )
           )
       )
-    ),
-    'Paginator' => array('className' => 'JoinedPaginator'),
   );
   public $cacheAction = "0";
 
