@@ -1,0 +1,44 @@
+.combo-box {
+  display: 'block';
+  overflow: hidden;
+}
+
+.combo-list-box {
+  display: block;
+  background: #EDEDED;
+  border: 2px solid #444;
+  border-radius: 5px;
+  padding: 0;
+  margin: 0;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.75);
+  -moz-box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.75);
+  box-shadow: 3px 3px 5px 0px rgba(50, 50, 50, 0.75);
+}
+
+.combo-list-box ul {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+}
+
+.combo-list-box ul li {
+  border: none;
+  border-bottom: 1px dotted #444;
+  width: 100%;
+  cursor: pointer;
+}
+
+.combo-filter-text {
+  
+}
+
+.combo-btn-show {
+  
+}
+
+.combo-paging {
+  border: 1px solid #444;
+}

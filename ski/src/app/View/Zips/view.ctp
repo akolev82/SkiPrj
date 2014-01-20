@@ -11,7 +11,7 @@
 			<?php echo h($zip['Zip']['CountryName']); ?>
 			&nbsp;
 		</dd>
-		<dt><?php echo __('CityID'); ?></dt>
+		<dt><?php echo __('City'); ?></dt>
 		<dd>
 			<?php echo h($zip['Zip']['CityName']); ?>
 			&nbsp;

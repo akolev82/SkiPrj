@@ -64,6 +64,7 @@ header('Pragma: no-cache'); ?>
       echo $this->Html->css('menus');
       // echo $this->Html->css('final'); //IMPORTANT this css should be the last added css, in order to override css layouts
     }
+    echo $this->Html->css('combo.css');
     
    /* if (isset($css_list)) {
     	foreach($css_list as $item) {

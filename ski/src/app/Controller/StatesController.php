@@ -145,17 +145,16 @@ class StatesController extends AppController {
       }
       $criterias[] = array('what' => $what, 'value' => $value);
     }
-  
+    
     if ($is_find === true) {
+      $fields = array('State.StateID', 'State.StateName');
+      $order_by = array('State.StateName' => 'asc');
+      $empty = 'Please choose state.';
       $this->State->clear();
-      $selectbox = $this->State->find('list', array(
-          'conditions' => $conditions, 
-          'fields' => array('State.StateID', 'State.StateName'),
-          'order' => array('State.StateName'),
-          'recursive' => 0
-      ));
+      $options = compact('fields', 'order_by', 'conditions', 'criterias', 'empty');
+      $this->Ajax->paginateCombo($this->State, $options);
     }
-    $this->set(compact('selectbox', 'criterias', 'empty_caption'));
+    return true;
   }
   
 }

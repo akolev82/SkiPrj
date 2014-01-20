@@ -117,21 +117,21 @@ class CountriesController extends AppController {
         break;
       } else if ($what == 'beginswith') {
         $conditions['Country.CountryName like '] = $value . '%';
+      } else if ($what == 'all') {
+        break;
       }
       $criterias[] = array('what' => $what, 'value' => $value);
     }
   
     if ($is_find === true) {
+      $fields = array('Country.CountryID', 'Country.CountryName');
+      $order_by = array('Country.CountryName' => 'asc');
+      $empty = 'Please choose country.';
       $this->Country->clear();
-      $selectbox = $this->Country->find('list', array(
-          'conditions' => $conditions,
-          'fields' => array('Country.CountryID', 'Country.CountryName'),
-          'order' => array('Country.CountryName'),
-          'recursive' => 0
-      ));
+      $options = compact('fields', 'order_by', 'conditions', 'criterias', 'empty');
+      $this->Ajax->paginateCombo($this->Country, $options);
     }
-    $this->set(compact('selectbox', 'criterias', 'empty_caption'));
-    $this->layout = 'ajax';
+    return true;
   }
   
 }

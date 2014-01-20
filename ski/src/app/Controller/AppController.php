@@ -31,12 +31,14 @@ App::uses('Controller', 'Controller');
  * @link		http://book.cakephp.org/2.0/en/controllers.html#the-app-controller
 */
 
-App::uses('JoinedPaginatorComponent', 'Controller/Component');
+App::uses('Component', 'Controller');
+App::uses('AuthComponent', 'Controller/Component');
 
 class AppController extends Controller {
 
   public $components = array('Session',
       'Paginator' => array('className' => 'JoinedPaginator'),
+      'Ajax' => array('className' => 'Ajax'),
       'Auth' => array(
           'loginAction' => array(
               'controller' => 'users',
@@ -176,7 +178,8 @@ class AppController extends Controller {
       return;
     }
     $this->internalFind($numargs, $arg_list);
-    $this->render('/Pages/find', 'ajax');
+    //$this->render('/Pages/find', 'ajax');
+    $this->Ajax->toJson();
   }
 
   public function find() {

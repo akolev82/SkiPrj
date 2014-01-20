@@ -8,10 +8,10 @@
 		$CountryID = $this->Form->value('Zip.CountryID');
 	    $StateID = $this->Form->value('Zip.StateID');
 	    $CityID = $this->Form->value('Zip.CityID');
-		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', 'CityID', '');
-		echo $combo->addCountryCombo('CountryID', array('label' => 'Country', /*'options' => $countries, 'empty' => 'Please choose country',*/ 'CountryID' => $CountryID));
-		echo $combo->addStateCombo('StateID', array('label' => 'State', 'CountryID' => $CountryID, 'StateID' => $StateID));
-		echo $combo->addCityCombo('CityID', array('label' => 'City', 'CountryID' => $CountryID, 'StateID' => $StateID, 'CityID' => $CityID));
+		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', 'CityID', '', array('country' => $CountryID, 'state' => $StateID, 'city' => $CityID));
+		echo $combo->addCountryCombo('CountryID', array('label' => 'Country'));
+		echo $combo->addStateCombo('StateID', array('label' => 'State'));
+		echo $combo->addCityCombo('CityID', array('label' => 'City'));
 		
 		echo $this->Form->input('ZipCode', array('label' => 'Zip'));
 		echo $this->Form->input('latitude', array('label' => 'Latitude'));
@@ -19,7 +19,7 @@
 	?>
 	</fieldset>
 <?php echo $this->Form->end(__('Submit'));
-$combo->loadData($CountryID, $StateID, $CityID);
+//$combo->loadData($CountryID, $StateID, $CityID);
 $combo->printClientScript(); 
 ?>
 </div>

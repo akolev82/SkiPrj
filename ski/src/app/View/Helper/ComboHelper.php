@@ -1,30 +1,45 @@
 <?php
 class LocationComboMaker {
   protected $helper = null;
+  protected $model = null;
   protected $js_object = '';
   protected $Form = null;
   
   protected $mInitComboCode = '';
   protected $mExecComboCode = '';
 
-  public function __construct(&$helper, $js_object, $CountryID = '', $StateID = '', $CityID = '', $ZipID = '') { //do not instantiate directly
+  public function __construct(Helper &$helper, $js_object, $model = '', $CountryID = '', $StateID = '', $CityID = '', $ZipID = '', $values = array()) { //do not instantiate directly
     $this->helper = $helper;
     $this->Form = $this->helper->Form;
     $this->js_object = $js_object;
+    $this->model = ($model > '') ? $model : $this->Form->defaultModel;
     $CountryID = $this->toID($CountryID);
     $StateID = $this->toID($StateID);
     $CityID = $this->toID($CityID);
     $ZipID = $this->toID($ZipID);
-    $this->addInitComboCode($this->js_object . ' = new Ace.Locations("' . $CountryID . '","' . $StateID . '","' . $CityID . '","' . $ZipID . '");');
+    
+    $initialValues = '';
+    if (isset($values['country']) == true) $initialValues .= '"country": "' . $values['country'] . '"';
+    if ($initialValues > '') $initialValues .= ',';
+    if (isset($values['state']) == true) $initialValues .= '"state": "' . $values['state'] . '"';
+    if ($initialValues > '') $initialValues .= ',';
+    if (isset($values['city']) == true) $initialValues .= '"city": "' . $values['city'] . '"';
+    if ($initialValues > '') $initialValues .= ',';
+    if (isset($values['zip']) == true) $initialValues .= '"zip": "' . $values['zip'] . '"';
+    $initialValues = '{' . $initialValues . '}';
+    $this->addInitComboCode($this->js_object . ' = new Ace.Locations("' . $CountryID . '","' . $StateID . '","' . $CityID . '","' . $ZipID . '", ' . $initialValues . ');');
   }
   
   public function loadData($CountryValue = '', $StateValue = '', $CityValue = '', $ZipValue = '') {
-    $this->addInitComboCode($this->js_object . '.reloadAll("' . $CountryValue . '","' . $StateValue . '","' . $CityValue . '","' . $ZipValue . '");');
+    //$this->addInitComboCode($this->js_object . '.changeCountry("' . $CountryValue . '")');
+    //$this->addInitComboCode($this->js_object . '.changeState("' . $StateValue . '")');
+    //$this->addInitComboCode($this->js_object . '.changeCity("' . $CityValue . '")');
+    //$this->addInitComboCode($this->js_object . '.changeZip("' . $ZipValue . '")');
   }
   
   public function toID($name) {
     if ($name <= '') return '';
-    return '#' . $this->Form->defaultModel . $name; 
+    return '#' . $this->model . $name; 
   }
   
   protected function call($statement) {
@@ -57,24 +72,31 @@ class LocationComboMaker {
   }
   
   public function addCustomCombo($name, $script, $options) {
-    $this->helper->addCustomCombo($name, $options);
+    $str = $this->helper->addCustomCombo($name, $options);
     $this->addExecComboCode($script);
+    return $str;
+  }
+  
+  public function addAutoComplete($name, $script, $options) {
+    if (!isset($options)) $options = array();
+    $options['autocomplete'] = true;
+    return $this->addCustomCombo($name, $script, $options);
   }
 
   public function addCountryCombo($name, $options) {
-    $this->addCustomCombo($name, $this->call('changeCountry("' . $this->getValue($options, 'CountryID') .'")'), $options);
+    return $this->addAutoComplete($name, $this->call('changeCountry("' . $this->getValue($options, 'CountryID') .'")'), $options);
   }
 
   public function addStateCombo($name, $options) {
-    $this->addCustomCombo($name, $this->call('changeState("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '")'), $options);
+    return $this->addAutoComplete($name, $this->call('changeState("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '")'), $options);
   }
 
   public function addCityCombo($name, $options) {
-    $this->addCustomCombo($name, $this->call('changeCity("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '","' . $this->getValue($options, 'CityID') . '")'), $options);
+    return $this->addAutoComplete($name, $this->call('changeCity("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '","' . $this->getValue($options, 'CityID') . '")'), $options);
   }
 
   public function addZipCombo($name, $options) {
-    $this->addCustomCombo($name, $this->call('changeCity("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '","' . $this->getValue($options, 'CityID') . '","' . $this->getValue($options, 'ZipID') . '")'), $options);
+    return $this->addAutoComplete($name, $this->call('changeCity("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '","' . $this->getValue($options, 'CityID') . '","' . $this->getValue($options, 'ZipID') . '")'), $options);
   }
   
   public function printClientScript() {
@@ -94,12 +116,15 @@ class ComboHelper extends Helper {
   protected $booleanMap = array('0' => 'No', '1' => 'Yes');
   
   public function addCustomCombo($name, $options) {
-    $merged_options = array_merge(array('options' => array(), 'empty' => 'Please choose'), $options);
-    echo $this->Form->input($name, $merged_options);
+    $merged_options = array_merge(array('options' => array(), 'autocomplete' => 'on'), $options);
+    if (isset($merged_options['autocomplete']) && ($merged_options['autocomplete'] === true || strtolower($merged_options['autocomplete']) == 'on')) {
+      unset($merged_options['options']);
+    }
+    return $this->Form->input($name, $merged_options);
   }
   
-  public function getLocationCombos($js_object, $CountryID = '', $StateID = '', $CityID = '', $ZipID = '') {
-    return new LocationComboMaker($this, $js_object, $CountryID, $StateID, $CityID, $ZipID);
+  public function getLocationCombos($js_object, $CountryID = '', $StateID = '', $CityID = '', $ZipID = '', $values) {
+    return new LocationComboMaker($this, $js_object, $this->Form->defaultModel, $CountryID, $StateID, $CityID, $ZipID, $values);
   }
   
   public function getYesNoMap() {

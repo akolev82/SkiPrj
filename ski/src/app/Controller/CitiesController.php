@@ -135,20 +135,21 @@ class CitiesController extends AppController {
         $conditions['City.StateID = '] = $value;
       } else if ($what == 'beginswith') {
         $conditions['City.CityName like '] = $value . '%';
+      } else if ($what == 'all') {
+        break;
       }
       $criterias[] = array('what' => $what, 'value' => $value);
     }
     
     if ($is_find === true) {
+      $fields = array('City.CityID', 'City.CityName');
+      $order_by = array('City.CityName' => 'asc');
+      $empty = 'Please choose city.';
       $this->City->clear();
-      $selectbox = $this->City->find('list', array(
-          'conditions' => $conditions,
-          'fields' => array('City.CityID', 'City.CityName'),
-          'order' => array('City.CityName'),
-          'recursive' => 0
-      ));
+      $options = compact('fields', 'order_by', 'conditions', 'criterias', 'empty');
+      $this->Ajax->paginateCombo($this->City, $options);
     }
-    $this->set(compact('selectbox', 'criterias', 'empty_caption'));
+    return true;
   }
   
 }

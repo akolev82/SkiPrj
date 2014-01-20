@@ -31,7 +31,7 @@ class ZipsController extends AppController {
   public function index() {
     $this->Zip->recursive = 0;
     $this->setVirtualFields();
-    $this->set('zips', $this->Paginator->paginate());
+    $this->set('zips', $this->Paginator->paginate('Zip'));
   }
   
   public function admin_index() {
@@ -147,18 +147,16 @@ class ZipsController extends AppController {
       }
       $criterias[] = array('what' => $what, 'value' => $value);
     }
-  
+    
     if ($is_find === true) {
+      $fields = array('Zip.ZipID', 'Zip.ZipCode');
+      $order_by = array('Zip.ZipCode');
+      $empty = 'Please choose zip.';
       $this->Zip->clear();
-      $selectbox = $this->Zip->find('list', array(
-          'conditions' => $conditions,
-          'fields' => array('Zip.ZipID', 'Zip.ZipCode'),
-          'order' => array('Zip.ZipCode'),
-          'recursive' => 0
-      ));
+      $options = compact('fields', 'order_by', 'conditions', 'criterias', 'empty');
+      $this->Ajax->paginateCombo($this->Zip, $options);
     }
-    $this->set(compact('selectbox', 'criterias', 'empty_caption'));
-    $this->layout = 'ajax';
+    return true;
   }
   
 }
