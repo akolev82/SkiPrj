@@ -4,12 +4,16 @@
 		<h2><?php echo __('Add State'); ?></h2>
 	<?php
 		//echo $this->Form->input('StateID');
-		echo $this->Form->input('CountryID', array('label' => 'Country', 'options' => $countries, 'empty' => 'Please choose country'));
+		
+	    $combo = $this->Combo->getLocationCombos('mLocations', array('country' => 'CountryID'));
+		echo $combo->addCountryCombo('CountryID', array('label' => 'Country'));
 		echo $this->Form->input('StateCode', array('label' => 'Code'));
 		echo $this->Form->input('StateName', array('label' => 'Name'));
 	?>
 	</fieldset>
-<?php echo $this->Form->end(__('Submit')); ?>
+<?php echo $this->Form->end(__('Submit'));
+$combo->printClientScript(); 
+?>
 </div>
 <div class="actions">
     <h2><?php echo __('Actions'); ?></h2>

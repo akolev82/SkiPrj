@@ -5,7 +5,7 @@
 	<?php
 		//echo $this->Form->input('ZipID');
 		
-		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', 'CityID', '');
+		$combo = $this->Combo->getLocationCombos('mLocations', array('country' => 'CountryID', 'state' => 'StateID', 'city' => 'CityID'));
 		echo $combo->addCountryCombo('CountryID', array('label' => 'Country'));
 		echo $combo->addStateCombo('StateID', array('label' => 'State'));
 		echo $combo->addCityCombo('CityID', array('label' => 'City'));

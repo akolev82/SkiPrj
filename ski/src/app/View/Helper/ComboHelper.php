@@ -8,24 +8,30 @@ class LocationComboMaker {
   protected $mInitComboCode = '';
   protected $mExecComboCode = '';
 
-  public function __construct(Helper &$helper, $js_object, $model = '', $CountryID = '', $StateID = '', $CityID = '', $ZipID = '', $values = array()) { //do not instantiate directly
+  public function __construct(Helper &$helper, $js_object, $model = '', $fields = array(), $values = array()) { //do not instantiate directly
     $this->helper = $helper;
     $this->Form = $this->helper->Form;
     $this->js_object = $js_object;
     $this->model = ($model > '') ? $model : $this->Form->defaultModel;
-    $CountryID = $this->toID($CountryID);
-    $StateID = $this->toID($StateID);
-    $CityID = $this->toID($CityID);
-    $ZipID = $this->toID($ZipID);
+    $CountryID = $this->toID($fields, 'country');
+    $StateID = $this->toID($fields, 'state');
+    $CityID = $this->toID($fields, 'city');
+    $ZipID = $this->toID($fields, 'zip');
     
     $initialValues = '';
     if (isset($values['country']) == true) $initialValues .= '"country": "' . $values['country'] . '"';
-    if ($initialValues > '') $initialValues .= ',';
-    if (isset($values['state']) == true) $initialValues .= '"state": "' . $values['state'] . '"';
-    if ($initialValues > '') $initialValues .= ',';
-    if (isset($values['city']) == true) $initialValues .= '"city": "' . $values['city'] . '"';
-    if ($initialValues > '') $initialValues .= ',';
-    if (isset($values['zip']) == true) $initialValues .= '"zip": "' . $values['zip'] . '"';
+    if (isset($values['state']) == true) {
+      if ($initialValues > '') $initialValues .= ',';
+      $initialValues .= '"state": "' . $values['state'] . '"';
+    }
+    if (isset($values['city']) == true) {
+      if ($initialValues > '') $initialValues .= ',';
+      $initialValues .= '"city": "' . $values['city'] . '"';
+    }
+    if (isset($values['zip']) == true) {
+      if ($initialValues > '') $initialValues .= ',';
+      $initialValues .= '"zip": "' . $values['zip'] . '"';
+    }
     $initialValues = '{' . $initialValues . '}';
     $this->addInitComboCode($this->js_object . ' = new Ace.Locations("' . $CountryID . '","' . $StateID . '","' . $CityID . '","' . $ZipID . '", ' . $initialValues . ');');
   }
@@ -37,7 +43,9 @@ class LocationComboMaker {
     //$this->addInitComboCode($this->js_object . '.changeZip("' . $ZipValue . '")');
   }
   
-  public function toID($name) {
+  public function toID(array &$fields, $name) {
+    if (!isset($fields[$name])) return '';
+    $name = $fields[$name];
     if ($name <= '') return '';
     return '#' . $this->model . $name; 
   }
@@ -123,8 +131,8 @@ class ComboHelper extends Helper {
     return $this->Form->input($name, $merged_options);
   }
   
-  public function getLocationCombos($js_object, $CountryID = '', $StateID = '', $CityID = '', $ZipID = '', $values) {
-    return new LocationComboMaker($this, $js_object, $this->Form->defaultModel, $CountryID, $StateID, $CityID, $ZipID, $values);
+  public function getLocationCombos($js_object, $fields = array(), $values = array()) {
+    return new LocationComboMaker($this, $js_object, $this->Form->defaultModel, $fields, $values);
   }
   
   public function getYesNoMap() {

@@ -11,7 +11,8 @@
 		
 		echo '<fieldset><legend>Birth place</legend>';
     		//echo $this->Form->input('BirthPlace', array('options' => $cities, 'empty' => 'Please choose city'));
-    		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', 'BirthPlace', '');
+    	
+    		$combo = $this->Combo->getLocationCombos('mLocations', array('country' => 'CountryID', 'state' => 'StateID', 'city' => 'BirthPlace'));
     		echo $combo->addCountryCombo('CountryID', array('label' => 'Country'));
     		echo $combo->addStateCombo('StateID', array('label' => 'State'));
     		echo $combo->addCityCombo('BirthPlace', array('label' => 'City'));
