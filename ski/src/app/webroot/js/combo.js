@@ -158,6 +158,8 @@
         this._filter = aOptions.value;
       } else if (lType == 'current') {
         aOptions.value = this._filter
+      } else if (lType == 'oneitem') {
+        this._filter = '';
       }
       
       var lSourceOptions = lThat.element.triggerHandler('source', [ aOptions ]);
@@ -347,6 +349,49 @@
         }
         return true; //continue;
       });
+      if (!lFound) {
+        var lElementName = lThat.element.prop('name'); 
+        var lSourceOptions = lThat.element.triggerHandler('source', [ {
+          'type': 'oneitem',
+          'one_item_value': aChangeValue
+        } ]);
+        $.ajax({
+          type : "get",
+          dataType : 'json',
+          url : lSourceOptions.source.url,
+          success : function(aDataJSON) {
+            if (aDataJSON.messages) {
+              var lMessagesStr = '';
+              for (var index = 0; index < aDataJSON.messages.length; index++) {
+                lMessagesStr += aDataJSON.messages[index] + "\n";
+              }
+              if (lMessagesStr > '') {
+                alert(lMessagesStr);
+              }
+            }
+            if (aDataJSON.data && aDataJSON.data[lSourceOptions.model]) {
+              var lRoot = aDataJSON.data[lSourceOptions.model];
+              var lRecords = lRoot.records;
+              for (var index = 0; index < lRecords.length; index++) {
+                var lRecord = lRecords[index];
+                var lValuesID = '';
+                var lCaptions = '';
+                for (var lMember in lRecord.id) {
+                  if (lValuesID > '')
+                    lValuesID += ',';
+                  lValuesID += lRecord.id[lMember];
+                }
+                for ( var lMember in lRecord.display) {
+                  if (lCaptions > '')
+                    lCaptions += ',';
+                  lCaptions += lRecord.display[lMember];
+                }
+                lThat._selectIndexAndValue(-1, lValuesID, lCaptions);
+              }
+            }
+          }
+        });
+      }
       return this;
     }
   });
@@ -370,9 +415,18 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
   if (aInitialValues.city) mInitialValues.city = aInitialValues.city;
   if (aInitialValues.zip) mInitialValues.zip = aInitialValues.zip;
   
-  var mBuildAjaxUrl = function(aRootUrl, aValues, aPage, aLimit, aEmptyOnEmptyFilter) {
+  var mBuildAjaxUrl = function(aRootUrl, aType, aValues, aPage, aLimit, aEmptyOnEmptyFilter, aOptions) {
+    if (aType == 'oneitem') {
+      return {
+        'url': aRootUrl + aOptions.one_item_value,
+        'postData': null
+      }
+    }
     var lUrl = '', lCurVal;
     var lIsAll = false;
+    aType = aType.toLowerCase();
+    aValues = aValues || {};
+    var lReturnSingleRecord = false;
     if (typeof (aValues) == 'string') {
       if (aValues.toLowerCase() != 'all') {
         lUrl = aWhatToFind + '/' + lCurVal;
@@ -384,26 +438,27 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
       var lPassed = false;
       $.each(aValues, function(aKey, aValue) {
         aKey = aKey.toLowerCase();
-        if (aKey == 'page') return;
-        if (aKey == 'limit') return;
+        if (aKey == 'page') return true;
+        if (aKey == 'limit') return true;
+        if (aKey == 'record') return true;
         if (aKey == 'beginswith' && aValue <= '') {
-          if (!aEmptyOnEmptyFilter) return;
+          if (!aEmptyOnEmptyFilter) return false;
         }
-        if (aValue <= '') return;
+        if (aValue <= '') return true;
         if (lUrl != '') lUrl = lUrl + '/';
         lUrl = lUrl + aKey + '/' + aValue;
         lPassed = true;
       });
       if (!lPassed && !aEmptyOnEmptyFilter) {
         lUrl = 'all/*';
-        lIsAll = true;
+        lIsAll = !lReturnSingleRecord;
       }
     }
     if (!lIsAll && lUrl <= '') {
-      lUrl = (aAllOnEmptyFilter == true) ? 'all/*' : 'empty/0';
+      lUrl = (aEmptyOnEmptyFilter === true) ? 'empty/0' : 'all/*';
     }
     var lFullPath = aRootUrl + lUrl + '/page:' + aPage + '/limit:' + aLimit;
-    
+   
     return {
       'url': lFullPath,
       'postData': null
@@ -440,10 +495,12 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
     var lValue = (aOptions.value) ? aOptions.value : '';
     var lPage = (aOptions.page) ? aOptions.page : 1;
     var lLimit = (aOptions.limit) ? aOptions.limit : 20;
+    var lType = (aOptions.type) ? aOptions.type.toLowerCase() : '';
+    var lAction = (lType == 'oneitem') ? 'oneitem' : 'find';
     aFilter = aFilter || {};
     aFilter.beginswith = lValue;
     return {
-      'source': mBuildAjaxUrl(AcePath + aController +'/find/', aFilter, lPage, lLimit, aEmptyOnEmptyFilter),
+      'source': mBuildAjaxUrl(AcePath + aController +'/' + lAction + '/', lType, aFilter, lPage, lLimit, aEmptyOnEmptyFilter, aOptions),
       'model': aModel
     }
   }
@@ -466,7 +523,6 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
       if (mInitialValues.country > '') {
         mProtectedChange(mInitialValues.country, mCountryObject);
         mInitialValues.country = '';
-        return;
       }
       if (mStateObject != null) mStateObject.hiddenLoad();
       if (mStateObject == null && mCityObject != null) mCityObject.hiddenLoad();
@@ -488,7 +544,6 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
       if (mInitialValues.state > '') {
         mProtectedChange(mInitialValues.state, mStateObject);
         mInitialValues.state = '';
-        return;
       }
       if (mCityObject != null) mCityObject.hiddenLoad();
       if (mCityObject == null && mZipObject != null) mZipObject.hiddenLoad();
@@ -512,7 +567,6 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
       if (mInitialValues.city > '') {
         mProtectedChange(mInitialValues.city, mCityObject);
         mInitialValues.city = '';
-        return;
       }
       if (mZipObject != null) mZipObject.hiddenLoad();
     };
@@ -540,7 +594,6 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
       if (mInitialValues.city > '') {
         mProtectedChange(mInitialValues.city, mCityObject);
         mInitialValues.city = '';
-        return;
       }
     });
   }

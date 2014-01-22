@@ -95,7 +95,7 @@ class AppController extends Controller {
   public function beforeFilter() {
     //$this->clear_cache();
 
-    $this->Auth->allowedActions = array('display', 'index', 'view', 'find'); //do not require automatic login
+    $this->Auth->allowedActions = array('display', 'index', 'view', 'find', 'oneitem'); //do not require automatic login
 
     $is_admin = $this->isAdminContext();
     $this->set('is_admin', $is_admin);
@@ -166,9 +166,37 @@ class AppController extends Controller {
     $this->set(compact('files'));
     //$this->layout = 'ajax';
   }
+  
+  protected function setVirtualFields() {
+    
+  }
+  
+  
+  
+  protected function doOneItem($numargs, $arg_list) {
+    $value = '';
+    $modelClass = $this->modelClass;
+    $model = $this->$modelClass;
+    if ($numargs > 0) {
+      $value = $arg_list[0];
+    }
+    $this->setVirtualFields();
+    
+    $options = array('conditions' => array($model->alias . '.' . $model->primaryKey => $value));
+    $this->Ajax->getOneItem($model, $options);
+    $this->Ajax->toJson();
+  }
+  
+  public function oneitem() {
+    $this->doOneItem(func_num_args(), func_get_args());
+  }
+  
+  public function admin_oneitem() {
+    $this->doOneItem(func_num_args(), func_get_args());
+  }
 
   protected function internalFind($numargs, $arg_list) {
-
+    //this is inherited by child classes
   }
 
   protected final function doFind($numargs, $arg_list) {

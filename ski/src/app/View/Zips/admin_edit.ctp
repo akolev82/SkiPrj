@@ -9,6 +9,7 @@
 	    $StateID = $this->Form->value('Zip.StateID');
 	    $CityID = $this->Form->value('Zip.CityID');
 		$combo = $this->Combo->getLocationCombos('mLocations', 'CountryID', 'StateID', 'CityID', '', array('country' => $CountryID, 'state' => $StateID, 'city' => $CityID));
+		
 		echo $combo->addCountryCombo('CountryID', array('label' => 'Country'));
 		echo $combo->addStateCombo('StateID', array('label' => 'State'));
 		echo $combo->addCityCombo('CityID', array('label' => 'City'));

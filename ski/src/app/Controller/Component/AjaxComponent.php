@@ -65,7 +65,22 @@ class AjaxComponent extends Component {
     if (isset($options['empty'])) $empty = $options['empty'];
     
     $data = array('type' => $type, 'empty' => $empty);
-    if ($type == 'combo') {
+    if ($type == 'oneitem') {
+      $lPrimaryKey = $options['primaryKey'];
+      $lDisplayFields = $options['displayFields'];
+      $combo = array();
+      foreach($records as $record) {
+        $combo_item = array();
+        foreach($lPrimaryKey as $field_name => $field_alias) {
+          $combo_item['id'][$field_alias] = $this->getValue($record, $field_alias);
+        }
+        foreach($lDisplayFields as $field_name => $field_alias) {
+          $combo_item['display'][$field_alias] = $this->getValue($record, $field_alias);
+        }
+        array_push($combo, $combo_item);
+      }
+      $data['records'] = $combo;
+    } else if ($type == 'combo') {
       $lPrimaryKey = $options['primaryKey'];
       $lDisplayFields = $options['displayFields'];
       $combo = array();
@@ -83,9 +98,10 @@ class AjaxComponent extends Component {
     } else {
       $data['records'] = $records;
     }
-    $paging['url'] = $this->link();
-    $data['paging'] = $paging;
-    
+    if (!empty($paging)) {
+      $paging['url'] = $this->link();
+      $data['paging'] = $paging;
+    }
     $this->addData(strtolower($field), $data);
   }
 
@@ -102,21 +118,34 @@ class AjaxComponent extends Component {
 
     $whitelist = array();
     if (isset($options['whitelist'])) $whitelist = $options['whitelist'];
+    
+    $type = '';
+    if (isset($options['type'])) {
+      $type = $options['type'];
+    };
+    if ($type <= '') $type = 'grid';
 
-    $data = $this->Paginator->paginate($model, $conditions, $whitelist);
-    /*$paging = array(
-     'page' => $page,
-        'current' => count($results),
-        'count' => $count,
-        'prevPage' => ($page > 1),
-        'nextPage' => ($count > ($page * $limit)),
-        'pageCount' => $pageCount,
-        'order' => $order,
-        'limit' => $limit,
-        'options' => Hash::diff($options, $defaults),
-        'paramType' => $options['paramType']
-    );*/
-    $paging = $this->controller->request['paging'][$name];
+    $paging = null;
+    if ($type == 'oneitem') {
+      $one_item_options = $options;
+      $one_item_options['fields'] = am($options['primaryKey'], $options['displayFields']);
+      $data = $model->find('first', $one_item_options);
+    } else {
+      $data = $this->Paginator->paginate($model, $conditions, $whitelist);
+      /*$paging = array(
+       'page' => $page,
+          'current' => count($results),
+          'count' => $count,
+          'prevPage' => ($page > 1),
+          'nextPage' => ($count > ($page * $limit)),
+          'pageCount' => $pageCount,
+          'order' => $order,
+          'limit' => $limit,
+          'options' => Hash::diff($options, $defaults),
+          'paramType' => $options['paramType']
+      );*/
+      $paging = $this->controller->request['paging'][$name];
+    }
     $this->addPaginatedRecord($name, $data, $paging, $options);
     return true;
   }
@@ -124,6 +153,16 @@ class AjaxComponent extends Component {
   public function paginateCombo(Model $model = null, $options = array()) {
     $combo_options = array(
         'type' => 'combo',
+        'primaryKey' => array($model->name . '.' . $model->primaryKey => $model->primaryKey), 
+        'displayFields' => array($model->name . '.' . $model->displayField => $model->displayField)
+    );
+    $options = am($options, $combo_options);
+    return $this->paginate($model, $options);
+  }
+  
+  public function getOneItem(Model $model, $options = array()) {
+    $combo_options = array(
+        'type' => 'oneitem',
         'primaryKey' => array($model->name . '.' . $model->primaryKey => $model->primaryKey), 
         'displayFields' => array($model->name . '.' . $model->displayField => $model->displayField)
     );
