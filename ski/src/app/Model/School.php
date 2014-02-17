@@ -1,76 +1,140 @@
 <?php
-App::uses('AppModel', 'Model');
-/**
- * School Model
- *
-*/
-class School extends AppModel {
-  
-  public $name = 'School';
-  public $useTable='schools';
-  public $primaryKey = 'SchoolID';
-  public $displayField = 'SchoolName';
-  
+App::uses ( 'AppModel', 'Model' );
 
-  /**
-   * Validation rules
-   *
-   * @var array
-   */
-  public $validate = array(
-      'SchoolID' => array(
-          'numeric' => array(
-              'rule' => array('numeric'),
-              //'message' => 'Your custom message here',
-              //'allowEmpty' => false,
-              'required' => true,
-              //'last' => false, // Stop validation after this rule
-              'on' => 'update', // Limit validation to 'create' or 'update' operations
-          ),
-      ),
-      'SchoolName' => array(
-          'notEmpty' => array(
-              'rule' => array('notEmpty'),
-              //'message' => 'Your custom message here',
-              //'allowEmpty' => false,
-              //'required' => false,
-              //'last' => false, // Stop validation after this rule
-              //'on' => 'create', // Limit validation to 'create' or 'update' operations
-          ),
-      ),
-      'Active' => array(
-          'numeric' => array(
-              'rule' => array('numeric'),
-              //'message' => 'Your custom message here',
-          //'allowEmpty' => false,
-          //'required' => false,
-          //'last' => false, // Stop validation after this rule
-          //'on' => 'create', // Limit validation to 'create' or 'update' operations
-          ),
-      ),
-  );
-  
-  //The Associations below have been created with all possible keys, those that are not needed can be removed
-  
-  /**
-   * belongsTo associations
-   *
-   * @var array
-   */
-  public $belongsTo = array(
-      'Address' => array(
-          'className' => 'Address',
-          'foreignKey' => 'PrimaryAddressID',
-          'conditions' => '',
-          'fields' => 'AddressID',
-          'order' => ''
-      ),
-      'Person' => array(
-          'className' => 'Person',
-          'foreignKey' => 'PrincipalID',
-          'conditions' => '',
-          'fields' => 'PersonID',
-          'order' => ''
-      )
-  );
+class School extends AppModel {
+	public $name = 'School';
+	public $primaryKey = 'SchoolID';
+	public $displayField = 'SchoolName';
+	
+	public $virtualFields = array(
+		'PrincipalFullName' => 'TRIM(SQUEEZE(CONCAT(Principal.FirstName, " ", Principal.MiddleName, " ", Principal.LastName)))',
+	);
+	
+	public function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct($id, $table, $ds);
+		$curName = 'Principal';
+		$this->Principal->virtualFields['FullName'] = 'TRIM(SQUEEZE(CONCAT(' . $curName . '.FirstName, " ", ' . $curName . '.MiddleName, " ", ' . $curName . '.LastName)))';
+	}
+	
+	public $validate = array (
+			'SchoolID' => array (
+					'naturalNumber' => array (
+							'rule' => array (
+									'naturalNumber' 
+							),
+							'message' => 'Required school ID.',
+							'required' => true,
+							'on' => 'update' 
+					) 
+			),
+			'SchoolName' => array (
+					'notEmpty' => array (
+							'rule' => array (
+									'notEmpty' 
+							),
+							'message' => 'Required school name.' 
+					) 
+			),
+			'Active' => array (
+					'naturalNumber' => array (
+							'rule' => array (
+									'naturalNumber' 
+							),
+							'message' => 'Required active value',
+							'allowEmpty' => true,
+							'required' => false 
+					) 
+			),
+			'PrincipalID' => array (
+					'naturalNumber' => array (
+							'rule' => array (
+									'naturalNumber' 
+							),
+							'on' => 'create' 
+					) 
+			),
+			'ZipID' => array (
+					'naturalNumber' => array (
+							'rule' => array (
+									'naturalNumber' 
+							),
+							'message' => 'Invalid Zip.',
+							'required' => false,
+							'allowEmpty' => true,
+							'on' => 'update' 
+					) 
+			),
+			'CityID' => array (
+					'naturalNumber' => array (
+							'rule' => array (
+									'naturalNumber' 
+							),
+							'message' => 'Invalid Zip.',
+							'required' => false,
+							'allowEmpty' => true,
+							'on' => 'update' 
+					) 
+			),
+			'StateID' => array (
+					'naturalNumber' => array (
+							'rule' => array (
+									'naturalNumber' 
+							),
+							'message' => 'Invalid Zip.',
+							'required' => false,
+							'allowEmpty' => true,
+							'on' => 'update' 
+					) 
+			),
+			'CountryID' => array (
+					'naturalNumber' => array (
+							'rule' => array (
+									'naturalNumber' 
+							),
+							'message' => 'Invalid Zip.',
+							'required' => false,
+							'allowEmpty' => true,
+							'on' => 'update' 
+					) 
+			) 
+	);
+	
+	// The Associations below have been created with all possible keys, those that are not needed can be removed
+	public $belongsTo = array (
+			'City' => array (
+					'className' => 'City',
+					'foreignKey' => 'CityID',
+					'conditions' => '',
+					'fields' => 'CityID',
+					'order' => '' 
+			),
+			'State' => array (
+					'className' => 'State',
+					'foreignKey' => 'StateID',
+					'conditions' => '',
+					'fields' => 'StateID',
+					'order' => '' 
+			),
+			'Country' => array (
+					'className' => 'Country',
+					'foreignKey' => 'CountryID',
+					'conditions' => '',
+					'fields' => 'CountryID',
+					'order' => '' 
+			),
+			'Zip' => array (
+					'className' => 'Zip',
+					'foreignKey' => 'ZipID',
+					'conditions' => '',
+					'fields' => 'ZipID',
+					'order' => '' 
+			),
+			'Principal' => array (
+					'className' => 'Coach',
+					'foreignKey' => 'PrincipalID',
+					'conditions' => '',
+					'fields' => 'CoachID',
+					'order' => '' 
+			) 
+	);
 }

@@ -105,7 +105,7 @@ class CountriesController extends AppController {
     return $this->redirect(array('action' => 'index'));
   }
   
-  protected function internalFind($numargs, $arg_list) {
+  protected function internalFind($numargs, $arg_list, $options) {
     $this->set('is_debug', false);
     $conditions = array('Country.CountryName !=' => null, 'Country.CountryName !=' => '');
     $criterias = array(); $selectbox = array(); $empty_caption = 'Please select country'; $is_find = true;
@@ -128,7 +128,7 @@ class CountriesController extends AppController {
       $order_by = array('Country.CountryName' => 'asc');
       $empty = 'Please choose country.';
       $this->Country->clear();
-      $options = compact('fields', 'order_by', 'conditions', 'criterias', 'empty');
+      $options = am(compact('fields', 'order_by', 'conditions', 'criterias', 'empty'), $options);
       $this->Ajax->paginateCombo($this->Country, $options);
     }
     return true;

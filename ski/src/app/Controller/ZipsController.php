@@ -126,7 +126,7 @@ class ZipsController extends AppController {
     return $this->redirect(array('action' => 'index'));
   }
   
-  protected function internalFind($numargs, $arg_list) {
+  protected function internalFind($numargs, $arg_list, $options) {
     $this->set('is_debug', false);
     $conditions = array('Zip.ZipCode !=' => null, 'Zip.ZipCode !=' => '');
     $criterias = array(); $selectbox = array(); $empty_caption = 'Please select zip'; $is_find = true;
@@ -153,7 +153,7 @@ class ZipsController extends AppController {
       $order_by = array('Zip.ZipCode');
       $empty = 'Please choose zip.';
       $this->Zip->clear();
-      $options = compact('fields', 'order_by', 'conditions', 'criterias', 'empty');
+      $options = am(compact('fields', 'order_by', 'conditions', 'criterias', 'empty'), $options);
       $this->Ajax->paginateCombo($this->Zip, $options);
     }
     return true;

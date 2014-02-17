@@ -5,8 +5,15 @@
 	<?php
 		echo $this->Form->hidden('StateID');
 		
-		$combo = $this->Combo->getLocationCombos('mLocations', array('country' => 'CountryID'), array('country' => $this->Form->value('State.CountryID')));
+		$options = array(
+		    'country' => array(
+		        'name' => 'CountryID',
+		        'value' => $this->Form->value('State.CountryID')
+		    )
+		);
+		$combo = $this->Combo->getLocationCombos('mLocations', $options);
 		echo $combo->addCountryCombo('CountryID', array('label' => 'Country'));
+		
 		echo $this->Form->input('StateCode', array('label' => 'Code'));
 		echo $this->Form->input('StateName', array('label' => 'Name'));
 	?>

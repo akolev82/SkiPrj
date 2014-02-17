@@ -118,7 +118,7 @@ class CitiesController extends AppController {
     return $this->redirect(array('action' => 'index'));
   }
   
-  protected function internalFind($numargs, $arg_list) {
+  protected function internalFind($numargs, $arg_list, $options) {
     $this->layout = 'ajax';
     $this->set('is_debug', false);
     $conditions = array('City.CityName !=' => null, 'City.CityName !=' => '');
@@ -146,7 +146,8 @@ class CitiesController extends AppController {
       $order_by = array('City.CityName' => 'asc');
       $empty = 'Please choose city.';
       $this->City->clear();
-      $options = compact('fields', 'order_by', 'conditions', 'criterias', 'empty');
+      $options = am(compact('fields', 'order_by', 'conditions', 'criterias', 'empty'), $options);
+      
       $this->Ajax->paginateCombo($this->City, $options);
     }
     return true;

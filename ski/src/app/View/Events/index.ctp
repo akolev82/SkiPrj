@@ -2,26 +2,44 @@
 	<h2><?php echo __('Events'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('EventID'); ?></th>
-			<th><?php echo $this->Paginator->sort('SeasonID'); ?></th>
-			<th><?php echo $this->Paginator->sort('EventName'); ?></th>
-			<th><?php echo $this->Paginator->sort('DateBegin'); ?></th>
-			<th><?php echo $this->Paginator->sort('DateEnd'); ?></th>
-			<th><?php echo $this->Paginator->sort('AddressID'); ?></th>
+			<th><?php echo $this->Paginator->sort('EventID', __('ID')); ?></th>
+			<th><?php echo $this->Paginator->sort('SeasonName', __('Season')); ?></th>
+			<th><?php echo $this->Paginator->sort('EventName', __('Event')); ?></th>
+			<th><?php echo $this->Paginator->sort('DateBegin', __('Begin event')); ?></th>
+			<th><?php echo $this->Paginator->sort('DateEnd', __('End event')); ?></th>
+			<th><?php echo $this->Paginator->sort('StreetAddress', __('Street address')); ?></th>
+			<th><?php echo $this->Paginator->sort('ZipID', __('ZipCode')); ?></th>
+			<th><?php echo $this->Paginator->sort('CityID', __('City')); ?></th>
+			<th><?php echo $this->Paginator->sort('StateID', __('State')); ?></th>
+			<th><?php echo $this->Paginator->sort('CountryID', __('Country')); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($events as $event): ?>
 	<tr>
 		<td><?php echo h($event['Event']['EventID']); ?>&nbsp;</td>
-		<td><?php echo h($event['Event']['SeasonID']); ?>&nbsp;</td>
+		<td><?php echo h($event['Event']['SeasonName']); ?>&nbsp;</td>
 		<td><?php echo h($event['Event']['EventName']); ?>&nbsp;</td>
 		<td><?php echo h($event['Event']['DateBegin']); ?>&nbsp;</td>
 		<td><?php echo h($event['Event']['DateEnd']); ?>&nbsp;</td>
-		<td><?php echo h($event['Event']['AddressID']); ?>&nbsp;</td>
+		<td><?php echo h($event['Event']['StreetAddress']); ?>&nbsp;</td>
+		<td>
+			<?php echo $this->Html->link($event['Zip']['ZipCode'], array('controller' => 'zips', 'action' => 'view', $event['Zip']['ZipID'])); ?>
+		</td>
+		<td>
+			<?php echo $this->Html->link($event['City']['CityName'], array('controller' => 'cities', 'action' => 'view', $event['City']['CityID'])); ?>
+		</td>
+		<td>
+			<?php echo $this->Html->link($event['State']['StateName'], array('controller' => 'states', 'action' => 'view', $event['State']['StateID'])); ?>
+		</td>
+		<td>
+			<?php echo $this->Html->link($event['Country']['CountryName'], array('controller' => 'countries', 'action' => 'view', $event['Country']['CountryID'])); ?>
+		</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $event['Event']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $event['Event']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $event['Event']['id']), null, __('Are you sure you want to delete # %s?', $event['Event']['id'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $event['Event']['EventID']));
+			if ($is_admin) {
+				echo $this->Html->link(__('Edit'), array('action' => 'edit', $event['Event']['EventID']));
+				echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $event['Event']['EventID']), null, __('Are you sure you want to delete # %s?', $event['Event']['EventID']));
+			} ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -43,6 +61,8 @@
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Event'), array('action' => 'add')); ?></li>
+		<?php if ($is_admin) { ?>
+			<li><?php echo $this->Html->link(__('New Event'), array('action' => 'add')); ?></li>
+		<?php } ?>
 	</ul>
 </div>

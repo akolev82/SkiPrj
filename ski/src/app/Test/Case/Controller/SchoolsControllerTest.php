@@ -13,7 +13,12 @@ class SchoolsControllerTest extends ControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
-		'app.school'
+		'app.school',
+		'app.city',
+		'app.state',
+		'app.country',
+		'app.zip',
+		'app.coach'
 	);
 
 /**
@@ -54,6 +59,46 @@ class SchoolsControllerTest extends ControllerTestCase {
  * @return void
  */
 	public function testDelete() {
+	}
+
+/**
+ * testAdminIndex method
+ *
+ * @return void
+ */
+	public function testAdminIndex() {
+	}
+
+/**
+ * testAdminView method
+ *
+ * @return void
+ */
+	public function testAdminView() {
+	}
+
+/**
+ * testAdminAdd method
+ *
+ * @return void
+ */
+	public function testAdminAdd() {
+	}
+
+/**
+ * testAdminEdit method
+ *
+ * @return void
+ */
+	public function testAdminEdit() {
+	}
+
+/**
+ * testAdminDelete method
+ *
+ * @return void
+ */
+	public function testAdminDelete() {
 	}
 
 }

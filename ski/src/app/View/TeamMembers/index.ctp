@@ -2,20 +2,22 @@
 	<h2><?php echo __('Team Members'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('TeamMemberID'); ?></th>
-			<th><?php echo $this->Paginator->sort('TeamID'); ?></th>
-			<th><?php echo $this->Paginator->sort('StudentID'); ?></th>
+			<th><?php echo $this->Paginator->sort('TeamMemberID', __('ID')); ?></th>
+			<th><?php echo $this->Paginator->sort('TeamID', __('Team')); ?></th>
+			<th><?php echo $this->Paginator->sort('StudentID', __('Member')); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($teamMembers as $teamMember): ?>
 	<tr>
 		<td><?php echo h($teamMember['TeamMember']['TeamMemberID']); ?>&nbsp;</td>
-		<td><?php echo h($teamMember['TeamMember']['TeamID']); ?>&nbsp;</td>
-		<td><?php echo h($teamMember['TeamMember']['StudentID']); ?>&nbsp;</td>
+		<td><?php echo h($teamMember['TeamMember']['TeamName']); ?>&nbsp;</td>
+		<td><?php echo h($teamMember['TeamMember']['StudentFullName']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $teamMember['TeamMember']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $teamMember['TeamMember']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $teamMember['TeamMember']['id']), null, __('Are you sure you want to delete # %s?', $teamMember['TeamMember']['id'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $teamMember['TeamMember']['TeamMemberID']));
+			if ($is_admin) {
+				echo $this->Html->link(__('Edit'), array('action' => 'edit', $teamMember['TeamMember']['TeamMemberID']));
+				echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $teamMember['TeamMember']['TeamMemberID']), null, __('Are you sure you want to delete # %s?', $teamMember['TeamMember']['TeamMemberID'])); 
+			} ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -37,6 +39,8 @@
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Team Member'), array('action' => 'add')); ?></li>
+		<?php if ($is_admin) { ?>
+			<li><?php echo $this->Html->link(__('New Team Member'), array('action' => 'add')); ?></li>
+		<?php } ?>
 	</ul>
 </div>

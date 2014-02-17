@@ -216,21 +216,25 @@ Configure::write('Routing.prefixes', array('admin'));
  *
  */
 	Configure::write('Session', array(
-		'defaults' => 'php'
+		'defaults' => 'cake',
+		/*'ini' => array(
+			'session.save_path' => '/prj/tmp/cookies',
+			'session.cookie_path' => '/prj/tmp/sessions'		
+		)*/		 
 	));
 
 /**
  * A random string used in security hashing methods.
  */
  	//Configure::write('Security.salt', 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi');
-	  Configure::write('Security.salt', 'zVKVgmsA0UV1ojkS3vOUf6IszAg6At3GAFQjsl7M');
+	Configure::write('Security.salt', 'zVKVgmsA0UV1ojkS3vOUf6IszAg6At3GAFQjsl7M');
 
 /**
  * A random numeric string (digits only) used to encrypt/decrypt strings.
  */
 	//Configure::write('Security.cipherSeed', '76859309657453542496749683645');
 	//Configure::write('Security.cipherSeed', '90680332737776340083787838936423');
-	Configure::write('Security.cipherSeed', '3186876375075823348391935385913929421324127492227369427634202432');
+	//Configure::write('Security.cipherSeed', '3186876375075823348391935385913929421324127492227369427634202432');
 	  
 
 /**

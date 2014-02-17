@@ -8,44 +8,43 @@ App::uses('AppController', 'Controller');
  */
 class EventsController extends AppController {
 
-/**
- * Components
- *
- * @var array
- */
-	public $components = array('Paginator');
-
-/**
- * index method
- *
- * @return void
- */
-	public function index() {
-		$this->Event->recursive = 0;
-		$this->set('events', $this->Paginator->paginate());
+	protected function setVirtualFields() {
+		$this->Event->virtualFields = array(
+			'SeasonName' => 'Season.SeasonName'
+		);		
 	}
 
-/**
- * view method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
+	public function index() {
+		$this->Event->recursive = 0;
+		$this->setVirtualFields();
+		$this->set('events', $this->Paginator->paginate());
+	}
+	
 	public function view($id = null) {
 		if (!$this->Event->exists($id)) {
 			throw new NotFoundException(__('Invalid event'));
 		}
+		$this->setVirtualFields();
 		$options = array('conditions' => array('Event.' . $this->Event->primaryKey => $id));
 		$this->set('event', $this->Event->find('first', $options));
 	}
+	
+	public function admin_index() {
+		$this->index();
+		$this->render('index');
+	}
+	
+	public function admin_view($id = null) {
+		$this->view($id);
+		$this->render('view');
+	}
+	
+	protected function setVariables() {
+		$seasons = $this->Event->Season->find('list');
+		$this->set(compact('seasons'));
+	}
 
-/**
- * add method
- *
- * @return void
- */
-	public function add() {
+	public function admin_add() {
 		if ($this->request->is('post')) {
 			$this->Event->create();
 			if ($this->Event->save($this->request->data)) {
@@ -55,16 +54,10 @@ class EventsController extends AppController {
 				$this->Session->setFlash(__('The event could not be saved. Please, try again.'));
 			}
 		}
+		$this->setVariables();
 	}
 
-/**
- * edit method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function edit($id = null) {
+	public function admin_edit($id = null) {
 		if (!$this->Event->exists($id)) {
 			throw new NotFoundException(__('Invalid event'));
 		}
@@ -79,30 +72,21 @@ class EventsController extends AppController {
 			$options = array('conditions' => array('Event.' . $this->Event->primaryKey => $id));
 			$this->request->data = $this->Event->find('first', $options);
 		}
+		$this->setVariables();
 	}
 
-/**
- * delete method
- *
- * @throws NotFoundException
- * @param string $id
- * @return void
- */
-	public function delete($id = null) {
-		$this->Event->id = $id;
-		if (!$this->Event->exists()) {
+	public function admin_delete($id = null) {
+		$this->Event->clear();
+		if (!$this->Event->exists($id)) {
 			throw new NotFoundException(__('Invalid event'));
 		}
 		$this->request->onlyAllow('post', 'delete');
-		if ($this->Event->delete()) {
+		if ($this->Event->delete($id)) {
 			$this->Session->setFlash(__('The event has been deleted.'));
 		} else {
 			$this->Session->setFlash(__('The event could not be deleted. Please, try again.'));
 		}
 		return $this->redirect(array('action' => 'index'));
 	}
-    public function admin_index() {
 
-    }
-
-}
+} ?>

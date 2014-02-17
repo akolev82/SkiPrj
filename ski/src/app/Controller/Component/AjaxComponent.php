@@ -1,12 +1,12 @@
 <?php App::uses('Component', 'Controller');
 
 App::uses('PaginatorComponent', 'Controller/Component');
+App::uses('ConnectionManager', 'Model');
 
 class AjaxComponent extends Component {
 
   // the other component your component uses
   public $components = array('Paginator');
-
   public $controller = null;
 
   protected $container = array(); //this is final data
@@ -24,15 +24,18 @@ class AjaxComponent extends Component {
     $this->messages =& $this->container['messages'];
     $this->container['data'] = array();
     $this->data =& $this->container['data'];
+    if (Configure::read('debug') >= 2) {
+      $this->container['sqlLogs'] = $this->showSqlLogs();
+    }
   }
 
   public function toJson() {
-    $this->controller->autoRender = $this->controller->layout = false;
+    $this->setJsonType();
     echo json_encode($this->container);
   }
 
   public function addMessage($message, $type = 'info') {
-    array_push($this->message, array('message' => $message, 'type' => $type));
+    array_push($this->messages, array('message' => $message, 'type' => $type));
   }
 
   public function addData($field, $data) {
@@ -45,8 +48,12 @@ class AjaxComponent extends Component {
 
   protected function getValue(array &$array, $fieldname) {
     $fields = explode('.', $fieldname);
+    $lFldStr = '';
     $ref = null; $lInitalRef = $array;
     foreach($fields as $field) {
+      if ($lFldStr > '') $lFldStr .= '.';
+      $lFldStr .= $field;
+      if (!isset($lInitalRef[$field])) throw new NotFoundException(__('Not found ' . $lFldStr . ' field.'));
       $ref = $lInitalRef[$field];
       $lInitalRef = $ref;
     }
@@ -64,6 +71,7 @@ class AjaxComponent extends Component {
     $empty = '';
     if (isset($options['empty'])) $empty = $options['empty'];
     
+    $lDepends = isset($options['depends']) ? $options['depends'] : null;
     $data = array('type' => $type, 'empty' => $empty);
     if ($type == 'oneitem') {
       $lPrimaryKey = $options['primaryKey'];
@@ -76,6 +84,12 @@ class AjaxComponent extends Component {
         }
         foreach($lDisplayFields as $field_name => $field_alias) {
           $combo_item['display'][$field_alias] = $this->getValue($record, $field_alias);
+        }
+        if (is_array($lDepends)) {
+          foreach($lDepends as $key => $item) {
+            $alias = $item['alias'];
+            $combo_item['depends'][$key] = $this->getValue($record, $alias);
+          }  
         }
         array_push($combo, $combo_item);
       }
@@ -91,6 +105,12 @@ class AjaxComponent extends Component {
         }
         foreach($lDisplayFields as $field_name => $field_alias) {
           $combo_item['display'][$field_alias] = $this->getValue($record, $field_name);
+        }
+        if (is_array($lDepends)) {
+          foreach($lDepends as $key => $item) {
+            $alias = $item['alias'];
+            $combo_item['depends'][$key] = $this->getValue($record, $item['field']);
+          }
         }
         array_push($combo, $combo_item);
       }
@@ -129,6 +149,12 @@ class AjaxComponent extends Component {
     if ($type == 'oneitem') {
       $one_item_options = $options;
       $one_item_options['fields'] = am($options['primaryKey'], $options['displayFields']);
+      if (isset($options['depends'])) { //to include in displaying fields
+        $depends =& $options['depends'];
+        foreach($depends as $key => $item) {
+          $one_item_options['fields'][$item['field']] = $item['alias'];
+        }
+      }
       $data = $model->find('first', $one_item_options);
     } else {
       $data = $this->Paginator->paginate($model, $conditions, $whitelist);
@@ -196,6 +222,24 @@ class AjaxComponent extends Component {
     unset($build['page']);
     unset($build['limit']);
     return $this->url($build, false);
+  }
+  
+  public function setJsonType() {
+    $this->controller->autoRender = $this->controller->layout = false;
+  }
+  
+  public function showSqlLogs() {
+    //if (!class_exists('ConnectionManager') || Configure::read('debug') < 2) {
+    //  return false;
+    //}
+    $sources = ConnectionManager::sourceList();
+    $sqlLogs = array();
+    foreach($sources as $source) {
+      $db = ConnectionManager::getDataSource($source);
+      if (!method_exists($db, 'getLog')) continue;
+      $sqlLogs[$source] = $db->getLog();
+    }
+    return $sqlLogs;
   }
 
 }

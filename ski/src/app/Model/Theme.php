@@ -1,16 +1,13 @@
 <?php
 App::uses('AppModel', 'Model');
-/**
- * Theme Model
- *
- */
+
 class Theme extends AppModel {
 
-/**
- * Validation rules
- *
- * @var array
- */
+	public $name = 'Theme';
+  public $useTable='themes';
+  public $primaryKey = 'ThemeID';
+  public $displayField = 'ThemeName';
+  
 	public $validate = array(
 		'ThemeID' => array(
 			'numeric' => array(
@@ -43,4 +40,5 @@ class Theme extends AppModel {
 			),
 		),
 	);
+	
 }

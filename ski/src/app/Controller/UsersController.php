@@ -78,12 +78,14 @@ class UsersController extends AppController {
   public function admin_login() {
     $this->layout = 'loginLayout';
    
-    /*$this->User->clear();
+    $this->User->clear();
+    $this->User->create();
     $data = array();
+    $data['User']['UserID'] = 1;
     $data['User']['name'] = 'admin';
     $data['User']['pass'] = 'admin';
     $data['User']['super'] = '1';
-    $this->User->save($data);*/
+    $this->User->save($data);
 
     if ($this->request->is('post')) {
       if ($this->Auth->login()) {

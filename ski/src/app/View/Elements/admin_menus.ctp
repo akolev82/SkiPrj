@@ -17,16 +17,18 @@ echo '<div id="cssmenu">';
         
   echo '<li class="has-sub"><a href="#"><span>Peoples</span></a>';
     echo '<ul>';
-      echo '<li>' . $this->Html->link(__('People'), array('action' => 'index', 'controller' => 'people', 'admin' => true)) . '</li>';
+      //echo '<li>' . $this->Html->link(__('People'), array('action' => 'index', 'controller' => 'people', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Students'), array('action' => 'index', 'controller' => 'students', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Coaches'), array('action' => 'index', 'controller' => 'coaches', 'admin' => true)) . '</li>';
-      echo '<li>' . $this->Html->link(__('Contact types'), array('action' => 'index', 'controller' => 'ContactTypes', 'admin' => true)) . '</li>';
+      //echo '<li>' . $this->Html->link(__('Contact types'), array('action' => 'index', 'controller' => 'ContactTypes', 'admin' => true)) . '</li>';
     echo '</ul>';
   echo '</li>';
 
   echo '<li class="has-sub"><a href="#"><span>Teams</span></a>';
     echo '<ul>';
+    	echo '<li>' . $this->Html->link(__('Team types'), array('action' => 'index', 'controller' => 'TeamTypes', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Teams'), array('action' => 'index', 'controller' => 'teams', 'admin' => true)) . '</li>';
+      echo '<li>' . $this->Html->link(__('Team members'), array('action' => 'index', 'controller' => 'TeamMembers', 'admin' => true)) . '</li>';
       echo '<li>' . $this->Html->link(__('Schools'), array('action' => 'index', 'controller' => 'schools', 'admin' => true)) . '</li>';
     echo '</ul>';
   echo '</li>';

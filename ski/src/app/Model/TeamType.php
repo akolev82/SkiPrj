@@ -1,9 +1,6 @@
 <?php
 App::uses('AppModel', 'Model');
-/**
- * TeamType Model
- *
-*/
+
 class TeamType extends AppModel {
 
   public $name = 'TeamType';
@@ -11,11 +8,6 @@ class TeamType extends AppModel {
   public $primaryKey = 'TeamTypeID';
   public $displayField = 'TeamTypeName';
 
-  /**
-   * Validation rules
-   *
-   * @var array
-   */
   public $validate = array(
       'TeamTypeID' => array(
           'numeric' => array(
@@ -35,7 +27,7 @@ class TeamType extends AppModel {
               //'required' => false,
               //'last' => false, // Stop validation after this rule
               //'on' => 'create', // Limit validation to 'create' or 'update' operations
-          ),
+          )
       ),
   );
 }

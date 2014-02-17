@@ -8,13 +8,18 @@
         'classFilterText' : 'combo-filter-text',
         'classBtnShow' : 'combo-btn-show',
         'pagingBox': 'combo-paging'
+      },
+      'depends': {
+        
       }
     },
     _currentIndex: -1,
-    _lockFilterCounter: 0, //used to prevent change of filter text box to reload
+    _lockFilterCounter: 0, // used to prevent change of filter text box to
+                            // reload
     _isToResize: 0,
     _filter: '',
     _records: [],
+    _firstDependentAlways: true,
     _create : function() {
       var lThat = this;
       this.element.hide();
@@ -52,7 +57,7 @@
         'bottom' : 0,
         'display' : 'block',
         'z-index' : 60000
-      }).hide().insertAfter(this._boxObj); //appendTo(this._boxObj);
+      }).hide().insertAfter(this._boxObj); // appendTo(this._boxObj);
 
       this._filterBoxObj = $('<input/>').addClass(this.options.css.classFilterText).attr({
         'id' : this._filterBoxID,
@@ -130,7 +135,7 @@
       }
       return this;
     },
-    _selectIndexAndValue: function(aIndex, aValue, aCaption) {
+    _selectIndexAndValue: function(aIndex, aValue, aCaption, aDepends) {
       this._currentIndex = aIndex;
       this.lockFilter(); 
       try {
@@ -141,6 +146,10 @@
       this._filterBoxObj.val(aCaption);
       if (!this.isLockedFilter()) {
         this.element.triggerHandler('changed', [ aValue ]);
+        if (aDepends) {
+          this.element.triggerHandler('depended', [ aDepends, this._firstDependentAlways ]);
+          this._firstDependentAlways = false;
+        }
       }
     },
     loadData: function(aOptions) {
@@ -172,24 +181,28 @@
 
       } else {
         var lIndexItem = 0;
-        var mAddItem = function(aTable, aCaption, aValue) {
+        var mAddItem = function(aTable, aCaption, aValue, aDepends) {
           lThat._records.push({
             'index': lIndexItem,
             'selected': false,
             'value': aValue,
-            'caption': aCaption
+            'caption': aCaption,
+            'depends': aDepends
           });
           var lObj = $('<li>').data('value', aValue).text(aCaption).click(function() {
-            lThat._selectIndexAndValue(lIndexItem, aValue, aCaption);
+            lThat._selectIndexAndValue(lIndexItem, aValue, aCaption, aDepends);
             lThat.hideList();
           }).appendTo(aTable);
           lIndexItem++;
           return lObj;
         };
         $.ajax({
-          type : "get",
+          type : "post",
           dataType : 'json',
           url : lSourceOptions.source.url,
+          data : {
+            'depends': this.options.depends
+          },
           success : function(aDataJSON) {
             lThat._clearList();
             lThat._tableContent = $('<ul/>');
@@ -197,7 +210,8 @@
             if (aDataJSON.messages) {
               var lMessagesStr = '';
               for (var index = 0; index < aDataJSON.messages.length; index++) {
-                lMessagesStr += aDataJSON.messages[index] + "\n";
+                var lMessageItem = aDataJSON.messages[index];
+                lMessagesStr += lMessageItem.message + "\n";
               }
               if (lMessagesStr > '') {
                 alert(lMessagesStr);
@@ -206,7 +220,7 @@
             if (aDataJSON.data && aDataJSON.data[lSourceOptions.model]) {
               var lRoot = aDataJSON.data[lSourceOptions.model];
               if (typeof (lRoot.empty) == 'string' && lRoot.empty > '') {
-                mAddItem(lThat._tableContent, '', lRoot.empty);
+                mAddItem(lThat._tableContent, '', lRoot.empty, null);
               }
               var lRecords = lRoot.records;
               var lPaging = lRoot.paging;
@@ -224,16 +238,15 @@
                     lCaptions += ',';
                   lCaptions += lRecord.display[lMember];
                 }
-                mAddItem(lThat._tableContent, lCaptions, lValuesID);
+                mAddItem(lThat._tableContent, lCaptions, lValuesID, (lRecord.depends) ? lRecord.depends : null);
               }
               
-              /*'current' => count($results),
-              'count' => $count,
-              'prevPage' => ($page > 1),
-              'nextPage' => ($count > ($page * $limit)),
-              'pageCount' => $pageCount,
-              'order' => $order,
-              'limit' => $limit,*/
+              /*
+               * 'current' => count($results), 'count' => $count, 'prevPage' =>
+               * ($page > 1), 'nextPage' => ($count > ($page * $limit)),
+               * 'pageCount' => $pageCount, 'order' => $order, 'limit' =>
+               * $limit,
+               */
               
               $('<p/>').text('Page ' + lPaging.page + ' of ' + lPaging.pageCount + '.').appendTo(lThat._tablePaging);
               $('<p/>').text('There ' + lPaging.limit + ' items per page.').appendTo(lThat._tablePaging);
@@ -277,12 +290,12 @@
             } else {
               lThat._isToResize = true;
             }
-            //activating list
+            // activating list
             lThat.element.triggerHandler('loaded');
           }
         });
         return true;
-      }
+      }City
       return this;
     },
     resizeList: function() {
@@ -302,7 +315,7 @@
         'type': 'filter',
         'value': aText
       });
-      //lThat.element.triggerHandler('filter', [ this.value, true ]);
+      // lThat.element.triggerHandler('filter', [ this.value, true ]);
       return this;
     },
     load: function(aOptions) {
@@ -330,6 +343,10 @@
       this.element.on('changed', aCallback);
       return this;
     },
+    depended: function(aCallback) {
+      this.element.on('depended', aCallback);
+      return this;
+    },
     getSelectedIndex: function() {
       return this._currentIndex;
     },
@@ -343,21 +360,24 @@
       var lThat = this, lFound = false;
       $.each(this._records, function(aIndex, aCompValue) {
         if (aCompValue.value == aChangeValue) {
-          lThat._selectIndexAndValue(aCompValue.index, aCompValue.value, aCompValue.caption);
+          lThat._selectIndexAndValue(aCompValue.index, aCompValue.value, aCompValue.caption, aCompValue.depends);
           lFound = true;
-          return false; //break;
+          return false; // break;
         }
-        return true; //continue;
+        return true; // continue;
       });
-      if (!lFound) {
+      if (!lFound || this.options.depends) {
         var lElementName = lThat.element.prop('name'); 
         var lSourceOptions = lThat.element.triggerHandler('source', [ {
           'type': 'oneitem',
-          'one_item_value': aChangeValue
+          'one_item_value': aChangeValue,
         } ]);
         $.ajax({
-          type : "get",
+          type : "post",
           dataType : 'json',
+          data : {
+            'depends': this.options.depends
+          },
           url : lSourceOptions.source.url,
           success : function(aDataJSON) {
             if (aDataJSON.messages) {
@@ -381,12 +401,12 @@
                     lValuesID += ',';
                   lValuesID += lRecord.id[lMember];
                 }
-                for ( var lMember in lRecord.display) {
+                for (var lMember in lRecord.display) {
                   if (lCaptions > '')
                     lCaptions += ',';
                   lCaptions += lRecord.display[lMember];
                 }
-                lThat._selectIndexAndValue(-1, lValuesID, lCaptions);
+                lThat._selectIndexAndValue(-1, lValuesID, lCaptions, lRecord.depends);
               }
             }
           }
@@ -397,23 +417,130 @@
   });
 }(jQuery));
 
-Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitialValues) {
+Ace.Ajax = {}
+
+Ace.Ajax.Url = function(aRootUrl, aParameters) {
+  var mRootUrl = aRootUrl;
+  var mAllowedParams = aParameters || {};
+  
+  var mConcatNamedUrl = function(aContent, aNew) {
+    var lLen = aContent.length;
+    if (lLen > 0) {
+      if (aContent.charAt(lLen-1) == '/') aContent = aContent + '/';
+    }
+    aContent = aContent + aNew;
+  }
+  
+  return {
+    toControllerUrl: function(aController, aAction) {
+      var lUrl = mRootUrl;
+      if (aController > '') {
+        lUrl = mConcatNamedUrl(lUrl, aController); 
+      }
+      if (aController > '') {
+        lUrl = mConcatNamedUrl(lUrl, aController); 
+      }
+      return lUrl;
+    },
+    toFilterUrl: function(aOptions) {
+      var lType = (aOptions['type']) ? aOptions['type'] : 'grid';
+      var lController = (aOptions['controller']) ? aOptions['controller'] : '';
+      var lAction = (aOptions['action']) ? aOptions['action'] : '';
+      lType = lType.toLowerCase();      
+      var lControllerUrl = this.toControllerUrl(lController, lAction);
+      
+      if (lType == 'oneitem') {
+        return {
+          'url': mConcatNamedUrl(lControllerUrl, aOptions.one_item_value),
+          'postData': null
+        }
+      }
+      var lUrl = '', lCurVal;
+      var lIsAll = false;
+      
+      var lValues = aOptions['values'] || null;
+      var lReturnSingleRecord = false;
+      var lEmptyOnEmptyFilter = aOptions['empty_on_empty_filter'] || false;
+  
+      var lPassed = false;
+      if (lValues) {
+        $.each(lValues, function(aKey, aValue) {
+          aKey = aKey.toLowerCase();
+          if (aKey == 'page') return true;
+          if (aKey == 'limit') return true;
+          if (aKey == 'record') return true;
+          if (aKey == 'beginswith' && aValue <= '') {
+            if (!lEmptyOnEmptyFilter) return false;
+          }
+          if (aValue <= '') return true;
+          if (lUrl != '') lUrl = lUrl + '/';
+          lUrl = lUrl + aKey + '/' + aValue;
+          lPassed = true;
+        });  
+      }
+      if (!lPassed && !lEmptyOnEmptyFilter) {
+        lUrl = 'all/*';
+        lIsAll = !lReturnSingleRecord;
+      }
+        
+      if (!lIsAll && lUrl <= '') {
+        lUrl = (lEmptyOnEmptyFilter === true) ? 'empty/0' : 'all/*';
+      }
+      var lFullPath = lControllerUrl;
+      lFullPath = mConcatNamedUrl(lFullPath, lUrl);
+      if (aOptions['page']) {
+        lFullPath = mConcatNamedUrl(lFullPath, 'page:' + aOptions['page']);
+      }
+      if (aOptions['limit']) {
+        lFullPath = mConcatNamedUrl(lFullPath, 'limit:' + aOptions['limit']);
+      }
+     
+      return {
+        'url': lFullPath,
+        'postData': null
+      };
+    }
+  }
+};
+
+Ace.Locations = function(aFields) {
+  var mFields = aFields;
+  
   var mNames = {
-    country : aCountryName,
-    state : aStateName,
-    city : aCityName,
-    zip : aZipName
+    'country': '',
+    'state': '',
+    'city': '',
+    'zip': '',
+    'school': '',
   };
   var mInitialValues = {
     'country': '',
     'state': '',
     'city': '',
-    'zip': ''
+    'zip': '',
+    'school': ''
   };
-  if (aInitialValues.country) mInitialValues.country = aInitialValues.country;
-  if (aInitialValues.state) mInitialValues.state = aInitialValues.state;
-  if (aInitialValues.city) mInitialValues.city = aInitialValues.city;
-  if (aInitialValues.zip) mInitialValues.zip = aInitialValues.zip;
+  
+  if (mFields.country) {
+    mNames.country = mFields.country.id;
+    mInitialValues.country = mFields.country.value;
+  }
+  if (mFields.state) {
+    mNames.state = mFields.state.id;
+    mInitialValues.state = mFields.state.value;
+  }
+  if (mFields.city) {
+    mNames.city = mFields.city.id;
+    mInitialValues.city = mFields.city.value;
+  }
+  if (mFields.zip) {
+    mNames.zip = mFields.zip.id;
+    mInitialValues.zip = mFields.zip.value;
+  }
+  if (mFields.school) {
+    mNames.school = mFields.school.id;
+    mInitialValues.school = mFields.school.value;
+  }
   
   var mBuildAjaxUrl = function(aRootUrl, aType, aValues, aPage, aLimit, aEmptyOnEmptyFilter, aOptions) {
     if (aType == 'oneitem') {
@@ -467,28 +594,38 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
 
   var lThat = this; // because of the scope of event handlers
 
-  var mCountryObject = null;
-  if (mNames.country > '') {
-    $(mNames.country).acecombobox();
-    mCountryObject = $(mNames.country).data('ui-acecombobox');
-  }
-
-  var mStateObject = null;
-  if (mNames.state > '') {
-    $(mNames.state).acecombobox();
-    mStateObject = $(mNames.state).data('ui-acecombobox');
-  }
-
-  var mCityObject = null;
-  if (mNames.city > '') {    
-    $(mNames.city).acecombobox();
-    mCityObject = $(mNames.city).data('ui-acecombobox');
+  var mObjectLoad = function(aName) {
+    if (mFields[aName]) {
+      var lRef = mFields[aName];
+      if (lRef.id > '') {
+        $(lRef.id).acecombobox({
+          'depends' : (lRef.depends) ? lRef.depends : ''
+        });
+        return $(lRef.id).data('ui-acecombobox');
+      }
+    }
+    return null;
   }
   
-  var mZipObject = null;
-  if (mNames.zip > '') {    
-    $(mNames.zip).acecombobox();
-    mZipObject = $(mNames.zip).data('ui-acecombobox');
+  var mDefDependent = function(aSender) {
+    aSender.depended(function(aEvent, aDepends, aIsFirstUpdate) {
+      $.each(aDepends, function(aKey, aValue) {
+        if (mObjects[aKey]) {
+          var lObj = mObjects[aKey];
+          if (aIsFirstUpdate || lObj.getSelectedValue() != aValue) {
+            lObj.val(aValue);
+          }
+        }
+      });
+    });
+  }
+  
+  var mObjects = {
+      'country': mObjectLoad('country'),
+      'state': mObjectLoad('state'),
+      'city': mObjectLoad('city'),
+      'zip': mObjectLoad('zip'),
+      'school': mObjectLoad('school')
   }
   
   var mSetSource = function(aEvent, aOptions, aController, aModel, aFilter, aEmptyOnEmptyFilter, aSpecificFunction) {
@@ -514,122 +651,252 @@ Ace.Locations = function(aCountryName, aStateName, aCityName, aZipName, aInitial
     }
   }
   
-  //initialization
-  if (mCountryObject != null) {
-    mCountryObject.source(function(aEvent, aOptions) {
+  // initialization
+  if (mObjects.country != null) {
+    mObjects.country.source(function(aEvent, aOptions) {
       return mSetSource(aEvent, aOptions, 'countries', 'country', {}, false, null);
     });
     var mChangedCountry = function() {
       if (mInitialValues.country > '') {
-        mProtectedChange(mInitialValues.country, mCountryObject);
+        mProtectedChange(mInitialValues.country, mObjects.country);
         mInitialValues.country = '';
       }
-      if (mStateObject != null) mStateObject.hiddenLoad();
-      if (mStateObject == null && mCityObject != null) mCityObject.hiddenLoad();
-      if (mStateObject == null && mCityObject == null && mZipObject != null) mZipObject.hiddenLoad();
+      if (mObjects.state != null) mObjects.state.hiddenLoad();
+      if (mObjects.state == null && mObjects.city != null) mObjects.city.hiddenLoad();
+      if (mObjects.state == null && mObjects.city == null && mObjects.zip != null) mObjects.zip.hiddenLoad();
     };
-    mCountryObject.loaded(mChangedCountry);
-    mCountryObject.changed(mChangedCountry);
+    mObjects.country.loaded(mChangedCountry);
+    mObjects.country.changed(mChangedCountry);
+    mDefDependent(mObjects.country);
   }
   
-  if (mStateObject != null) {
-    mStateObject.source(function(aEvent, aOptions) {
+  if (mObjects.state != null) {
+    mObjects.state.source(function(aEvent, aOptions) {
       var lFilter = {};
-      if (mCountryObject != null && mCountryObject.getSelectedValue() > '') {
-        lFilter.country = mCountryObject.getSelectedValue();
+      if (mObjects.country != null && mObjects.country.getSelectedValue() > '') {
+        lFilter.country = mObjects.country.getSelectedValue();
       }
       return mSetSource(aEvent, aOptions, 'states', 'state', lFilter, false, null);
     });
     var mChangedState = function() {
       if (mInitialValues.state > '') {
-        mProtectedChange(mInitialValues.state, mStateObject);
+        mProtectedChange(mInitialValues.state, mObjects.state);
         mInitialValues.state = '';
       }
-      if (mCityObject != null) mCityObject.hiddenLoad();
-      if (mCityObject == null && mZipObject != null) mZipObject.hiddenLoad();
+      if (mObjects.city != null) mObjects.city.hiddenLoad();
+      if (mObjects.city == null && mObjects.zip != null) mObjects.zip.hiddenLoad();
     };
-    mStateObject.loaded(mChangedState);
-    mStateObject.changed(mChangedState);
+    mObjects.state.loaded(mChangedState);
+    mObjects.state.changed(mChangedState);
+    mDefDependent(mObjects.state);
   }
   
-  if (mCityObject != null) {
-    mCityObject.source(function(aEvent, aOptions) {
+  if (mObjects.city != null) {
+    mObjects.city.source(function(aEvent, aOptions) {
       var lFilter = {};
-      if (mCountryObject != null && mCountryObject.getSelectedValue() > '') {
-        lFilter.country = mCountryObject.getSelectedValue();
+      if (mObjects.country != null && mObjects.country.getSelectedValue() > '') {
+        lFilter.country = mObjects.country.getSelectedValue();
       }
-      if (mStateObject != null && mStateObject.getSelectedValue() > '') {
-        lFilter.state = mStateObject.getSelectedValue();
+      if (mObjects.state != null && mObjects.state.getSelectedValue() > '') {
+        lFilter.state = mObjects.state.getSelectedValue();
       }
       return mSetSource(aEvent, aOptions, 'cities', 'city', lFilter, false, null);
     });
     var mChangedCity = function() {
       if (mInitialValues.city > '') {
-        mProtectedChange(mInitialValues.city, mCityObject);
+        mProtectedChange(mInitialValues.city, mObjects.city);
         mInitialValues.city = '';
       }
-      if (mZipObject != null) mZipObject.hiddenLoad();
+      if (mObjects.zip != null) mObjects.zip.hiddenLoad();
     };
-    mCityObject.loaded(mChangedCity);
-    mCityObject.changed(mChangedCity);
+    mObjects.city.loaded(mChangedCity);
+    mObjects.city.changed(mChangedCity);
+    mDefDependent(mObjects.city);
   }
   
-  if (mZipObject != null) {
-    mZipObject.source(function(aEvent, aOptions) {
+  if (mObjects.zip != null) {
+    mObjects.zip.source(function(aEvent, aOptions) {
       var lFilter = {};
-      if (mCountryObject != null && mCountryObject.getSelectedValue() > '') {
-        lFilter.country = mCountryObject.getSelectedValue();
+      if (mObjects.country != null && mObjects.country.getSelectedValue() > '') {
+        lFilter.country = mObjects.country.getSelectedValue();
       }
-      if (mStateObject != null && mStateObject.getSelectedValue() > '') {
-        lFilter.state = mStateObject.getSelectedValue();
+      if (mObjects.state != null && mObjects.state.getSelectedValue() > '') {
+        lFilter.state = mObjects.state.getSelectedValue();
       }
-      if (mCityObject != null && mCityObject.getSelectedValue() > '') {
-        lFilter.city = mCityObject.getSelectedValue();
+      if (mObjects.city != null && mObjects.city.getSelectedValue() > '') {
+        lFilter.city = mObjects.city.getSelectedValue();
       }
       return mSetSource(aEvent, aOptions, 'zips', 'zip', lFilter, false, null);
     });
-    mZipObject.loaded(function() {
-    });
-    mZipObject.changed(function() {
-      if (mInitialValues.city > '') {
-        mProtectedChange(mInitialValues.city, mCityObject);
-        mInitialValues.city = '';
+    var mChangedZip = function() {
+      if (mInitialValues.zip > '') {
+        mProtectedChange(mInitialValues.zip, mObjects.zip);
+        mInitialValues.zip = '';
       }
-    });
+      if (mObjects.school != null) mObjects.school.hiddenLoad();
+    };
+    mObjects.zip.loaded(mChangedZip);
+    mObjects.zip.changed(mChangedZip);
+    mDefDependent(mObjects.zip);
   }
   
-  //now loading data, and dependiing data
-  if (mCountryObject != null) {
-    mCountryObject.hiddenLoad(); //this cause chain reaction of loading states and cities
-  } else if (mStateObject != null) {
-    mStateObject.hiddenLoad();
-  } else if (mCityObject != null) {
-    mCityObject.hiddenLoad();
-  } else if (mZipObject != null) {
-    mZipObject.hiddenLoad();
+  if (mObjects.school != null) {
+    mObjects.school.source(function(aEvent, aOptions) {
+      var lFilter = {};
+      if (mObjects.country != null && mObjects.country.getSelectedValue() > '') {
+        lFilter.country = mObjects.country.getSelectedValue();
+      }
+      if (mObjects.state != null && mObjects.state.getSelectedValue() > '') {
+        lFilter.state = mObjects.state.getSelectedValue();
+      }
+      if (mObjects.city != null && mObjects.city.getSelectedValue() > '') {
+        lFilter.city = mObjects.city.getSelectedValue();
+      }
+      if (mObjects.zip != null && mObjects.zip.getSelectedValue() > '') {
+    	lFilter.zip = mObjects.zip.getSelectedValue();
+	  }
+      return mSetSource(aEvent, aOptions, 'schools', 'school', lFilter, false, null);
+    });
+    mObjects.school.loaded(function() {
+    });
+    mObjects.school.changed(function() {
+      if (mInitialValues.school > '') {
+        mProtectedChange(mInitialValues.school, mObjects.school);
+        mInitialValues.school = '';
+      }
+    });
+    mDefDependent(mObjects.school);
+  }
+  
+  // now loading data, and dependiing data
+  if (mObjects.country != null) {
+    mObjects.country.hiddenLoad(); // this cause chain reaction of loading
+                                    // states and cities
+  } else if (mObjects.state != null) {
+    mObjects.state.hiddenLoad();
+  } else if (mObjects.city != null) {
+    mObjects.city.hiddenLoad();
+  } else if (mObjects.zip != null) {
+    mObjects.zip.hiddenLoad();
+  } else if (mObjects.school != null) {
+    mObjects.school.hiddenLoad();
   }
 
   return {
     changeCountry : function(aCountryID) {
-      if (mCountryObject == null) return this;
-      mCountryObject.val(aCountryID);
+      if (mObjects.country == null) return this;
+      mObjects.country.val(aCountryID);
       return this;
     },
     changeState : function(aStateID) {
-      if (mStateObject == null) return this;
-      mStateObject.val(aStateID);
+      if (mObjects.state == null) return this;
+      mObjects.state.val(aStateID);
       return this;
     },
     changeCity : function(aCityID) {
-      if (mCityObject == null) return this;
-      mCityObject.val(aCityID);
+      if (mObjects.city == null) return this;
+      mObjects.city.val(aCityID);
       return this;
     },
     changeZip : function(aZipID) {
-      if (mZipObject == null) return this;
-      mZipObject.val(aZipID);
+      if (mObjects.zip == null) return this;
+      mObjects.zip.val(aZipID);
       return this;
-    }
+    },
+    changeSchool: function(aSchoolID) {
+      if (mObjects.school == null) return this;
+      mObjects.school.val(aSchoolID);
+      return this;
+    } 
   }
 
 };
+
+Ace.Combo = {
+    
+}
+
+Ace.Combo.AutoComplete = function(aFieldOptions) {
+  var mID = (aFieldOptions.id) ? aFieldOptions.id : '';
+  var mName = (aFieldOptions.name) ? aFieldOptions.name : '';
+  
+  var mUrlBuilder = new Ace.Ajax.Url(AcePath);
+  var mController = (aFieldOptions.controller) ? (aFieldOptions.controller) : '';
+  var mModel = (aFieldOptions.model) ? (aFieldOptions.model) : '';
+  var mDepends = (aFieldOptions.depends) ? aFieldOptions.depends : null;
+  
+  var mComboOptions = {
+      'depends': mDepends
+  }
+  var mCombo = $(mID).acecombobox(mComboOptions);
+  var mInitialValue = (aFieldOptions.value) ? aFieldOptions.value : null;
+  if (mInitialValue <= '') mInitialValue = null;
+    
+  var lThat = this; // because of the scope of event handlers
+  
+  mCombo.source(function(aEvent, aOptions) {
+    var lParams = {
+        'controller': mController,
+        'model': mModel,
+        'value': (aOptions.value) ? aOptions.value : '',
+        'page': (aOptions.page) ? aOptions.page : 1,
+        'limit': (aOptions.limit) ? aOptions.limit : 20,
+        'type': (aOptions.type) ? aOptions.type.toLowerCase() : ''
+    }
+    lParams['action'] = (lParams.type == 'oneitem') ? 'oneitem' : 'find';
+    
+    return {
+      'source': mUrlBuilder.toFilterUrl(lParams),
+      'model': mModel
+    }
+  });
+  var mChandedInitialValue = function() {
+    if (mInitialValue != null) {
+      mCombo.lockFilter();
+      try {
+        mCombo.val(mInitialValue);  
+      } finally {
+        mCombo.unlockFilter();
+      }
+      mInitialValue = null;
+      return true;
+    }
+    return false;
+  };
+  mCombo.loaded(function() {
+    if (mChandedInitialValue()) {
+      
+    }
+    mCombo.element.trigger('loaded', [this]);
+  });
+  mCombo.changed(function() {
+    if (mChandedInitialValue()) {
+      
+    }
+    mCombo.element.trigger('changed', [this]);
+  });
+  
+  mCombo.depended(function(aEvent, aDepends, aIsFirstUpdate) {
+    $.each(aDepends, function(aKey, aValue) {
+      if (aIsFirstUpdate || mCombo.getSelectedValue() != aValue) {
+        mCombo.val(aValue);
+      }
+    });
+  });
+  
+  return {
+    val: function() {
+      if (args.length <= 0) {
+        return mCombo.getSelectedValue();
+      }
+      mCombo.val(args[0]);
+      return null;
+    },
+    changed: function(aCallback) {
+      mCombo.changed(aCallback);
+    },
+    loaded: function(aCallback) {
+      mCombo.changed(aCallback)
+    }
+  }
+}

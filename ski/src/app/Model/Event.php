@@ -11,11 +11,7 @@ class Event extends AppModel {
   public $primaryKey = 'EventID';
   public $displayField = 'EventName';
 
-  /**
-   * Validation rules
-   *
-   * @var array
-   */
+  
   public $validate = array(
       'EventID' => array(
           'numeric' => array(
@@ -39,23 +35,74 @@ class Event extends AppModel {
               'rule' => array('date')
           ),
       ),
+  		'ZipID' => array(
+  				'naturalNumber' => array(
+  						'rule' => array('naturalNumber'),
+  						'message' => 'Invalid Zip.',
+  						'required' => false,
+  						'allowEmpty' => true,
+  						'on' => 'update'
+  				),
+  		),
+  		'CityID' => array(
+  				'naturalNumber' => array(
+  						'rule' => array('naturalNumber'),
+  						'message' => 'Invalid City.',
+  						'required' => false,
+  						'allowEmpty' => true,
+  						'on' => 'update'
+  				),
+  		),
+  		'StateID' => array(
+  				'naturalNumber' => array(
+  						'rule' => array('naturalNumber'),
+  						'message' => 'Invalid State.',
+  						'required' => false,
+  						'allowEmpty' => true,
+  						'on' => 'update'
+  				),
+  		),
+  		'CountryID' => array(
+  				'naturalNumber' => array(
+  						'rule' => array('naturalNumber'),
+  						'message' => 'Invalid Country.',
+  						'required' => false,
+  						'allowEmpty' => true,
+  						'on' => 'update'
+  				),
+  		),
   );
   
   //The Associations below have been created with all possible keys, those that are not needed can be removed
-  
-  /**
-   * belongsTo associations
-   *
-   * @var array
-   */
   public $belongsTo = array(
-      'Address' => array(
-          'className' => 'Address',
-          'foreignKey' => 'AddressID',
-          'conditions' => '',
-          'fields' => 'AddressID',
-          'order' => ''
-      ),
+  		'City' => array(
+  				'className' => 'City',
+  				'foreignKey' => 'CityID',
+  				'conditions' => '',
+  				'fields' => '',
+  				'order' => ''
+  		),
+  		'State' => array(
+  				'className' => 'State',
+  				'foreignKey' => 'StateID',
+  				'conditions' => '',
+  				'fields' => '',
+  				'order' => ''
+  		),
+  		'Country' => array(
+  				'className' => 'Country',
+  				'foreignKey' => 'CountryID',
+  				'conditions' => '',
+  				'fields' => '',
+  				'order' => ''
+  		),
+  		'Zip' => array(
+  				'className' => 'Zip',
+  				'foreignKey' => 'ZipID',
+  				'conditions' => '',
+  				'fields' => '',
+  				'order' => ''
+  		),
       'Season' => array(
           'className' => 'Season',
           'foreignKey' => 'SeasonID',
@@ -64,4 +111,5 @@ class Event extends AppModel {
           'order' => ''
       )
   );
+  
 }

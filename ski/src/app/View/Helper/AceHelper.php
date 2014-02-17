@@ -37,7 +37,6 @@ class AceHelper extends Helper {
   protected $defaultClass = 'TitledForm';
   protected $genderMap = array('M' => 'Male', 'F' => 'Female', 'U' => 'Unknown');
   
-  
   public function create($model, $title, $options) {
     if (!isset($options['class'])) {
       $options['class'] = $this->defaultClass;
@@ -87,6 +86,14 @@ class AceHelper extends Helper {
   public function toYesNoStr($value) {
     $bool = $this->toBoolean($value);
     return ($bool === true) ? 'Yes' : 'No';
+  }
+  
+  public function createGenderCombo($name, $options = null) {
+    $params = array('label' => 'Gender', 'empty' => 'Please choose gender', 'options' => $this->genderMap);
+    if (!empty($options) && is_array($options)) {
+      $params = am($params, $options);
+    }
+    return $this->Form->input($name, $params);
   }
   
 } ?>

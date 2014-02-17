@@ -1,21 +1,18 @@
 <?php
 App::uses('AppModel', 'Model');
-/**
- * TeamMember Model
- *
-*/
+
 class TeamMember extends AppModel {
 
   public $name = 'TeamMember';
   public $useTable='team_members';
   public $primaryKey = 'TeamMemberID';
   public $displayField = '';
+  
+  public $virtualFields = array(
+  		'StudentFullName' => 'TRIM(SQUEEZE(CONCAT(Student.FirstName, " ", Student.MiddleName, " ", Student.LastName)))',
+  		'TeamName' => 'Team.TeamName'
+  );
 
-  /**
-   * Validation rules
-   *
-   * @var array
-   */
   public $validate = array(
       'TeamMemberID' => array(
           'numeric' => array(
@@ -30,32 +27,20 @@ class TeamMember extends AppModel {
       'TeamID' => array(
           'numeric' => array(
               'rule' => array('numeric'),
-              //'message' => 'Your custom message here',
-              //'allowEmpty' => false,
-              //'required' => false,
-              //'last' => false, // Stop validation after this rule
-              //'on' => 'create', // Limit validation to 'create' or 'update' operations
+              'message' => 'Required team.',
+          		'required' => true
           ),
       ),
       'StudentID' => array(
           'numeric' => array(
               'rule' => array('numeric'),
-              //'message' => 'Your custom message here',
-          //'allowEmpty' => false,
-          //'required' => false,
-          //'last' => false, // Stop validation after this rule
-          //'on' => 'create', // Limit validation to 'create' or 'update' operations
-          ),
+              'message' => 'Required student',
+          		'required' => true
+          )
       ),
   );
   
   //The Associations below have been created with all possible keys, those that are not needed can be removed
-  
-  /**
-   * belongsTo associations
-   *
-   * @var array
-   */
   public $belongsTo = array(
       'Team' => array(
           'className' => 'Team',
@@ -72,4 +57,5 @@ class TeamMember extends AppModel {
           'order' => ''
       )
   );
+  
 }

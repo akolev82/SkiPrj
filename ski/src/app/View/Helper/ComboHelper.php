@@ -1,53 +1,64 @@
-<?php
-class LocationComboMaker {
+<?php //class helper 
+
+class ComboMaker {
   protected $helper = null;
   protected $model = null;
   protected $js_object = '';
   protected $Form = null;
   
+  protected $fields = array();
+  
   protected $mInitComboCode = '';
   protected $mExecComboCode = '';
-
-  public function __construct(Helper &$helper, $js_object, $model = '', $fields = array(), $values = array()) { //do not instantiate directly
+  
+  public function __construct(Helper &$helper, $js_object, $model = '', $conf = array()) { //do not instantiate directly
     $this->helper = $helper;
     $this->Form = $this->helper->Form;
     $this->js_object = $js_object;
     $this->model = ($model > '') ? $model : $this->Form->defaultModel;
-    $CountryID = $this->toID($fields, 'country');
-    $StateID = $this->toID($fields, 'state');
-    $CityID = $this->toID($fields, 'city');
-    $ZipID = $this->toID($fields, 'zip');
-    
-    $initialValues = '';
-    if (isset($values['country']) == true) $initialValues .= '"country": "' . $values['country'] . '"';
-    if (isset($values['state']) == true) {
-      if ($initialValues > '') $initialValues .= ',';
-      $initialValues .= '"state": "' . $values['state'] . '"';
-    }
-    if (isset($values['city']) == true) {
-      if ($initialValues > '') $initialValues .= ',';
-      $initialValues .= '"city": "' . $values['city'] . '"';
-    }
-    if (isset($values['zip']) == true) {
-      if ($initialValues > '') $initialValues .= ',';
-      $initialValues .= '"zip": "' . $values['zip'] . '"';
-    }
-    $initialValues = '{' . $initialValues . '}';
-    $this->addInitComboCode($this->js_object . ' = new Ace.Locations("' . $CountryID . '","' . $StateID . '","' . $CityID . '","' . $ZipID . '", ' . $initialValues . ');');
+    $this->fields = $this->init($conf);
   }
   
-  public function loadData($CountryValue = '', $StateValue = '', $CityValue = '', $ZipValue = '') {
-    //$this->addInitComboCode($this->js_object . '.changeCountry("' . $CountryValue . '")');
-    //$this->addInitComboCode($this->js_object . '.changeState("' . $StateValue . '")');
-    //$this->addInitComboCode($this->js_object . '.changeCity("' . $CityValue . '")');
-    //$this->addInitComboCode($this->js_object . '.changeZip("' . $ZipValue . '")');
+  protected function init(array &$conf) {
+    $options = array();
+    foreach($conf as $key => &$params) {
+      if (!is_array($params)) {
+        throw new NotFoundException(__('The option ' . $name . ' is not an array.'));
+      }
+      $model = '';
+      if ($this->isEmpty($params, 'model')) $params['model'] = $this->model;
+      if ($this->isEmpty($params, 'name')) {
+        throw new NotFoundException(__('Missing field "name".'));
+      }
+      $model = $params['model'];
+      $name = $params['name'];
+      $options[$key] = $this->helper->toOptions($model, $name, $params);
+      $opt =& $options[$key];
+      if (!$this->isEmpty($opt, 'id')) {
+        $opt['id'] = '#' . $opt['id'];
+      }
+      if ($this->isEmpty($opt, 'value')) {
+        $opt['value'] = '';
+      }
+      //$options[$key] = $opt;
+    }
+    return $options;
+  }
+  
+  protected function toJavaScriptObject(&$data) {
+    return json_encode($data);
+  }
+  
+  protected function isEmpty(array &$data, $name) {
+    if (!isset($data[$name])) return true;
+    return (empty($data[$name]) == true) ? true : false;
   }
   
   public function toID(array &$fields, $name) {
     if (!isset($fields[$name])) return '';
     $name = $fields[$name];
     if ($name <= '') return '';
-    return '#' . $this->model . $name; 
+    return '#' . $this->model . $name;
   }
   
   protected function call($statement) {
@@ -71,8 +82,15 @@ class LocationComboMaker {
   public function getExecComboCode() {
     return $this->mExecComboCode;
   }
-
-  public function getValue(&$options, $name) {
+  
+  public function getValue(&$options, $name, $type = '') {
+    if ($options == null) {
+      if ($type > '') {
+        $options = $this->fields[$type][$name];
+      } else {
+        $options =& $this->fields[$name];
+      }
+    }
     if (!array_key_exists($name, $options)) {
       return 'null';
     }
@@ -85,14 +103,48 @@ class LocationComboMaker {
     return $str;
   }
   
+  protected function isDefinedOption(&$options) {
+    return (isset($options) && is_array($options) && count($options) > 0) ? true : false;
+  }
+  
   public function addAutoComplete($name, $script, $options) {
-    if (!isset($options)) $options = array();
+    if (!$this->isDefinedOption($options)) {
+      if (isset($this->fields[$name])) { //TODO: edit this
+        $options = $this->fields[$name]; //then name of is used as model(combotype)
+        $name = $options['name'];
+        echo $name;
+      } else {
+        $options = array();
+      }
+    }
     $options['autocomplete'] = true;
     return $this->addCustomCombo($name, $script, $options);
   }
+  
+  public function printClientScript() {
+    echo '<script type="text/javascript">$(document).ready(function() {';
+    echo $this->mInitComboCode;
+    echo "\n";
+    //echo $this->mExecComboCode;
+    echo '});</script>';
+  }
+  
+}
 
-  public function addCountryCombo($name, $options) {
-    return $this->addAutoComplete($name, $this->call('changeCountry("' . $this->getValue($options, 'CountryID') .'")'), $options);
+class LocationComboMaker extends ComboMaker {
+
+  public function __construct(Helper &$helper, $js_object, $model = '', $fields = array()) { //do not instantiate directly
+    parent::__construct($helper, $js_object, $model, $fields);
+    $this->addInitComboCode($this->js_object . ' = new Ace.Locations(' . $this->toJavaScriptObject($this->fields) . ');');
+  }
+  
+  public function addCountryCombo($name, $options = NULL) {
+    if (!$this->isDefinedOption($options)) {
+      $values =& $this->fields;
+    } else {
+      $values =& $options;
+    }
+    return $this->addAutoComplete($name, $this->call('changeCountry("' . $this->getValue($values, 'CountryID') .'")'), $options);
   }
 
   public function addStateCombo($name, $options) {
@@ -104,24 +156,48 @@ class LocationComboMaker {
   }
 
   public function addZipCombo($name, $options) {
-    return $this->addAutoComplete($name, $this->call('changeCity("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '","' . $this->getValue($options, 'CityID') . '","' . $this->getValue($options, 'ZipID') . '")'), $options);
+    return $this->addAutoComplete($name, $this->call('changeZip("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '","' . $this->getValue($options, 'CityID') . '","' . $this->getValue($options, 'ZipID') . '")'), $options);
   }
   
-  public function printClientScript() {
-    echo '<script type="text/javascript">$(document).ready(function() {';
-    echo $this->mInitComboCode;
-    echo "\n";
-    //echo $this->mExecComboCode; 
-    echo '});</script>';
+  public function addSchoolCombo($name, $options) {
+    return $this->addAutoComplete($name, $this->call('changeSchool("' . $this->getValue($options, 'CountryID') .'","' . $this->getValue($options, 'StateID') . '","' . $this->getValue($options, 'CityID') . '","' . $this->getValue($options, 'ZipID') . '","' . $this->getValue($options, 'SchoolID') . '")'), $options);
   }
 
 }
 
-class ComboHelper extends Helper {
+class ModeledComboMaker extends ComboMaker {
+  public function __construct(Helper &$helper, $js_object, $model = '', $fields = array()) { //do not instantiate directly
+    parent::__construct($helper, $js_object, $helper->Form->defaultModel, $fields);
+    $this->addInitComboCode($this->js_object . ' = new Ace.Combo.Ajax(' . $this->toJavaScriptObject($this->fields) . ');');
+  }
+}
+
+class ComboHelper extends FormHelper {
   
   public $helpers = array('Html', 'Form', 'Ace');
   
   protected $booleanMap = array('0' => 'No', '1' => 'Yes');
+  
+  public function toOptions($model, $fieldName, $options = array()) {
+    $this->setEntity($model, true);
+    $options['type'] = 'hidden';
+    
+    $secure = false;
+    if (isset($options['secure']) === true) {
+      $secure = $options['secure'];
+      unset($options['secure']);
+    }
+  
+    $options = $this->_initInputField($fieldName, array_merge(
+        $options, array('secure' => FormHelper::SECURE_SKIP)
+    ));
+  
+    if ($secure === true) {
+      $this->_secure(true, null, '' . $options['value']);
+    }
+  
+    return $options;
+  }
   
   public function addCustomCombo($name, $options) {
     $merged_options = array_merge(array('options' => array(), 'autocomplete' => 'on'), $options);
@@ -131,8 +207,12 @@ class ComboHelper extends Helper {
     return $this->Form->input($name, $merged_options);
   }
   
-  public function getLocationCombos($js_object, $fields = array(), $values = array()) {
-    return new LocationComboMaker($this, $js_object, $this->Form->defaultModel, $fields, $values);
+  public function getCombos($js_object, $fields = array()) {
+    return new ComboMaker($this, $js_object, $this->Form->defaultModel, $fields);
+  }
+  
+  public function getLocationCombos($js_object, $fields = array()) {
+    return new LocationComboMaker($this, $js_object, $this->Form->defaultModel, $fields);
   }
   
   public function getYesNoMap() {

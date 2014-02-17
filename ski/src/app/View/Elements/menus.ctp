@@ -31,7 +31,7 @@
                             </ul>
                         </li>
                         <li>
-                            <?php if ($is_logged_in) {
+                            <?php if (isset($is_logged_in) && $is_logged_in) {
                                 echo $this->HTML->link(__('Logout'), array('controller' => 'users', 'action' => 'logout'), array('id' => 'logout'));
                             } else {
                                 echo '<div class="login_right">';

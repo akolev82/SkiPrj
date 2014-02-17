@@ -30,7 +30,7 @@ create table `cities`(
 insert into `cities`(`CountryID`, `StateID`, `CityName`) 
 select distinct 1 as CountryID, s.StateID, z.city as CityName 
 from zip_codes z 
-left outer join states s on s.StateName=z.full_state
+left outer join states s on s.StateName=z.full_state and 
 order by z.full_state, z.city;
 
 create table `zips`(
@@ -50,8 +50,8 @@ create table `zips`(
 insert into `zips`(`CountryID`, `StateID`, `CityID`, `ZipCode`, `latitude`, `longitude`) 
 select distinct 1 as CountryID, s.StateID, c.CityID, z.zip as ZipCode, z.latitude, z.longitude
 from zip_codes z 
-left outer join states s on s.StateName=z.full_state
-left outer join cities c on c.CityName=z.city
+inner join states s on s.StateName=z.full_state
+left outer join cities c on c.StateID=s.StateID and c.CityName=z.city
 order by z.full_state, z.city;
 
 create table `addresses`(

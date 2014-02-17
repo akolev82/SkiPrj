@@ -1,7 +1,4 @@
 <?php
-<?php
-class MydbSchema extends CakeSchema {
-}
 class SkiSchema extends CakeSchema {
 
 	var $addresses = array(
@@ -35,7 +32,7 @@ class SkiSchema extends CakeSchema {
 			'DomainID' => array('type' => 'integer', 'default' => '', 'key' => 'primary'),
 			'DomainName' => array('type' => 'string', 'default' => '', 'length' => '255'),
 			'DomainDesc' => array('type' => 'text', 'null' => true, 'default' => NULL),
-			'enabled' => array('type' => 'integer', 'default' => ''0'')
+			'enabled' => array('type' => 'integer', 'default' => '0')
 	);
 
 	var $events = array(
@@ -65,7 +62,7 @@ class SkiSchema extends CakeSchema {
 			'DomainID' => array('type' => 'integer', 'default' => ''),
 			'PermissionName' => array('type' => 'string', 'default' => '', 'length' => '255'),
 			'PermissionDesc' => array('type' => 'text', 'null' => true, 'default' => NULL),
-			'enabled' => array('type' => 'integer', 'default' => ''0'')
+			'enabled' => array('type' => 'integer', 'default' => '0')
 	);
 
 	var $person_addresses = array(
@@ -87,7 +84,7 @@ class SkiSchema extends CakeSchema {
 			'FirstName' => array('type' => 'string', 'default' => '', 'length' => '255'),
 			'LastName' => array('type' => 'string', 'default' => '', 'length' => '255'),
 			'MiddleName' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => '255'),
-			'Gender' => array('type' => 'enum', 'default' => ''U''),
+			'Gender' => array('type' => 'enum', 'default' => 'U'),
 			'BirthDate' => array('type' => 'date', 'null' => true, 'default' => NULL),
 			'BirthPlace' => array('type' => 'integer', 'null' => true, 'default' => NULL)
 	);
@@ -102,7 +99,7 @@ class SkiSchema extends CakeSchema {
 			'RolePermissionID' => array('type' => 'integer', 'default' => '', 'key' => 'primary'),
 			'PermissionID' => array('type' => 'integer', 'default' => ''),
 			'Action' => array('type' => 'string', 'default' => '', 'length' => '255'),
-			'enabled' => array('type' => 'integer', 'default' => ''0'')
+			'enabled' => array('type' => 'integer', 'default' => '0')
 	);
 
 	var $roles = array(
@@ -115,7 +112,7 @@ class SkiSchema extends CakeSchema {
 			'SchoolID' => array('type' => 'integer', 'default' => '', 'key' => 'primary'),
 			'SchoolName' => array('type' => 'string', 'default' => '', 'length' => '255'),
 			'PrimaryAddressID' => array('type' => 'integer', 'null' => true, 'default' => NULL),
-			'Active' => array('type' => 'integer', 'default' => ''1''),
+			'Active' => array('type' => 'integer', 'default' => '1'),
 			'SchoolLogo' => array('type' => 'text', 'null' => true, 'default' => NULL),
 			'PrincipalID' => array('type' => 'integer', 'null' => true, 'default' => NULL)
 	);
@@ -125,7 +122,7 @@ class SkiSchema extends CakeSchema {
 			'SeasonName' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => '200'),
 			'DateBegin' => array('type' => 'date', 'default' => ''),
 			'DateEnd' => array('type' => 'date', 'default' => ''),
-			'NumberOfRuns' => array('type' => 'integer', 'default' => ''0''),
+			'NumberOfRuns' => array('type' => 'integer', 'default' => '0'),
 			'SeedOrderClass' => array('type' => 'string', 'null' => true, 'default' => NULL, 'length' => '100')
 	);
 
@@ -178,7 +175,7 @@ class SkiSchema extends CakeSchema {
 			'UserPermissionID' => array('type' => 'integer', 'default' => '', 'key' => 'primary'),
 			'PermissionID' => array('type' => 'integer', 'default' => ''),
 			'Action' => array('type' => 'string', 'default' => '', 'length' => '255'),
-			'enabled' => array('type' => 'integer', 'default' => ''0'')
+			'enabled' => array('type' => 'integer', 'default' => '0')
 	);
 
 	var $user_roles = array(
@@ -190,7 +187,7 @@ class SkiSchema extends CakeSchema {
 			'UserID' => array('type' => 'integer', 'default' => '', 'key' => 'primary'),
 			'name' => array('type' => 'string', 'default' => '', 'length' => '50'),
 			'pass' => array('type' => 'string', 'default' => '', 'length' => '256'),
-			'super' => array('type' => 'integer', 'default' => ''0'')
+			'super' => array('type' => 'integer', 'default' => '0')
 	);
 
 	var $zips = array(
@@ -198,9 +195,9 @@ class SkiSchema extends CakeSchema {
 			'CountryID' => array('type' => 'integer', 'default' => ''),
 			'CityID' => array('type' => 'integer', 'null' => true, 'default' => NULL),
 			'StateID' => array('type' => 'integer', 'null' => true, 'default' => NULL),
-			'ZipCode' => array('type' => 'string', 'default' => '''', 'length' => '5'),
-			'latitude' => array('type' => 'string', 'default' => '''', 'length' => '10'),
-			'longitude' => array('type' => 'string', 'default' => '''', 'length' => '10')
+			'ZipCode' => array('type' => 'string', 'default' => '', 'length' => '5'),
+			'latitude' => array('type' => 'string', 'default' => '', 'length' => '10'),
+			'longitude' => array('type' => 'string', 'default' => '', 'length' => '10')
 	);
 }
 ?>

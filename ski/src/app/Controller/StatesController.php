@@ -127,7 +127,7 @@ class StatesController extends AppController {
     return $this->redirect(array('action' => 'index'));
   }
   
-  protected function internalFind($numargs, $arg_list) {
+  protected function internalFind($numargs, $arg_list, $options) {
     $this->set('is_debug', false);
     $this->layout = 'ajax';
     $conditions = array('State.StateName !=' => null, 'State.StateName !=' => '');
@@ -151,7 +151,7 @@ class StatesController extends AppController {
       $order_by = array('State.StateName' => 'asc');
       $empty = 'Please choose state.';
       $this->State->clear();
-      $options = compact('fields', 'order_by', 'conditions', 'criterias', 'empty');
+      $options = am(compact('fields', 'order_by', 'conditions', 'criterias', 'empty'), $options);
       $this->Ajax->paginateCombo($this->State, $options);
     }
     return true;

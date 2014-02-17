@@ -51,11 +51,14 @@ class AppController extends Controller {
           ),
           //'logoutRedirect' => '/',
           'authError' => 'Did you really think you are allowed to see that?',
-          'authenticate' => array(
+          'authenticate' => array(          	  
               'Form' => array(
-                  'userModel' => 'User',
+                  'userModel' => 'Users.User',
                   'fields' => array('username' => 'name', 'password' => 'pass'),
+              	  //'scope' => array('enabled' => 1)
+              	  'passwordHasher' => 'Simple'
               )
+          	            		
           )
       )
   );
@@ -174,16 +177,22 @@ class AppController extends Controller {
   
   
   protected function doOneItem($numargs, $arg_list) {
-    $value = '';
-    $modelClass = $this->modelClass;
-    $model = $this->$modelClass;
-    if ($numargs > 0) {
-      $value = $arg_list[0];
+    $this->Ajax->setJsonType();
+    try {
+      $value = '';
+      $modelClass = $this->modelClass;
+      $model = $this->$modelClass;
+      if ($numargs > 0) {
+        $value = $arg_list[0];
+      }
+      $this->setVirtualFields();
+      
+      $options = array('conditions' => array($model->alias . '.' . $model->primaryKey => $value));
+      $options['depends'] = $this->request->data('depends');
+      $this->Ajax->getOneItem($model, $options);
+    } catch(Exception $e) {
+      $this->Ajax->addMessage('Error has happen. Reason: ' . $e->getMessage(), 'error');
     }
-    $this->setVirtualFields();
-    
-    $options = array('conditions' => array($model->alias . '.' . $model->primaryKey => $value));
-    $this->Ajax->getOneItem($model, $options);
     $this->Ajax->toJson();
   }
   
@@ -195,18 +204,26 @@ class AppController extends Controller {
     $this->doOneItem(func_num_args(), func_get_args());
   }
 
-  protected function internalFind($numargs, $arg_list) {
+  protected function internalFind($numargs, $arg_list, $options) {
     //this is inherited by child classes
   }
 
   protected final function doFind($numargs, $arg_list) {
-    if ($numargs > 0 && $numargs % 2 != 0) {
-      echo 'Invalid number of parameters.';
-      $this->render('Errors/error');
-      return;
+    $this->Ajax->setJsonType();
+    try {
+      if ($numargs > 0 && $numargs % 2 != 0) {
+        echo 'Invalid number of parameters.';
+        $this->render('Errors/error');
+        return;
+      }
+      $options = array();
+      $options['depends'] = $this->request->data('depends');
+      $this->internalFind($numargs, $arg_list, $options);
+    } catch(NotFoundException $e) {
+      $this->Ajax->addMessage('Error has happen. Reason: ' . $e->getMessage(), 'error');
+    } catch(Exception $e) {
+      $this->Ajax->addMessage('Error has happen. Reason: ' . $e->getMessage(), 'error');
     }
-    $this->internalFind($numargs, $arg_list);
-    //$this->render('/Pages/find', 'ajax');
     $this->Ajax->toJson();
   }
 

@@ -2,8 +2,8 @@
 	<h2><?php echo __('Team Types'); ?></h2>
 	<table cellpadding="0" cellspacing="0">
 	<tr>
-			<th><?php echo $this->Paginator->sort('TeamTypeID'); ?></th>
-			<th><?php echo $this->Paginator->sort('TeamTypeName'); ?></th>
+			<th><?php echo $this->Paginator->sort('TeamTypeID', __('ID')); ?></th>
+			<th><?php echo $this->Paginator->sort('TeamTypeName', __('Team type')); ?></th>
 			<th class="actions"><?php echo __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($teamTypes as $teamType): ?>
@@ -11,9 +11,11 @@
 		<td><?php echo h($teamType['TeamType']['TeamTypeID']); ?>&nbsp;</td>
 		<td><?php echo h($teamType['TeamType']['TeamTypeName']); ?>&nbsp;</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View'), array('action' => 'view', $teamType['TeamType']['id'])); ?>
-			<?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $teamType['TeamType']['id'])); ?>
-			<?php echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $teamType['TeamType']['id']), null, __('Are you sure you want to delete # %s?', $teamType['TeamType']['id'])); ?>
+			<?php echo $this->Html->link(__('View'), array('action' => 'view', $teamType['TeamType']['TeamTypeID']));
+			if ($is_admin) {
+				echo $this->Html->link(__('Edit'), array('action' => 'edit', $teamType['TeamType']['TeamTypeID']));
+				echo $this->Form->postLink(__('Delete'), array('action' => 'delete', $teamType['TeamType']['TeamTypeID']), null, __('Are you sure you want to delete # %s?', $teamType['TeamType']['TeamTypeID'])); 
+			} ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -35,6 +37,8 @@
 <div class="actions">
 	<h3><?php echo __('Actions'); ?></h3>
 	<ul>
-		<li><?php echo $this->Html->link(__('New Team Type'), array('action' => 'add')); ?></li>
+		<?php if ($is_admin) { ?>
+			<li><?php echo $this->Html->link(__('New Team Type'), array('action' => 'add')); ?></li>
+		<?php } ?>
 	</ul>
 </div>
